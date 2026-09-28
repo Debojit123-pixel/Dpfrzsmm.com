@@ -66,7 +66,7 @@
     .btn-add-fund { background: var(--success); color: white; border: none; padding: 8px 15px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 13px; }
 
     /* Scrollable Content Area */
-    .app-content { flex: 1; padding: 20px; overflow-y: auto; background: var(--bg-color); padding-bottom: 80px; /* Space for bottom nav */ }
+    .app-content { flex: 1; padding: 20px; overflow-y: auto; background: var(--bg-color); padding-bottom: 90px; }
     .screen { display: none; }
     .screen.active { display: block; }
 
@@ -104,8 +104,8 @@
     .dot.disconnected { background: var(--danger); box-shadow: 0 0 5px var(--danger); }
     .btn-reconnect { background: #e2e8f0; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: 600; color: #475569; }
 
-    /* Bottom Nav (FIXED POSITION) */
-    .bottom-nav { background: white; border-top: 1px solid var(--border-color); display: flex; justify-content: space-around; padding: 10px 0; position: absolute; bottom: 0; width: 100%; z-index: 50; }
+    /* Bottom Nav (Strictly Fixed at Bottom) */
+    .bottom-nav { background: white; border-top: 1px solid var(--border-color); display: flex; justify-content: space-around; padding: 10px 0; position: absolute; bottom: 0; left: 0; width: 100%; z-index: 100; height: 60px; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); }
     .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-muted); font-size: 11px; font-weight: 600; cursor: pointer; width: 33%; }
     .nav-item i { font-size: 20px; margin-bottom: 4px; }
     .nav-item.active { color: var(--primary); }
@@ -265,16 +265,12 @@
 
           <div class="card">
             <h2 class="card-title" style="color:var(--danger);"><i class="fa-solid fa-tags"></i> Manage Prices (Per 1000)</h2>
-            <div id="adminServicesList">
-              <!-- Admin Services Will Load Here -->
-            </div>
+            <div id="adminServicesList"></div>
           </div>
 
           <div class="card">
             <h2 class="card-title" style="color:var(--danger);"><i class="fa-solid fa-list-check"></i> All Users Orders</h2>
-            <div id="adminAllOrdersList">
-              <!-- Global Orders Will Load Here -->
-            </div>
+            <div id="adminAllOrdersList"></div>
           </div>
         </div>
 
@@ -293,7 +289,7 @@
 
       </div>
 
-      <!-- Bottom Nav (Fixed properly) -->
+      <!-- Bottom Nav (Fixed at absolute bottom) -->
       <div class="bottom-nav">
         <div class="nav-item active" id="navbtn-newOrder" onclick="switchNav('newOrder')"><i class="fa-solid fa-cart-plus"></i><span>Order</span></div>
         <div class="nav-item" id="navbtn-history" onclick="switchNav('history')"><i class="fa-solid fa-clock-rotate-left"></i><span>History</span></div>
@@ -323,7 +319,6 @@
 
     function showLoader(show) { document.getElementById('loader').style.display = show ? 'flex' : 'none'; }
     
-    // Core Firebase Call with Error Handling
     async function fbGet(path) { 
       try {
         const res = await fetch(`${FIREBASE_DB_URL}${path}.json`); 
@@ -335,6 +330,25 @@
     }
     async function fbPut(path, data) { await fetch(`${FIREBASE_DB_URL}${path}.json`, { method: 'PUT', body: JSON.stringify(data) }); }
     async function fbPatch(path, data) { await fetch(`${FIREBASE_DB_URL}${path}.json`, { method: 'PATCH', body: JSON.stringify(data) }); }
+
+    // ================= PERSISTENT LOGIN ON PAGE LOAD =================
+    window.onload = async function() {
+      const savedUserId = localStorage.getItem('dpfrz_userId');
+      const savedEmail = localStorage.getItem('dpfrz_email');
+      
+      if (savedUserId && savedEmail) {
+        showLoader(true);
+        const user = await fbGet(`users/${savedUserId}`);
+        showLoader(false);
+        if (user) {
+          currentUserId = savedUserId;
+          currentUserEmail = savedEmail;
+          currentUserData = user;
+          initApp(user.picture);
+          return;
+        }
+      }
+    };
 
     // ================= 1. GOOGLE PICKER LOGIC =================
     async function handleGooglePicker(response) {
@@ -373,11 +387,21 @@
         }
       }
 
-      currentUserId = safeId; currentUserEmail = tempGoogleData.email; currentUserData = user;
+      currentUserId = safeId; 
+      currentUserEmail = tempGoogleData.email; 
+      currentUserData = user;
+
+      // Save to localStorage for persistent login
+      localStorage.setItem('dpfrz_userId', safeId);
+      localStorage.setItem('dpfrz_email', tempGoogleData.email);
+
       initApp(tempGoogleData.picture);
     }
 
     function logout() {
+      localStorage.removeItem('dpfrz_userId');
+      localStorage.removeItem('dpfrz_email');
+
       currentUserId = null; currentUserEmail = null; currentUserData = null; tempGoogleData = null;
       document.getElementById('mainApp').style.display = 'none';
       document.getElementById('authScreenPassword').style.display = 'none';
@@ -387,6 +411,7 @@
 
     // ================= APP INIT =================
     async function initApp(pictureUrl) {
+      document.getElementById('authScreenPicker').style.display = 'none';
       document.getElementById('authScreenPassword').style.display = 'none';
       document.getElementById('mainApp').style.display = 'flex';
       
@@ -562,15 +587,14 @@
       showLoader(false);
     }
 
-    // ================= ADMIN LOGIC (FIXED RENDERING) =================
+    // ================= ADMIN LOGIC =================
     async function fetchAdminData() {
       showLoader(true);
       
-      // Load Services
       globalServices = await fbGet('services');
       const divSrv = document.getElementById('adminServicesList');
       
-      let htmlSrv = ''; // Build HTML as string first
+      let htmlSrv = ''; 
       for(let cat in globalServices) {
         for(let key in globalServices[cat]) {
           let s = globalServices[cat][key];
@@ -587,7 +611,6 @@
       }
       divSrv.innerHTML = htmlSrv;
 
-      // Load Global Orders
       const allOrders = await fbGet('orders') || {};
       const divOrd = document.getElementById('adminAllOrdersList');
       
@@ -642,7 +665,6 @@
       alert("Order Status updated!");
     }
 
-    // Admin Users View
     async function fetchAdminAllUsersList() {
       showLoader(true);
       const allUsers = await fbGet('users') || {};
@@ -670,6 +692,7 @@
   </script>
 </body>
 </html>
+
 
 
 

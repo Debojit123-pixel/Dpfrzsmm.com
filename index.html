@@ -57,16 +57,16 @@
     
     .header { background: var(--primary); color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; z-index: 10; flex-shrink: 0; }
     .header-left { display: flex; align-items: center; gap: 12px; }
-    .menu-icon { font-size: 20px; cursor: pointer; color: white; }
     .header-title { font-weight: 700; font-size: 18px; }
     
     .user-profile-header { display: flex; align-items: center; gap: 12px; }
-    .user-avatar { width: 32px; height: 32px; border-radius: 50%; background: white; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .user-avatar { width: 34px; height: 34px; border-radius: 50%; background: white; display: flex; align-items: center; justify-content: center; overflow: hidden; font-weight: 700; color: var(--primary); border: 2px solid rgba(255,255,255,0.8); }
     .user-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .menu-icon { font-size: 20px; cursor: pointer; color: white; }
 
     /* Side Drawer Menu */
-    .side-drawer { position: fixed; top: 0; left: -280px; width: 280px; height: 100%; background: white; z-index: 1000; box-shadow: 4px 0 15px rgba(0,0,0,0.1); transition: left 0.3s ease; display: flex; flex-direction: column; }
-    .side-drawer.open { left: 0; }
+    .side-drawer { position: fixed; top: 0; right: -280px; width: 280px; height: 100%; background: white; z-index: 1000; box-shadow: -4px 0 15px rgba(0,0,0,0.1); transition: right 0.3s ease; display: flex; flex-direction: column; }
+    .side-drawer.open { right: 0; }
     .drawer-header { background: var(--primary); color: white; padding: 20px; font-size: 18px; font-weight: 700; display: flex; justify-content: space-between; align-items: center; }
     .drawer-menu-items { padding: 15px 0; flex: 1; overflow-y: auto; }
     .drawer-item { padding: 14px 20px; display: flex; align-items: center; gap: 15px; font-size: 15px; font-weight: 600; color: var(--text-main); cursor: pointer; border-bottom: 1px solid #f1f5f9; text-decoration: none; }
@@ -189,15 +189,13 @@
     <!-- ================= MAIN APP ================= -->
     <div id="mainApp">
       
-      <!-- Header with Menu Icon -->
+      <!-- Header (Picture Left, Menu Right) -->
       <div class="header">
         <div class="header-left">
-          <i class="fa-solid fa-bars menu-icon" onclick="toggleDrawer()"></i>
+          <div class="user-avatar" id="avatarIcon">U</div>
           <div class="header-title"><i class="fa-solid fa-bolt"></i> DPFRZ SMM</div>
         </div>
-        <div class="user-profile-header">
-          <div class="user-avatar" id="avatarIcon">U</div>
-        </div>
+        <i class="fa-solid fa-bars menu-icon" onclick="toggleDrawer()"></i>
       </div>
 
       <!-- Side Drawer Menu -->
@@ -214,7 +212,11 @@
           <a class="drawer-item" onclick="toggleDrawer(); switchNav('history')">
             <i class="fa-solid fa-clock-rotate-left"></i> Order History
           </a>
-          <!-- Admin Panel Link (Dynamically Shown) -->
+          <!-- Add Balance Page Link in Menu -->
+          <a class="drawer-item" onclick="toggleDrawer(); switchNav('addBalance')">
+            <i class="fa-solid fa-wallet" style="color:var(--success);"></i> Add Balance
+          </a>
+          <!-- Admin Panel Link -->
           <a class="drawer-item" id="menuAdminItem" style="display:none; color:var(--danger);" onclick="toggleDrawer(); switchNav('admin')">
             <i class="fa-solid fa-shield-halved" style="color:var(--danger);"></i> Admin Panel
           </a>
@@ -271,16 +273,43 @@
           </div>
         </div>
 
-        <!-- Screen: MY ORDER HISTORY -->
+        <!-- Screen: MY ORDER HISTORY (With Back Button) -->
         <div id="screen-history" class="screen">
+          <button class="btn-back" onclick="switchNav('newOrder')">
+            <i class="fa-solid fa-arrow-left"></i> Back to Home
+          </button>
           <div class="card">
             <h2 class="card-title">My Order History</h2>
             <div id="userOrdersList"></div>
           </div>
         </div>
 
+        <!-- Screen: ADD BALANCE PAGE -->
+        <div id="screen-addBalance" class="screen">
+          <button class="btn-back" onclick="switchNav('newOrder')">
+            <i class="fa-solid fa-arrow-left"></i> Back to Home
+          </button>
+          <div class="card" style="text-align: center; padding: 30px 20px;">
+            <i class="fa-solid fa-wallet" style="font-size: 50px; color: var(--success); margin-bottom: 15px;"></i>
+            <h2 style="font-size: 22px; font-weight: 700; margin-bottom: 10px;">Add Funds to Wallet</h2>
+            <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 25px; line-height: 1.5;">
+              Instantly add balance to your DPFRZ SMM account using secure Razorpay gateway. Funds will be credited immediately upon successful payment.
+            </p>
+            <div style="background: #f8fafc; border: 1px solid var(--border-color); padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+              <span style="font-size: 13px; color: var(--text-muted); display: block;">Current Balance</span>
+              <h3 style="font-size: 24px; font-weight: 800; color: var(--success);" id="addBalanceDisplay">₹0.00</h3>
+            </div>
+            <button class="btn-main" onclick="triggerRazorpay()" style="background: var(--success);">
+              <i class="fa-solid fa-plus-circle"></i> Add Funds Now
+            </button>
+          </div>
+        </div>
+
         <!-- Screen: ADMIN DASHBOARD -->
         <div id="screen-admin" class="screen">
+          <button class="btn-back" onclick="switchNav('newOrder')">
+            <i class="fa-solid fa-arrow-left"></i> Back to Home
+          </button>
           
           <div class="db-status-box">
             <div class="status-indicator">
@@ -423,7 +452,6 @@
       currentUserEmail = tempGoogleData.email; 
       currentUserData = user;
 
-      // Save to localStorage for persistent login
       localStorage.setItem('dpfrz_userId', safeId);
       localStorage.setItem('dpfrz_email', tempGoogleData.email);
 
@@ -451,9 +479,10 @@
       if(pictureUrl) { avatarIcon.innerHTML = `<img src="${pictureUrl}" alt="DP">`; } 
       else { avatarIcon.innerText = currentUserEmail.charAt(0).toUpperCase(); }
 
-      document.getElementById('displayBalance').innerText = '₹' + parseFloat(currentUserData.balance).toFixed(2);
+      const balanceText = '₹' + parseFloat(currentUserData.balance).toFixed(2);
+      document.getElementById('displayBalance').innerText = balanceText;
+      document.getElementById('addBalanceDisplay').innerText = balanceText;
 
-      // Admin Visibility inside Menu Drawer
       if(currentUserEmail.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
         document.getElementById('menuAdminItem').style.display = 'flex';
       } else {
@@ -520,7 +549,11 @@
               const newBalance = parseFloat(currentUserData.balance) + amount;
               await fbPatch(`users/${currentUserId}`, { balance: newBalance });
               currentUserData.balance = newBalance;
-              document.getElementById('displayBalance').innerText = '₹' + newBalance.toFixed(2);
+              
+              const balanceText = '₹' + newBalance.toFixed(2);
+              document.getElementById('displayBalance').innerText = balanceText;
+              document.getElementById('addBalanceDisplay').innerText = balanceText;
+
               showLoader(false);
               alert("Payment Successful! ₹" + amount + " added to your wallet.");
             }
@@ -574,7 +607,10 @@
       const newBal = parseFloat(currentUserData.balance) - charge;
       await fbPatch(`users/${currentUserId}`, { balance: newBal });
       currentUserData.balance = newBal;
-      document.getElementById('displayBalance').innerText = '₹' + newBal.toFixed(2);
+      
+      const balanceText = '₹' + newBal.toFixed(2);
+      document.getElementById('displayBalance').innerText = balanceText;
+      document.getElementById('addBalanceDisplay').innerText = balanceText;
 
       const orderId = Date.now().toString();
       const orderObj = {
@@ -719,6 +755,7 @@
   </script>
 </body>
 </html>
+
 
 
 

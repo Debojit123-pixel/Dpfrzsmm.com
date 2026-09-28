@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Store - Online Shopping</title>
+    <!-- Razorpay Checkout Script -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        header {
+            background-color: #1e293b;
+            color: #ffffff;
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        header h1 {
+            font-size: 22px;
+            font-weight: 700;
+        }
+        nav a {
+            color: #cbd5e1;
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+        nav a:hover {
+            color: #ffffff;
+        }
+        .hero {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+        }
+        .hero h2 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        .section-title {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 24px;
+            color: #0f172a;
+        }
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 25px;
+        }
+        .product-card {
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+        }
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background-color: #f1f5f9;
+        }
+        .product-info {
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+        .product-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .product-desc {
+            font-size: 13px;
+            color: #64748b;
+            margin-bottom: 15px;
+            flex-grow: 1;
+        }
+        .product-bottom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+        .product-price {
+            font-size: 20px;
+            font-weight: bold;
+            color: #059669;
+        }
+        .buy-btn {
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            padding: 9px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+        .buy-btn:hover {
+            background-color: #1d4ed8;
+        }
+        footer {
+            background-color: #0f172a;
+            color: #94a3b8;
+            padding: 40px 5% 20px;
+            margin-top: 50px;
+        }
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .footer-col h3 {
+            color: #ffffff;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+        .footer-col ul {
+            list-style: none;
+        }
+        .footer-col ul li {
+            margin-bottom: 8px;
+        }
+        .footer-col ul li a {
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .footer-col ul li a:hover {
+            color: #ffffff;
+        }
+        .footer-bottom {
+            text-align: center;
+            border-top: 1px solid #1e293b;
+            padding-top: 20px;
+            margin-top: 30px;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header / Navbar -->
+    <header>
+        <h1>SmartStore</h1>
+        <nav>
+            <a href="#products">Products</a>
+            <a href="#contact">Contact</a>
+            <a href="#policies">Policies</a>
+        </nav>
+    </header>
+
+    <!-- Banner -->
+    <section class="hero">
+        <h2>Quality Products, Fast Delivery</h2>
+        <p>Your trusted shopping partner</p>
+    </section>
+
+    <!-- Product Section -->
+    <div class="container" id="products">
+        <h2 class="section-title">Featured Products</h2>
+        <div class="product-grid">
+            
+            <!-- Product 1 -->
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500" alt="Headphones" class="product-image">
+                <div class="product-info">
+                    <h3 class="product-title">Wireless Headphones</h3>
+                    <p class="product-desc">High-bass Bluetooth headphones with up to 20 hours battery life.</p>
+                    <div class="product-bottom">
+                        <span class="product-price">₹499</span>
+                        <button class="buy-btn" onclick="openRazorpay('Wireless Headphones', 499)">Buy Now</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 2 -->
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500" alt="Smart Watch" class="product-image">
+                <div class="product-info">
+                    <h3 class="product-title">Fitness Smartwatch</h3>
+                    <p class="product-desc">Track steps, heart rate, and sleep with water-resistant body.</p>
+                    <div class="product-bottom">
+                        <span class="product-price">₹899</span>
+                        <button class="buy-btn" onclick="openRazorpay('Fitness Smartwatch', 899)">Buy Now</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 3 -->
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=500" alt="Sunglasses" class="product-image">
+                <div class="product-info">
+                    <h3 class="product-title">UV Sunglasses</h3>
+                    <p class="product-desc">Stylish unisex UV protection sunglasses with hard protective case.</p>
+                    <div class="product-bottom">
+                        <span class="product-price">₹299</span>
+                        <button class="buy-btn" onclick="openRazorpay('UV Sunglasses', 299)">Buy Now</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Footer & Policy Section (Razorpay verification-এর জন্য অত্যন্ত গুরুত্বপূর্ণ) -->
+    <footer id="policies">
+        <div class="footer-content">
+            <div class="footer-col" id="contact">
+                <h3>About SmartStore</h3>
+                <p style="font-size: 14px; line-height: 1.5;">We provide quality lifestyle accessories and electronics at reasonable prices with doorstep delivery.</p>
+            </div>
+            <div class="footer-col">
+                <h3>Important Links</h3>
+                <ul>
+                    <li><a href="#">Terms & Conditions</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Refund & Cancellation</a></li>
+                    <li><a href="#">Shipping Policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Customer Support</h3>
+                <ul>
+                    <li>Email: support@smartstore.com</li>
+                    <li>Phone: +91 98765 43210</li>
+                    <li>Hours: 10:00 AM - 6:00 PM (Mon-Sat)</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 SmartStore. All rights reserved.
+        </div>
+    </footer>
+
+    <!-- Razorpay Integration Code -->
+    <script>
+        function openRazorpay(itemName, amountInRupees) {
+            // Razorpay amount paise-তে হিসাব করে (₹1 = 100 paise)
+            const amountInPaise = amountInRupees * 100;
+
+            const options = {
+                "key": "rzp_test_YOUR_KEY_HERE", // এখানে আপনার Razorpay Test Key বসাবেন
+                "amount": amountInPaise, 
+                "currency": "INR",
+                "name": "SmartStore",
+                "description": "Order for " + itemName,
+                "handler": function (response) {
+                    alert("Payment Successful! Payment ID: " + response.razorpay_payment_id);
+                },
+                "prefill": {
+                    "name": "Customer Name",
+                    "email": "customer@example.com",
+                    "contact": "9999999999"
+                },
+                "theme": {
+                    "color": "#2563eb"
+                }
+            };
+
+            const rzp = new Razorpay(options);
+            rzp.on('payment.failed', function (response){
+                alert("Payment Failed: " + response.error.description);
+            });
+            rzp.open();
+        }
+    </script>
+</body>
+</html>

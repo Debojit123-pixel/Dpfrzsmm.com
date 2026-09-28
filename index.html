@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Store - Online Shopping</title>
+    <title>SmartStore - Online Shopping</title>
     <!-- Razorpay Checkout Script -->
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <style>
@@ -131,6 +131,33 @@
         .buy-btn:hover {
             background-color: #1d4ed8;
         }
+
+        /* Policy Section Card */
+        .policy-card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 30px;
+            margin-top: 40px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.03);
+        }
+        .policy-card h3 {
+            font-size: 20px;
+            color: #0f172a;
+            margin-bottom: 15px;
+        }
+        .policy-card h4 {
+            font-size: 16px;
+            color: #1e293b;
+            margin-top: 15px;
+            margin-bottom: 5px;
+        }
+        .policy-card p {
+            font-size: 14px;
+            color: #475569;
+            margin-bottom: 10px;
+        }
+
         footer {
             background-color: #0f172a;
             color: #94a3b8;
@@ -159,6 +186,7 @@
             color: #94a3b8;
             text-decoration: none;
             font-size: 14px;
+            cursor: pointer;
         }
         .footer-col ul li a:hover {
             color: #ffffff;
@@ -179,8 +207,8 @@
         <h1>SmartStore</h1>
         <nav>
             <a href="#products">Products</a>
+            <a href="#privacy-policy">Privacy Policy</a>
             <a href="#contact">Contact</a>
-            <a href="#policies">Policies</a>
         </nav>
     </header>
 
@@ -235,9 +263,28 @@
             </div>
 
         </div>
+
+        <!-- Privacy Policy Content Section (For Razorpay Compliance) -->
+        <div class="policy-card" id="privacy-policy">
+            <h3>Privacy Policy</h3>
+            <p>Last updated: 2026</p>
+            <p>At <strong>SmartStore</strong>, we value the trust you place in us. This Privacy Policy outlines how your personal information is collected, used, and protected when you visit or make a purchase from our website.</p>
+            
+            <h4>1. Information We Collect</h4>
+            <p>When you place an order, we collect necessary information such as your name, billing address, shipping address, email address, and phone number to fulfill your purchase.</p>
+
+            <h4>2. Payment Processing Security</h4>
+            <p>We do not store your credit card, debit card, or UPI details on our servers. All online transactions are encrypted and securely processed through authorized payment gateway partners (such as Razorpay) complying with standard PCI-DSS compliance.</p>
+
+            <h4>3. How We Use Your Information</h4>
+            <p>We use customer details solely to process orders, arrange shipping, send order confirmations, and provide customer support. We do not sell or rent your personal information to third parties.</p>
+
+            <h4>4. Contact Us</h4>
+            <p>If you have any questions about this Privacy Policy or wish to update your details, please reach out to our support team at <strong>support@smartstore.com</strong>.</p>
+        </div>
     </div>
 
-    <!-- Footer & Policy Section (Razorpay verification-এর জন্য অত্যন্ত গুরুত্বপূর্ণ) -->
+    <!-- Footer -->
     <footer id="policies">
         <div class="footer-content">
             <div class="footer-col" id="contact">
@@ -247,10 +294,10 @@
             <div class="footer-col">
                 <h3>Important Links</h3>
                 <ul>
-                    <li><a href="#">Terms & Conditions</a></li>
-                    <li><a href="#">Privacy Policy</a></li>
-                    <li><a href="#">Refund & Cancellation</a></li>
-                    <li><a href="#">Shipping Policy</a></li>
+                    <li><a href="#privacy-policy">Privacy Policy</a></li>
+                    <li><a href="#policies">Terms & Conditions</a></li>
+                    <li><a href="#policies">Refund & Cancellation</a></li>
+                    <li><a href="#policies">Shipping Policy</a></li>
                 </ul>
             </div>
             <div class="footer-col">
@@ -267,14 +314,13 @@
         </div>
     </footer>
 
-    <!-- Razorpay Integration Code -->
+    <!-- Razorpay Checkout Integration -->
     <script>
         function openRazorpay(itemName, amountInRupees) {
-            // Razorpay amount paise-তে হিসাব করে (₹1 = 100 paise)
             const amountInPaise = amountInRupees * 100;
 
             const options = {
-                "key": "rzp_test_YOUR_KEY_HERE", // এখানে আপনার Razorpay Test Key বসাবেন
+                "key": "rzp_test_YOUR_KEY_HERE",
                 "amount": amountInPaise, 
                 "currency": "INR",
                 "name": "SmartStore",
@@ -301,3 +347,4 @@
     </script>
 </body>
 </html>
+

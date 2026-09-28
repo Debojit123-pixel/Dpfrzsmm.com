@@ -2,739 +2,668 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SMM Vault | Premium SMM Panel</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>DPFRZ SMM Panel</title>
 
-  <!-- Google Fonts & FontAwesome -->
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Google Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <!-- Official Google Identity Services SDK -->
   <script src="https://accounts.google.com/gsi/client" async defer></script>
+  
+  <!-- Razorpay SDK -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
   <style>
     :root {
-      --primary: #6366f1;
-      --primary-hover: #4f46e5;
-      --bg-dark: #090d16;
-      --card-bg: rgba(22, 27, 46, 0.85);
-      --border-color: rgba(255, 255, 255, 0.08);
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
+      --primary: #0ea5e9;
+      --primary-dark: #0284c7;
+      --bg-color: #f1f5f9;
+      --card-bg: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border-color: #e2e8f0;
+      --danger: #ef4444;
       --success: #10b981;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+    body { background-color: var(--bg-color); color: var(--text-main); display: flex; justify-content: center; min-height: 100vh; margin: 0; }
 
-    body {
-      min-height: 100vh;
-      background: radial-gradient(circle at 15% 15%, #1e1b4b 0%, #090d16 60%, #020617 100%);
-      color: var(--text-main);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
-
-    /* Ambient Lighting effect */
-    .glow-sphere {
-      position: fixed;
-      width: 400px;
-      height: 400px;
-      background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(168, 85, 247, 0.2));
-      filter: blur(100px);
-      border-radius: 50%;
-      z-index: 0;
-      pointer-events: none;
-    }
-
+    /* Container Setup */
     .app-container {
-      position: relative;
-      z-index: 1;
-      width: 100%;
-      display: flex;
-      justify-content: center;
+      width: 100%; max-width: 480px; background: var(--card-bg); min-height: 100vh; position: relative;
+      box-shadow: 0 0 20px rgba(0,0,0,0.05); display: flex; flex-direction: column; overflow-x: hidden;
     }
 
-    /* ================= AUTH VIEW ================= */
-    #authView {
-      width: 100%;
-      max-width: 440px;
-      animation: fadeIn 0.4s ease;
+    /* AUTH SCREENS */
+    #authScreenPicker, #authScreenPassword { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; padding: 30px 20px; text-align: center; }
+    #authScreenPassword { display: none; }
+    
+    .brand-logo { font-size: 32px; font-weight: 800; color: var(--primary); margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+    .auth-box { width: 100%; border: 1px solid var(--border-color); border-radius: 16px; padding: 30px 20px; background: #fff; margin-top: 20px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+    
+    .form-group { margin-bottom: 15px; text-align: left; }
+    .form-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: var(--text-main); }
+    
+    /* Readonly Email Input Style */
+    .form-control-readonly {
+      width: 100%; padding: 14px 15px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 14px;
+      background: #e2e8f0; color: #475569; font-weight: 600; cursor: not-allowed;
     }
+    
+    .form-control { width: 100%; padding: 14px 15px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 14px; background: #f8fafc; }
+    .form-control:focus { outline: none; border-color: var(--primary); background: #fff; }
+    
+    .btn-main { width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: 600; font-size: 15px; cursor: pointer; margin-top: 10px; }
 
-    .brand-header {
-      text-align: center;
-      margin-bottom: 24px;
-    }
+    /* MAIN APP */
+    #mainApp { display: none; flex-direction: column; height: 100vh; }
+    .header { background: var(--primary); color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 10; }
+    .header-title { font-weight: 700; font-size: 18px; }
+    .user-profile-header { display: flex; align-items: center; gap: 12px; }
+    .user-avatar { width: 32px; height: 32px; border-radius: 50%; background: white; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .user-avatar img { width: 100%; height: 100%; object-fit: cover; }
 
-    .brand-logo {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      background: linear-gradient(135deg, #6366f1, #a855f7);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      font-size: 28px;
-      font-weight: 800;
-      letter-spacing: -0.5px;
-    }
+    .balance-banner { background: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); }
+    .balance-banner h3 { font-size: 22px; font-weight: 800; color: var(--text-main); }
+    .btn-add-fund { background: var(--success); color: white; border: none; padding: 8px 15px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 13px; }
 
-    .brand-header p {
-      color: var(--text-muted);
-      font-size: 14px;
-      margin-top: 6px;
-    }
+    .app-content { flex: 1; padding: 20px; overflow-y: auto; background: var(--bg-color); }
+    .screen { display: none; }
+    .screen.active { display: block; }
 
-    .auth-card {
-      background: var(--card-bg);
-      backdrop-filter: blur(25px);
-      -webkit-backdrop-filter: blur(25px);
-      border: 1px solid var(--border-color);
-      border-radius: 20px;
-      padding: 32px 28px;
-      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6);
-    }
+    .card { background: #fff; border-radius: 12px; padding: 20px; border: 1px solid var(--border-color); margin-bottom: 20px; }
+    .card-title { font-size: 16px; font-weight: 700; margin-bottom: 15px; border-bottom: 1px solid #f1f5f9; padding-bottom: 10px; }
 
-    .tab-switch {
-      display: flex;
-      background: rgba(15, 23, 42, 0.6);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      padding: 4px;
-      margin-bottom: 22px;
-    }
+    /* Custom Lists */
+    .list-item { background: #f8fafc; border: 1px solid var(--border-color); border-radius: 8px; padding: 12px; margin-bottom: 10px; font-size: 13px; }
+    .list-item strong { display: block; font-size: 14px; margin-bottom: 6px; color: var(--text-main); }
+    .list-row { display: flex; justify-content: space-between; margin-bottom: 6px; }
+    
+    .status-badge { padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; }
+    .status-Pending { background: #fef3c7; color: #d97706; }
+    .status-Review { background: #e0f2fe; color: #0284c7; }
+    .status-Success { background: #dcfce7; color: #166534; }
+    .status-Failed { background: #fee2e2; color: #b91c1c; }
 
-    .tab-btn {
-      flex: 1;
-      padding: 10px;
-      background: transparent;
-      border: none;
-      color: var(--text-muted);
-      font-weight: 600;
-      font-size: 14px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: all 0.25s ease;
-    }
+    /* Admin specific */
+    .admin-service-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px dashed #e2e8f0; }
+    .admin-service-info { font-size: 13px; font-weight: 600; width: 60%; }
+    .admin-service-price { display: flex; gap: 5px; width: 40%; }
+    .admin-service-price input { width: 100%; padding: 6px; border: 1px solid #ccc; border-radius: 4px; font-size: 13px; }
+    .admin-select-status { padding: 6px; border: 1px solid #ccc; border-radius: 4px; font-size: 12px; font-weight: 600; background: #fff; }
 
-    .tab-btn.active {
-      background: var(--primary);
-      color: #ffffff;
-      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
-    }
+    .btn-admin-action { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: 600; font-size: 14px; cursor: pointer; }
+    .btn-back { background: transparent; border: 1px solid var(--primary); color: var(--primary); padding: 8px 15px; border-radius: 6px; font-weight: 600; cursor: pointer; margin-bottom: 15px; display: inline-flex; align-items: center; gap: 6px; font-size: 13px; }
+    
+    /* Firebase Status Box */
+    .db-status-box { display: flex; justify-content: space-between; align-items: center; background: #f8fafc; border: 1px solid var(--border-color); padding: 12px; border-radius: 8px; margin-bottom: 20px; font-size: 13px; font-weight: 600; }
+    .status-indicator { display: flex; align-items: center; gap: 6px; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .dot.connected { background: var(--success); box-shadow: 0 0 5px var(--success); }
+    .dot.disconnected { background: var(--danger); box-shadow: 0 0 5px var(--danger); }
+    .btn-reconnect { background: #e2e8f0; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: 600; color: #475569; }
 
-    /* Google Button Wrapper */
-    .google-btn-container {
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      margin-bottom: 8px;
-    }
+    /* Bottom Nav */
+    .bottom-nav { background: white; border-top: 1px solid var(--border-color); display: flex; justify-content: space-around; padding: 10px 0; position: sticky; bottom: 0; z-index: 10; }
+    .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-muted); font-size: 11px; font-weight: 600; cursor: pointer; width: 33%; }
+    .nav-item i { font-size: 20px; margin-bottom: 4px; }
+    .nav-item.active { color: var(--primary); }
+    #nav-admin { display: none; }
 
-    .divider {
-      display: flex;
-      align-items: center;
-      text-align: center;
-      margin: 20px 0;
-      color: var(--text-muted);
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-    }
+    /* Loader Modal */
+    #loader { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.85); z-index: 1000; justify-content: center; align-items: center; flex-direction: column; }
+    .spinner { border: 4px solid #e2e8f0; border-top: 4px solid var(--primary); border-radius: 50%; width: 45px; height: 45px; animation: spin 1s linear infinite; margin-bottom: 15px; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-    .divider::before, .divider::after {
-      content: '';
-      flex: 1;
-      border-bottom: 1px solid var(--border-color);
-    }
-
-    .divider span {
-      padding: 0 10px;
-    }
-
-    .form-group {
-      margin-bottom: 16px;
-    }
-
-    .form-group label {
-      display: block;
-      color: #cbd5e1;
-      font-size: 13px;
-      font-weight: 500;
-      margin-bottom: 6px;
-    }
-
-    .input-wrapper {
-      position: relative;
-      display: flex;
-      align-items: center;
-    }
-
-    .input-wrapper i.prefix-icon {
-      position: absolute;
-      left: 14px;
-      color: var(--text-muted);
-      font-size: 15px;
-    }
-
-    .input-wrapper input, .form-select {
-      width: 100%;
-      background: rgba(15, 23, 42, 0.85);
-      border: 1px solid var(--border-color);
-      color: var(--text-main);
-      padding: 12px 14px 12px 42px;
-      border-radius: 10px;
-      font-size: 14px;
-      outline: none;
-      transition: all 0.2s ease;
-    }
-
-    .input-wrapper input:focus, .form-select:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
-    }
-
-    .form-meta {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 20px;
-      font-size: 13px;
-    }
-
-    .remember-check {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      color: var(--text-muted);
-      cursor: pointer;
-    }
-
-    .remember-check input[type="checkbox"] {
-      accent-color: var(--primary);
-      width: 15px;
-      height: 15px;
-    }
-
-    .forgot-link {
-      color: var(--primary);
-      text-decoration: none;
-      font-weight: 500;
-    }
-
-    .btn-submit {
-      width: 100%;
-      padding: 13px;
-      background: linear-gradient(135deg, var(--primary), #8b5cf6);
-      border: none;
-      border-radius: 10px;
-      color: #ffffff;
-      font-size: 15px;
-      font-weight: 600;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      box-shadow: 0 8px 20px rgba(99, 102, 241, 0.35);
-      transition: all 0.25s ease;
-    }
-
-    .btn-submit:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 10px 24px rgba(99, 102, 241, 0.45);
-    }
-
-    .terms-text {
-      text-align: center;
-      font-size: 12px;
-      color: var(--text-muted);
-      margin-top: 18px;
-      line-height: 1.5;
-    }
-
-    .auth-form {
-      display: none;
-    }
-
-    .auth-form.active {
-      display: block;
-      animation: fadeIn 0.3s ease;
-    }
-
-    /* ================= MAIN DASHBOARD VIEW ================= */
-    #dashboardView {
-      display: none;
-      width: 100%;
-      max-width: 950px;
-      animation: fadeIn 0.4s ease;
-    }
-
-    .dash-nav {
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 16px;
-      padding: 16px 24px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 24px;
-    }
-
-    .user-profile {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .user-avatar {
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #6366f1, #ec4899);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      color: white;
-      overflow: hidden;
-    }
-
-    .user-avatar img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .balance-badge {
-      background: rgba(16, 185, 129, 0.15);
-      border: 1px solid rgba(16, 185, 129, 0.3);
-      color: var(--success);
-      padding: 6px 14px;
-      border-radius: 20px;
-      font-weight: 700;
-      font-size: 14px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .btn-logout {
-      background: rgba(239, 68, 68, 0.1);
-      border: 1px solid rgba(239, 68, 68, 0.2);
-      color: #ef4444;
-      padding: 8px 16px;
-      border-radius: 10px;
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 13px;
-      transition: all 0.2s;
-    }
-
-    .btn-logout:hover {
-      background: #ef4444;
-      color: #ffffff;
-    }
-
-    .dash-grid {
-      display: grid;
-      grid-template-columns: 2fr 1fr;
-      gap: 24px;
-    }
-
-    @media (max-width: 768px) {
-      .dash-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .order-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 18px;
-      padding: 28px;
-    }
-
-    .form-select {
-      padding-left: 14px;
-      cursor: pointer;
-    }
-
-    .form-select option {
-      background: #0f172a;
-      color: #f8fafc;
-    }
-
-    .order-summary {
-      background: rgba(15, 23, 42, 0.6);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      padding: 16px;
-      margin: 18px 0;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
   </style>
 </head>
 <body>
 
-  <div class="glow-sphere"></div>
+  <div id="loader">
+    <div class="spinner"></div>
+    <h3 style="color:var(--primary); font-size: 16px;">Loading...</h3>
+  </div>
 
   <div class="app-container">
+    
+    <!-- ================= AUTH SCREEN 1: GOOGLE PICKER ================= -->
+    <div id="authScreenPicker">
+      <div class="brand-logo"><i class="fa-solid fa-bolt"></i> DPFRZ SMM</div>
+      <p style="color: var(--primary-dark); font-weight: 600;">#1 Indian SMM Panel</p>
 
-    <!-- ================= 1. AUTH SCREEN ================= -->
-    <div id="authView">
-      <div class="brand-header">
-        <div class="brand-logo">
-          <i class="fa-solid fa-bolt-lightning"></i>
-          <span>SMM VAULT</span>
-        </div>
-        <p>Fastest & Cheapest Social Media Marketing Services</p>
-      </div>
-
-      <div class="auth-card">
-        <!-- Tab Switches -->
-        <div class="tab-switch">
-          <button class="tab-btn active" onclick="switchForm('login')">Sign In</button>
-          <button class="tab-btn" onclick="switchForm('signup')">Sign Up</button>
-        </div>
-
-        <!-- Official Google Sign-In Button Container -->
-        <div class="google-btn-container">
+      <div class="auth-box">
+        <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 25px; line-height: 1.5;">
+          Select your Google account. Your email will be verified automatically.
+        </p>
+        <div style="display:flex; justify-content:center;">
           <div id="g_id_onload"
                data-client_id="480658857207-it2hotcqdkrhmljo37htfbjnjmvlgn6h.apps.googleusercontent.com"
-               data-context="signin"
+               data-context="use"
                data-ux_mode="popup"
-               data-callback="handleGoogleCredentialResponse"
+               data-callback="handleGooglePicker"
                data-auto_prompt="false">
           </div>
-
           <div class="g_id_signin"
                data-type="standard"
                data-shape="rectangular"
-               data-theme="filled_black"
+               data-theme="outline"
                data-text="continue_with"
                data-size="large"
-               data-logo_alignment="left"
-               data-width="384">
+               data-logo_alignment="center"
+               data-width="280">
           </div>
-        </div>
-
-        <div class="divider">
-          <span>or continue with email</span>
-        </div>
-
-        <!-- LOGIN FORM -->
-        <form id="loginForm" class="auth-form active" onsubmit="handleManualAuth(event, 'login')">
-          <div class="form-group">
-            <label>Email Address</label>
-            <div class="input-wrapper">
-              <i class="fa-regular fa-envelope prefix-icon"></i>
-              <input type="email" id="loginEmail" placeholder="yourname@gmail.com" required>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label>Password</label>
-            <div class="input-wrapper">
-              <i class="fa-solid fa-lock prefix-icon"></i>
-              <input type="password" placeholder="••••••••" required>
-            </div>
-          </div>
-
-          <div class="form-meta">
-            <label class="remember-check">
-              <input type="checkbox"> Remember me
-            </label>
-            <a href="#" class="forgot-link">Forgot password?</a>
-          </div>
-
-          <button type="submit" class="btn-submit">
-            <span>Sign In</span>
-            <i class="fa-solid fa-arrow-right"></i>
-          </button>
-        </form>
-
-        <!-- SIGN UP FORM -->
-        <form id="signupForm" class="auth-form" onsubmit="handleManualAuth(event, 'signup')">
-          <div class="form-group">
-            <label>Username</label>
-            <div class="input-wrapper">
-              <i class="fa-regular fa-user prefix-icon"></i>
-              <input type="text" id="regUsername" placeholder="Enter username" required>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label>Email Address</label>
-            <div class="input-wrapper">
-              <i class="fa-regular fa-envelope prefix-icon"></i>
-              <input type="email" id="regEmail" placeholder="yourname@gmail.com" required>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label>Password</label>
-            <div class="input-wrapper">
-              <i class="fa-solid fa-lock prefix-icon"></i>
-              <input type="password" placeholder="At least 6 characters" required>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label>Confirm Password</label>
-            <div class="input-wrapper">
-              <i class="fa-solid fa-shield-halved prefix-icon"></i>
-              <input type="password" placeholder="Confirm your password" required>
-            </div>
-          </div>
-
-          <button type="submit" class="btn-submit">
-            <span>Create Account</span>
-            <i class="fa-solid fa-user-plus"></i>
-          </button>
-
-          <p class="terms-text">
-            By creating an account, you agree to our Terms of Service & Privacy Policy.
-          </p>
-        </form>
-      </div>
-    </div>
-
-    <!-- ================= 2. DASHBOARD VIEW (MAIN SCREEN) ================= -->
-    <div id="dashboardView">
-      <!-- Navbar -->
-      <div class="dash-nav">
-        <div class="user-profile">
-          <div class="user-avatar" id="avatarBox">U</div>
-          <div>
-            <h4 id="displayUsername" style="font-size: 15px;">User</h4>
-            <span id="displayEmail" style="font-size: 12px; color: var(--text-muted);">user@example.com</span>
-          </div>
-        </div>
-
-        <div style="display: flex; align-items: center; gap: 16px;">
-          <div class="balance-badge">
-            <i class="fa-solid fa-wallet"></i>
-            <span>$50.00</span>
-          </div>
-          <button class="btn-logout" onclick="logout()">
-            <i class="fa-solid fa-right-from-bracket"></i> Logout
-          </button>
-        </div>
-      </div>
-
-      <!-- Dashboard Main Grid -->
-      <div class="dash-grid">
-        <!-- New Order Form -->
-        <div class="order-card">
-          <h3 style="margin-bottom: 20px; font-size: 20px; font-weight: 700;">
-            <i class="fa-solid fa-cart-plus" style="color: var(--primary); margin-right: 8px;"></i>
-            New Order
-          </h3>
-
-          <form onsubmit="placeOrder(event)">
-            <div class="form-group">
-              <label>Category</label>
-              <select class="form-select" id="orderCategory" onchange="updateServices()">
-                <option value="youtube">YouTube - Views & Subscribers</option>
-                <option value="instagram">Instagram - Followers & Likes</option>
-                <option value="facebook">Facebook - Page Likes & Followers</option>
-                <option value="telegram">Telegram - Members & Post Views</option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label>Service</label>
-              <select class="form-select" id="orderService" onchange="calculatePrice()">
-                <!-- Populated dynamically via JS -->
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label>Link / URL</label>
-              <div class="input-wrapper">
-                <i class="fa-solid fa-link prefix-icon"></i>
-                <input type="url" placeholder="https://..." required>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label>Quantity</label>
-              <div class="input-wrapper">
-                <i class="fa-solid fa-arrow-up-9-1 prefix-icon"></i>
-                <input type="number" id="orderQuantity" value="1000" min="100" max="100000" oninput="calculatePrice()" required>
-              </div>
-            </div>
-
-            <div class="order-summary">
-              <span style="color: var(--text-muted); font-size: 14px;">Total Charge:</span>
-              <span id="totalCharge" style="font-size: 18px; font-weight: 700; color: #818cf8;">$0.80</span>
-            </div>
-
-            <button type="submit" class="btn-submit">
-              <span>Submit Order</span>
-              <i class="fa-solid fa-check"></i>
-            </button>
-          </form>
-        </div>
-
-        <!-- Account Quick Details -->
-        <div class="order-card" style="height: fit-content;">
-          <h4 style="margin-bottom: 16px; font-size: 16px;">Order Guidelines</h4>
-          <ul style="color: var(--text-muted); font-size: 13px; line-height: 1.8; padding-left: 18px;">
-            <li>Make sure your social media account is set to <b>Public</b>.</li>
-            <li>Do not place multiple orders for the same link at the same time.</li>
-            <li>Speed ranges from Instant to 1 hour depending on traffic.</li>
-          </ul>
         </div>
       </div>
     </div>
 
+    <!-- ================= AUTH SCREEN 2: PASSWORD SET/LOGIN ================= -->
+    <div id="authScreenPassword">
+      <div class="brand-logo"><i class="fa-solid fa-lock"></i> Secure Login</div>
+      <div class="auth-box">
+        <form onsubmit="handlePasswordSubmit(event)">
+          <div class="form-group">
+            <label>Selected Email (Unchangeable)</label>
+            <!-- Email is fixed and read-only -->
+            <input type="email" id="authFixedEmail" class="form-control-readonly" readonly>
+          </div>
+          <div class="form-group">
+            <label id="passLabel">Enter Password</label>
+            <input type="password" id="authPassword" class="form-control" placeholder="••••••••" required minlength="6">
+            <small style="color:var(--text-muted); font-size:11px; margin-top:4px; display:block;" id="passHint">
+              If new user, this will be set as your panel password.
+            </small>
+          </div>
+          <button type="submit" class="btn-main">Proceed to Panel</button>
+        </form>
+      </div>
+    </div>
+
+
+    <!-- ================= MAIN APP ================= -->
+    <div id="mainApp">
+      
+      <!-- Header -->
+      <div class="header">
+        <div class="header-title"><i class="fa-solid fa-bolt"></i> DPFRZ SMM</div>
+        <div class="user-profile-header">
+          <div class="user-avatar" id="avatarIcon">U</div>
+          <i class="fa-solid fa-right-from-bracket" style="cursor:pointer; font-size:18px;" onclick="logout()"></i>
+        </div>
+      </div>
+
+      <!-- Balance -->
+      <div class="balance-banner">
+        <div>
+          <span style="font-size:12px; color:var(--text-muted); font-weight:600;">Wallet Balance</span>
+          <h3 id="displayBalance">₹0.00</h3>
+        </div>
+        <button class="btn-add-fund" onclick="triggerRazorpay()">+ Add Funds</button>
+      </div>
+
+      <!-- App Content -->
+      <div class="app-content">
+        
+        <!-- Screen: NEW ORDER -->
+        <div id="screen-newOrder" class="screen active">
+          <div class="card">
+            <h2 class="card-title">Place New Order</h2>
+            <form onsubmit="placeOrder(event)">
+              <div class="form-group">
+                <label>Category</label>
+                <select class="form-control" id="orderCategory" onchange="renderServiceOptions()">
+                  <option value="instagram">Instagram Services</option>
+                  <option value="facebook">Facebook Services</option>
+                  <option value="youtube">YouTube Services</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Service (Price per 1000)</label>
+                <select class="form-control" id="orderService" onchange="calcPrice()"></select>
+              </div>
+              <div class="form-group">
+                <label>Target Link</label>
+                <input type="url" id="orderLink" class="form-control" placeholder="Paste target URL" required>
+              </div>
+              <div class="form-group">
+                <label>Quantity (Min 100)</label>
+                <input type="number" id="orderQty" class="form-control" placeholder="1000" min="100" oninput="calcPrice()" required>
+              </div>
+
+              <div style="background:#e0f2fe; padding:15px; border-radius:8px; margin-bottom:15px; display:flex; justify-content:space-between; align-items:center;">
+                <span style="font-weight:600; color:var(--primary-dark);">Total Charge:</span>
+                <span style="font-weight:800; color:var(--primary-dark); font-size:20px;">₹<span id="orderTotal">0.00</span></span>
+              </div>
+              <button type="submit" class="btn-main">Submit Order</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Screen: MY ORDER HISTORY -->
+        <div id="screen-history" class="screen">
+          <div class="card">
+            <h2 class="card-title">My Order History</h2>
+            <div id="userOrdersList"></div>
+          </div>
+        </div>
+
+        <!-- Screen: ADMIN DASHBOARD -->
+        <div id="screen-admin" class="screen">
+          
+          <!-- Firebase Connection Status Banner -->
+          <div class="db-status-box">
+            <div class="status-indicator">
+              <div class="dot connected" id="dbStatusDot"></div>
+              <span id="dbStatusText" style="color:var(--success);">Database Connected</span>
+            </div>
+            <button class="btn-reconnect" onclick="checkFirebaseConnection()"><i class="fa-solid fa-rotate"></i> Reconnect</button>
+          </div>
+
+          <!-- Users View Button -->
+          <div class="card" style="border: 2px solid var(--primary);">
+            <h2 class="card-title" style="color:var(--primary); border-bottom:none; margin-bottom:0;"><i class="fa-solid fa-users"></i> User Database</h2>
+            <p style="font-size:12px; color:grey; margin-bottom:15px;">Check total registered users and their balances.</p>
+            <button class="btn-admin-action" onclick="switchNav('adminUsers')">View All Users</button>
+          </div>
+
+          <!-- Price Manager -->
+          <div class="card">
+            <h2 class="card-title" style="color:var(--danger);"><i class="fa-solid fa-tags"></i> Manage Prices (Per 1000)</h2>
+            <div id="adminServicesList"></div>
+          </div>
+
+          <!-- Global Orders -->
+          <div class="card">
+            <h2 class="card-title" style="color:var(--danger);"><i class="fa-solid fa-list-check"></i> All Users Orders</h2>
+            <div id="adminAllOrdersList"></div>
+          </div>
+        </div>
+
+        <!-- Screen: ADMIN ALL USERS LIST (Sub-screen) -->
+        <div id="screen-adminUsers" class="screen">
+          <button class="btn-back" onclick="switchNav('admin')">
+            <i class="fa-solid fa-arrow-left"></i> Back to Admin
+          </button>
+          <div class="card">
+            <h2 class="card-title" style="color:var(--primary);">
+              <i class="fa-solid fa-users"></i> Total Users: <span id="adminTotalUsersCount">0</span>
+            </h2>
+            <div id="adminUsersList"></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Bottom Nav -->
+      <div class="bottom-nav">
+        <div class="nav-item active" id="navbtn-newOrder" onclick="switchNav('newOrder')"><i class="fa-solid fa-cart-plus"></i><span>Order</span></div>
+        <div class="nav-item" id="navbtn-history" onclick="switchNav('history')"><i class="fa-solid fa-clock-rotate-left"></i><span>History</span></div>
+        <div class="nav-item" id="nav-admin" onclick="switchNav('admin')"><i class="fa-solid fa-shield-halved" style="color:var(--danger);"></i><span style="color:var(--danger);">Admin</span></div>
+      </div>
+
+    </div>
   </div>
 
   <script>
-    // Tab switching logic
-    function switchForm(type) {
-      const loginForm = document.getElementById('loginForm');
-      const signupForm = document.getElementById('signupForm');
-      const buttons = document.querySelectorAll('.tab-btn');
+    // ================= CONFIGURATION =================
+    const FIREBASE_DB_URL = "https://dpfrzsmm-default-rtdb.firebaseio.com/";
+    const ADMIN_EMAIL = "pauldebojit629@gmail.com";
+    const RAZORPAY_KEY_ID = "rzp_live_ThRNn6xsDj9d2D";
 
-      if (type === 'login') {
-        loginForm.classList.add('active');
-        signupForm.classList.remove('active');
-        buttons[0].classList.add('active');
-        buttons[1].classList.remove('active');
-      } else {
-        signupForm.classList.add('active');
-        loginForm.classList.remove('active');
-        buttons[1].classList.add('active');
-        buttons[0].classList.remove('active');
-      }
-    }
+    const defaultServices = {
+      instagram: { "ig_views": { name: "Instagram Views", price: 10 }, "ig_likes": { name: "Instagram Likes", price: 30 }, "ig_followers": { name: "Instagram Followers", price: 120 } },
+      facebook: { "fb_views": { name: "Facebook Views", price: 20 }, "fb_likes": { name: "Facebook Likes", price: 40 }, "fb_followers": { name: "Facebook Followers", price: 90 } },
+      youtube: { "yt_views": { name: "YouTube Views", price: 150 }, "yt_likes": { name: "YouTube Likes", price: 200 }, "yt_subs": { name: "YouTube Subscribers", price: 450 } }
+    };
 
-    // Google Sign-In Callback (Parses Real Google Profile Data)
-    function handleGoogleCredentialResponse(response) {
+    let tempGoogleData = null; 
+    let currentUserId = null;
+    let currentUserEmail = null;
+    let currentUserData = null;
+    let globalServices = null;
+
+    function showLoader(show) { document.getElementById('loader').style.display = show ? 'flex' : 'none'; }
+    
+    // Core Firebase Call with Error Handling for Connection Check
+    async function fbGet(path) { 
       try {
-        const base64Url = response.credential.split('.')[1];
-        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-        const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-        }).join(''));
-
-        const profile = JSON.parse(jsonPayload);
-        proceedToDashboard(profile.name || "Google User", profile.email, profile.picture);
-      } catch (e) {
-        console.error("Token parsing error:", e);
-        proceedToDashboard("Google User", "user@gmail.com", null);
+        const res = await fetch(`${FIREBASE_DB_URL}${path}.json`); 
+        if(!res.ok) throw new Error("Network response was not ok");
+        return await res.json(); 
+      } catch (error) {
+        return null;
       }
     }
+    async function fbPut(path, data) { await fetch(`${FIREBASE_DB_URL}${path}.json`, { method: 'PUT', body: JSON.stringify(data) }); }
+    async function fbPatch(path, data) { await fetch(`${FIREBASE_DB_URL}${path}.json`, { method: 'PATCH', body: JSON.stringify(data) }); }
 
-    // Manual login/signup handler
-    function handleManualAuth(event, type) {
-      event.preventDefault();
-      let name = "User";
-      let email = "";
+    // ================= 1. GOOGLE PICKER LOGIC =================
+    async function handleGooglePicker(response) {
+      try {
+        const payload = JSON.parse(atob(response.credential.split('.')[1]));
+        tempGoogleData = { email: payload.email, picture: payload.picture };
+        
+        document.getElementById('authScreenPicker').style.display = 'none';
+        document.getElementById('authScreenPassword').style.display = 'flex';
+        document.getElementById('authFixedEmail').value = tempGoogleData.email;
+      } catch(e) { alert("Google account selection failed."); }
+    }
 
-      if (type === 'login') {
-        email = document.getElementById('loginEmail').value;
-        name = email.split('@')[0];
+    // ================= 2. PASSWORD LOGIC =================
+    async function handlePasswordSubmit(e) {
+      e.preventDefault();
+      const pass = document.getElementById('authPassword').value;
+      const safeId = tempGoogleData.email.replace(/[^a-zA-Z0-9]/g, '');
+      
+      showLoader(true);
+      let user = await fbGet(`users/${safeId}`);
+      
+      if(!user) {
+        user = { 
+          email: tempGoogleData.email, 
+          password: pass, 
+          balance: 0.00, 
+          picture: tempGoogleData.picture,
+          joinDate: new Date().toLocaleDateString()
+        };
+        await fbPut(`users/${safeId}`, user);
       } else {
-        name = document.getElementById('regUsername').value;
-        email = document.getElementById('regEmail').value;
+        if(user.password !== pass) {
+          showLoader(false);
+          return alert("Incorrect Password! Please try again.");
+        }
       }
 
-      proceedToDashboard(name, email, null);
+      currentUserId = safeId; currentUserEmail = tempGoogleData.email; currentUserData = user;
+      initApp(tempGoogleData.picture);
     }
 
-    // Redirect to Main Screen
-    function proceedToDashboard(name, email, pictureUrl) {
-      document.getElementById('authView').style.display = 'none';
-      document.getElementById('dashboardView').style.display = 'block';
-
-      document.getElementById('displayUsername').innerText = name;
-      document.getElementById('displayEmail').innerText = email;
-
-      const avatarBox = document.getElementById('avatarBox');
-      if (pictureUrl) {
-        avatarBox.innerHTML = `<img src="${pictureUrl}" alt="Avatar">`;
-      } else {
-        avatarBox.innerText = name.charAt(0).toUpperCase();
-      }
-    }
-
-    // Logout
     function logout() {
-      document.getElementById('dashboardView').style.display = 'none';
-      document.getElementById('authView').style.display = 'block';
+      currentUserId = null; currentUserEmail = null; currentUserData = null; tempGoogleData = null;
+      document.getElementById('mainApp').style.display = 'none';
+      document.getElementById('authScreenPassword').style.display = 'none';
+      document.getElementById('authScreenPicker').style.display = 'flex';
+      document.getElementById('authPassword').value = '';
     }
 
-    // Services Catalog Mock
-    const servicesData = {
-      youtube: [
-        { name: "YouTube High Retention Views - $0.80 / 1K", rate: 0.80 },
-        { name: "YouTube Real Subscribers (Non-Drop) - $4.50 / 1K", rate: 4.50 },
-        { name: "YouTube Video Likes (Instant) - $0.40 / 1K", rate: 0.40 }
-      ],
-      instagram: [
-        { name: "Instagram Real Followers [Instant] - $1.20 / 1K", rate: 1.20 },
-        { name: "Instagram Post Likes [Super Fast] - $0.25 / 1K", rate: 0.25 }
-      ],
-      facebook: [
-        { name: "Facebook Page Likes + Followers - $2.10 / 1K", rate: 2.10 },
-        { name: "Facebook Post Reactions - $0.60 / 1K", rate: 0.60 }
-      ],
-      telegram: [
-        { name: "Telegram Channel Members (Zero Drop) - $1.10 / 1K", rate: 1.10 },
-        { name: "Telegram Post Views - $0.05 / 1K", rate: 0.05 }
-      ]
-    };
+    // ================= APP INIT =================
+    async function initApp(pictureUrl) {
+      document.getElementById('authScreenPassword').style.display = 'none';
+      document.getElementById('mainApp').style.display = 'flex';
+      
+      const avatarIcon = document.getElementById('avatarIcon');
+      if(pictureUrl) { avatarIcon.innerHTML = `<img src="${pictureUrl}" alt="DP">`; } 
+      else { avatarIcon.innerText = currentUserEmail.charAt(0).toUpperCase(); }
 
-    function updateServices() {
-      const category = document.getElementById('orderCategory').value;
-      const serviceSelect = document.getElementById('orderService');
-      serviceSelect.innerHTML = '';
+      document.getElementById('displayBalance').innerText = '₹' + parseFloat(currentUserData.balance).toFixed(2);
 
-      servicesData[category].forEach((item) => {
-        const opt = document.createElement('option');
-        opt.value = item.rate;
-        opt.innerText = item.name;
-        serviceSelect.appendChild(opt);
-      });
+      if(currentUserEmail.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
+        document.getElementById('nav-admin').style.display = 'flex';
+      } else {
+        document.getElementById('nav-admin').style.display = 'none';
+      }
 
-      calculatePrice();
+      let srv = await fbGet('services');
+      if(!srv) { await fbPut('services', defaultServices); globalServices = defaultServices; } 
+      else { globalServices = srv; }
+
+      renderServiceOptions();
+      switchNav('newOrder');
+      showLoader(false);
     }
 
-    function calculatePrice() {
-      const rate = parseFloat(document.getElementById('orderService').value) || 0;
-      const quantity = parseInt(document.getElementById('orderQuantity').value) || 0;
-      const total = (rate * (quantity / 1000)).toFixed(2);
-      document.getElementById('totalCharge').innerText = '$' + total;
+    // ================= NAVIGATION =================
+    function switchNav(screenName) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+
+      document.getElementById('screen-' + screenName).classList.add('active');
+      
+      if(screenName !== 'adminUsers') { 
+        document.getElementById('navbtn-' + (screenName === 'admin' ? 'admin' : screenName)).classList.add('active');
+      }
+
+      if(screenName === 'history') fetchUserOrders();
+      if(screenName === 'admin') { fetchAdminData(); checkFirebaseConnection(); }
+      if(screenName === 'adminUsers') fetchAdminAllUsersList();
     }
 
-    function placeOrder(event) {
-      event.preventDefault();
-      alert("Order placed successfully! Order ID: #" + Math.floor(100000 + Math.random() * 900000));
+    // ================= DB CONNECTION CHECK =================
+    async function checkFirebaseConnection() {
+      const dot = document.getElementById('dbStatusDot');
+      const text = document.getElementById('dbStatusText');
+      
+      dot.className = "dot"; // Reset
+      text.style.color = "grey";
+      text.innerText = "Checking...";
+
+      const res = await fbGet('services'); // Simple fetch test
+      
+      if(res) {
+        dot.classList.add('connected');
+        text.style.color = "var(--success)";
+        text.innerText = "Database Connected";
+      } else {
+        dot.classList.add('disconnected');
+        text.style.color = "var(--danger)";
+        text.innerText = "Disconnected";
+        alert("Warning: Could not connect to Firebase database.");
+      }
     }
 
-    window.onload = function() {
-      updateServices();
-    };
+    // ================= RAZORPAY PAYMENT =================
+    function triggerRazorpay() {
+      const amountStr = prompt("Enter amount in Rupees (₹) to add:", "100");
+      const amount = parseFloat(amountStr);
+      if(isNaN(amount) || amount <= 0) return alert("Invalid amount entered!");
+
+      var options = {
+        "key": RAZORPAY_KEY_ID, 
+        "amount": amount * 100, 
+        "currency": "INR",
+        "name": "DPFRZ SMM",
+        "description": "Add Wallet Balance",
+        "handler": async function (response) {
+            if(response.razorpay_payment_id) {
+              showLoader(true);
+              const newBalance = parseFloat(currentUserData.balance) + amount;
+              await fbPatch(`users/${currentUserId}`, { balance: newBalance });
+              currentUserData.balance = newBalance;
+              document.getElementById('displayBalance').innerText = '₹' + newBalance.toFixed(2);
+              showLoader(false);
+              alert("Payment Successful! ₹" + amount + " added to your wallet.");
+            }
+        },
+        "prefill": { "email": currentUserEmail },
+        "theme": { "color": "#0ea5e9" }
+      };
+      
+      var rzp = new Razorpay(options);
+      rzp.on('payment.failed', function (response){ alert("Payment Failed! No amount deducted."); });
+      rzp.open();
+    }
+
+    // ================= ORDERS LOGIC =================
+    function renderServiceOptions() {
+      const cat = document.getElementById('orderCategory').value;
+      const select = document.getElementById('orderService');
+      select.innerHTML = '';
+      if(globalServices && globalServices[cat]) {
+        for(let key in globalServices[cat]) {
+          let s = globalServices[cat][key];
+          let opt = document.createElement('option');
+          opt.value = key; opt.dataset.name = s.name; opt.dataset.price = s.price;
+          opt.innerText = `${s.name} - ₹${s.price} (per 1000)`;
+          select.appendChild(opt);
+        }
+      }
+      calcPrice();
+    }
+
+    function calcPrice() {
+      const select = document.getElementById('orderService');
+      if(select.options.length === 0) return;
+      const rate = parseFloat(select.options[select.selectedIndex].dataset.price);
+      const qty = parseInt(document.getElementById('orderQty').value) || 0;
+      document.getElementById('orderTotal').innerText = ((rate/1000) * qty).toFixed(2);
+    }
+
+    async function placeOrder(e) {
+      e.preventDefault();
+      const select = document.getElementById('orderService');
+      const serviceName = select.options[select.selectedIndex].dataset.name;
+      const link = document.getElementById('orderLink').value;
+      const qty = parseInt(document.getElementById('orderQty').value);
+      const charge = parseFloat(document.getElementById('orderTotal').innerText);
+
+      if(qty < 100) return alert("Minimum quantity 100");
+      if(parseFloat(currentUserData.balance) < charge) return alert("Insufficient Wallet Balance!");
+
+      showLoader(true);
+      const newBal = parseFloat(currentUserData.balance) - charge;
+      await fbPatch(`users/${currentUserId}`, { balance: newBal });
+      currentUserData.balance = newBal;
+      document.getElementById('displayBalance').innerText = '₹' + newBal.toFixed(2);
+
+      const orderId = Date.now().toString();
+      const orderObj = {
+        orderId: orderId, userEmail: currentUserEmail, userId: currentUserId,
+        service: serviceName, link: link, qty: qty, charge: charge,
+        status: "Pending", timestamp: new Date().toLocaleString()
+      };
+
+      await fbPut(`orders/${orderId}`, orderObj);
+      showLoader(false);
+      alert("Order Placed Successfully!");
+      document.getElementById('orderLink').value = ''; document.getElementById('orderQty').value = ''; calcPrice();
+    }
+
+    async function fetchUserOrders() {
+      showLoader(true);
+      const allOrders = await fbGet('orders') || {};
+      const div = document.getElementById('userOrdersList');
+      div.innerHTML = '';
+      const myOrders = Object.values(allOrders).filter(o => o.userId === currentUserId).reverse();
+
+      if(myOrders.length===0) { div.innerHTML = '<p style="text-align:center;font-size:13px;color:grey;">No Orders Found.</p>'; }
+      else {
+        myOrders.forEach(o => {
+          div.innerHTML += `
+            <div class="list-item">
+              <strong>${o.service}</strong>
+              <div class="list-row"><span style="color:grey;">ID:</span> <span>${o.orderId}</span></div>
+              <div class="list-row"><span style="color:grey;">Link:</span> <span style="max-width:160px;overflow:hidden;text-overflow:ellipsis;">${o.link}</span></div>
+              <div class="list-row"><span style="color:grey;">Qty:</span> <span>${o.qty}</span></div>
+              <div class="list-row"><span style="color:grey;">Charge:</span> <span style="color:var(--primary);font-weight:700;">₹${parseFloat(o.charge).toFixed(2)}</span></div>
+              <div class="list-row" style="margin-top:5px;"><span class="status-badge status-${o.status}">${o.status}</span></div>
+            </div>
+          `;
+        });
+      }
+      showLoader(false);
+    }
+
+    // ================= ADMIN LOGIC =================
+    async function fetchAdminData() {
+      showLoader(true);
+      globalServices = await fbGet('services');
+      const divSrv = document.getElementById('adminServicesList');
+      divSrv.innerHTML = '';
+      for(let cat in globalServices) {
+        for(let key in globalServices[cat]) {
+          let s = globalServices[cat][key];
+          divSrv.innerHTML += `
+            <div class="admin-service-row">
+              <div class="admin-service-info">${s.name} <br><span style="font-size:10px;color:grey;text-transform:capitalize;">${cat}</span></div>
+              <div class="admin-service-price">
+                <input type="number" id="price-${cat}-${key}" value="${s.price}">
+                <button onclick="updateAdminPrice('${cat}','${key}')" style="background:var(--danger);color:white;border:none;border-radius:4px;padding:0 12px;cursor:pointer;"><i class="fa-solid fa-check"></i></button>
+              </div>
+            </div>
+          `;
+        }
+      }
+
+      const allOrders = await fbGet('orders') || {};
+      const divOrd = document.getElementById('adminAllOrdersList');
+      divOrd.innerHTML = '';
+      const ordersArray = Object.values(allOrders).reverse();
+      if(ordersArray.length === 0) { divOrd.innerHTML = '<p style="text-align:center;font-size:13px;color:grey;">No Global Orders Yet</p>'; }
+      else {
+        ordersArray.forEach(o => {
+          divOrd.innerHTML += `
+            <div class="list-item" style="border-left: 4px solid var(--danger);">
+              <div class="list-row"><span style="color:grey;">Email:</span> <strong style="color:var(--danger);">${o.userEmail}</strong></div>
+              <strong>${o.service}</strong>
+              <div class="list-row"><span style="color:grey;">Link:</span> <span style="max-width:140px;overflow:hidden;text-overflow:ellipsis;">${o.link}</span></div>
+              <div class="list-row"><span style="color:grey;">Qty:</span> <span>${o.qty}</span></div>
+              <div class="list-row"><span style="color:grey;">Charge:</span> <span style="font-weight:700;">₹${parseFloat(o.charge).toFixed(2)}</span></div>
+              
+              <div class="list-row" style="margin-top:10px; border-top:1px dashed #ccc; padding-top:10px; align-items:center;">
+                <span style="font-size:13px; font-weight:600; color:var(--danger);">Status:</span>
+                <select class="admin-select-status" onchange="changeOrderStatus('${o.orderId}', this.value)">
+                  <option value="Pending" ${o.status==='Pending'?'selected':''}>Pending</option>
+                  <option value="Review" ${o.status==='Review'?'selected':''}>Review</option>
+                  <option value="Success" ${o.status==='Success'?'selected':''}>Success</option>
+                  <option value="Failed" ${o.status==='Failed'?'selected':''}>Failed</option>
+                </select>
+              </div>
+            </div>
+          `;
+        });
+      }
+      showLoader(false);
+    }
+
+    async function updateAdminPrice(cat, key) {
+      const newPrice = parseFloat(document.getElementById(`price-${cat}-${key}`).value);
+      if(isNaN(newPrice) || newPrice <= 0) return alert("Invalid Price");
+      showLoader(true);
+      await fbPatch(`services/${cat}/${key}`, { price: newPrice });
+      globalServices[cat][key].price = newPrice;
+      showLoader(false);
+      alert("Price Updated!");
+      if(document.getElementById('orderCategory').value === cat) renderServiceOptions();
+    }
+
+    async function changeOrderStatus(orderId, newStatus) {
+      if(!confirm("Change status to " + newStatus + "?")) return fetchAdminData();
+      showLoader(true);
+      await fbPatch(`orders/${orderId}`, { status: newStatus });
+      showLoader(false);
+      alert("Order Status updated!");
+    }
+
+    // Admin Users View
+    async function fetchAdminAllUsersList() {
+      showLoader(true);
+      const allUsers = await fbGet('users') || {};
+      const usersArray = Object.values(allUsers);
+      
+      document.getElementById('adminTotalUsersCount').innerText = usersArray.length;
+      
+      const divUsr = document.getElementById('adminUsersList');
+      divUsr.innerHTML = '';
+      
+      if(usersArray.length === 0) { divUsr.innerHTML = '<p style="text-align:center;font-size:13px;color:grey;">No Users Found</p>'; }
+      else {
+        usersArray.forEach(u => {
+          divUsr.innerHTML += `
+            <div class="list-item" style="border-left: 4px solid var(--primary);">
+              <div class="list-row"><strong>${u.email}</strong></div>
+              <div class="list-row"><span style="color:grey;">Wallet:</span> <span style="font-weight:700; color:var(--success);">₹${parseFloat(u.balance).toFixed(2)}</span></div>
+              <div class="list-row"><span style="color:grey;">Joined:</span> <span>${u.joinDate || "N/A"}</span></div>
+            </div>
+          `;
+        });
+      }
+      showLoader(false);
+    }
   </script>
 </body>
 </html>
+
 
 

@@ -62,12 +62,29 @@
     
     .header { background: var(--primary); color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; z-index: 10; flex-shrink: 0; }
     .header-left { display: flex; align-items: center; gap: 12px; }
+    .header-right { display: flex; align-items: center; gap: 12px; }
     .header-title { font-weight: 700; font-size: 18px; }
     
-    .user-profile-header { display: flex; align-items: center; gap: 12px; }
     .user-avatar { width: 34px; height: 34px; border-radius: 50%; background: white; display: flex; align-items: center; justify-content: center; overflow: hidden; font-weight: 700; color: var(--primary); border: 2px solid rgba(255,255,255,0.8); }
     .user-avatar img { width: 100%; height: 100%; object-fit: cover; }
     .menu-icon { font-size: 20px; cursor: pointer; color: white; }
+
+    /* Header Install App Button */
+    .btn-install {
+      background: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      color: white;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: background 0.2s;
+    }
+    .btn-install:hover { background: rgba(255, 255, 255, 0.35); }
 
     /* Side Drawer Menu */
     .side-drawer { position: fixed; top: 0; right: -280px; width: 280px; height: 100%; background: white; z-index: 1000; box-shadow: -4px 0 15px rgba(0,0,0,0.1); transition: right 0.3s ease; display: flex; flex-direction: column; }
@@ -80,6 +97,7 @@
     .drawer-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 999; }
     .drawer-overlay.active { display: block; }
 
+    /* Balance Banner */
     .balance-banner { background: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); flex-shrink: 0; }
     .balance-banner h3 { font-size: 22px; font-weight: 800; color: var(--text-main); }
     .btn-add-fund { background: var(--success); color: white; border: none; padding: 8px 15px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 13px; }
@@ -123,7 +141,7 @@
     .btn-admin-action { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: 600; font-size: 14px; cursor: pointer; }
     .btn-back { background: transparent; border: 1px solid var(--primary); color: var(--primary); padding: 8px 15px; border-radius: 6px; font-weight: 600; cursor: pointer; margin-bottom: 15px; display: inline-flex; align-items: center; gap: 6px; font-size: 13px; }
     
-    /* WhatsApp Support Button */
+    /* WhatsApp Support Buttons */
     .btn-whatsapp { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 14px; background: var(--whatsapp); color: white; border: none; border-radius: 8px; font-weight: 700; font-size: 15px; cursor: pointer; text-decoration: none; margin-top: 10px; }
     
     /* Firebase Status Box */
@@ -212,13 +230,19 @@
     <!-- ================= MAIN APP ================= -->
     <div id="mainApp">
       
-      <!-- Header (Picture Left, Menu Right) -->
+      <!-- Header (Picture Left, Install App & Menu Right) -->
       <div class="header">
         <div class="header-left">
           <div class="user-avatar" id="avatarIcon">U</div>
           <div class="header-title"><i class="fa-solid fa-bolt"></i> DPFRZ SMM</div>
         </div>
-        <i class="fa-solid fa-bars menu-icon" onclick="toggleDrawer()"></i>
+        <div class="header-right">
+          <!-- Install App Button -->
+          <button class="btn-install" id="btnInstallApp" onclick="installPWA()">
+            <i class="fa-solid fa-cloud-arrow-down"></i> App
+          </button>
+          <i class="fa-solid fa-bars menu-icon" onclick="toggleDrawer()"></i>
+        </div>
       </div>
 
       <!-- Side Drawer Menu -->
@@ -238,6 +262,14 @@
           <a class="drawer-item" onclick="toggleDrawer(); switchNav('addBalance')">
             <i class="fa-solid fa-wallet" style="color:var(--success);"></i> Add Balance
           </a>
+          <!-- WhatsApp Support in Drawer -->
+          <a class="drawer-item" href="https://wa.me/918638707624?text=Hi%20please%20help%20me%20%3F" target="_blank" style="color:var(--whatsapp);">
+            <i class="fa-brands fa-whatsapp" style="color:var(--whatsapp);"></i> WhatsApp Support
+          </a>
+          <!-- Install App in Drawer -->
+          <a class="drawer-item" onclick="toggleDrawer(); installPWA();">
+            <i class="fa-solid fa-download" style="color:var(--primary);"></i> Install App
+          </a>
           <!-- Admin Panel Link -->
           <a class="drawer-item" id="menuAdminItem" style="display:none; color:var(--danger);" onclick="toggleDrawer(); switchNav('admin')">
             <i class="fa-solid fa-shield-halved" style="color:var(--danger);"></i> Admin Panel
@@ -248,11 +280,14 @@
         </div>
       </div>
 
-      <!-- Balance -->
+      <!-- Balance & Total Spent Banner -->
       <div class="balance-banner">
         <div>
-          <span style="font-size:12px; color:var(--text-muted); font-weight:600;">Wallet Balance</span>
+          <div style="font-size:11px; color:var(--text-muted); font-weight:600;">Current Balance</div>
           <h3 id="displayBalance">₹0.00</h3>
+          <div style="font-size:12px; color:var(--text-muted); font-weight:600; margin-top:2px;">
+            Total Spent: <span id="displayTotalSpent" style="color:var(--primary-dark); font-weight:700;">₹0.00</span>
+          </div>
         </div>
         <button class="btn-add-fund" onclick="switchNav('addBalance')">+ Add Funds</button>
       </div>
@@ -346,7 +381,7 @@
             </button>
 
             <!-- Customer Care WhatsApp Button -->
-            <a id="whatsappSupportBtn" href="#" target="_blank" class="btn-whatsapp">
+            <a id="whatsappSupportBtn" href="https://wa.me/918638707624?text=Hi%20please%20help%20me%20%3F" target="_blank" class="btn-whatsapp">
               <i class="fa-brands fa-whatsapp" style="font-size: 18px;"></i> Customer Care Support
             </a>
           </div>
@@ -468,6 +503,8 @@
     let currentUserData = null;
     let globalServices = null;
     let allUsersCache = {};
+    let allOrdersCache = {};
+    let deferredPrompt = null;
 
     function showLoader(show) { document.getElementById('loader').style.display = show ? 'flex' : 'none'; }
     
@@ -509,10 +546,28 @@
       document.getElementById('drawerOverlay').classList.toggle('active');
     }
 
+    // App Install PWA Handler
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+    });
+
+    function installPWA() {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+          deferredPrompt = null;
+        });
+      } else {
+        alert("To install DPFRZ SMM App on your phone:\n\n1. Tap the 3 dots (⋮) at top right of Chrome.\n2. Tap 'Install app' or 'Add to Home screen'.");
+      }
+    }
+
     // ================= PERSISTENT LOGIN ON PAGE LOAD =================
     window.onload = async function() {
       const savedUserId = localStorage.getItem('dpfrz_userId');
       const savedEmail = localStorage.getItem('dpfrz_email');
+      const savedPic = localStorage.getItem('dpfrz_pic');
       
       if (savedUserId && savedEmail) {
         showLoader(true);
@@ -522,7 +577,7 @@
           currentUserId = savedUserId;
           currentUserEmail = savedEmail;
           currentUserData = user;
-          initApp(user.picture);
+          initApp(user.picture || savedPic);
           return;
         }
       }
@@ -554,7 +609,7 @@
           email: tempGoogleData.email, 
           password: pass, 
           balance: 0.00, 
-          picture: tempGoogleData.picture,
+          picture: tempGoogleData.picture || "", 
           joinDate: new Date().toLocaleDateString()
         };
         await fbPut(`users/${safeId}`, user);
@@ -563,21 +618,31 @@
           showLoader(false);
           return alert("Incorrect Password! Please try again.");
         }
+        // Update user picture if missing or updated
+        if(tempGoogleData.picture && user.picture !== tempGoogleData.picture) {
+          user.picture = tempGoogleData.picture;
+          await fbPatch(`users/${safeId}`, { picture: tempGoogleData.picture });
+        }
       }
 
       currentUserId = safeId; 
       currentUserEmail = tempGoogleData.email; 
       currentUserData = user;
 
+      // Save picture and login locally
       localStorage.setItem('dpfrz_userId', safeId);
       localStorage.setItem('dpfrz_email', tempGoogleData.email);
+      if(user.picture || tempGoogleData.picture) {
+        localStorage.setItem('dpfrz_pic', user.picture || tempGoogleData.picture);
+      }
 
-      initApp(tempGoogleData.picture);
+      initApp(user.picture || tempGoogleData.picture);
     }
 
     function logout() {
       localStorage.removeItem('dpfrz_userId');
       localStorage.removeItem('dpfrz_email');
+      localStorage.removeItem('dpfrz_pic');
 
       currentUserId = null; currentUserEmail = null; currentUserData = null; tempGoogleData = null;
       document.getElementById('mainApp').style.display = 'none';
@@ -592,16 +657,23 @@
       document.getElementById('authScreenPassword').style.display = 'none';
       document.getElementById('mainApp').style.display = 'flex';
       
+      // DP Handling with referrerpolicy
       const avatarIcon = document.getElementById('avatarIcon');
-      if(pictureUrl) { avatarIcon.innerHTML = `<img src="${pictureUrl}" alt="DP">`; } 
-      else { avatarIcon.innerText = currentUserEmail.charAt(0).toUpperCase(); }
+      const pic = pictureUrl || (currentUserData && currentUserData.picture) || localStorage.getItem('dpfrz_pic');
+      
+      if(pic) {
+        localStorage.setItem('dpfrz_pic', pic);
+        avatarIcon.innerHTML = `<img src="${pic}" alt="DP" referrerpolicy="no-referrer" onerror="this.parentElement.innerText=currentUserEmail.charAt(0).toUpperCase()">`;
+      } else if(currentUserEmail) {
+        avatarIcon.innerText = currentUserEmail.charAt(0).toUpperCase();
+      }
 
       const balanceText = '₹' + parseFloat(currentUserData.balance).toFixed(2);
       document.getElementById('displayBalance').innerText = balanceText;
       document.getElementById('addBalanceDisplay').innerText = balanceText;
 
-      const waText = `Hi, My gmail is ${currentUserEmail}. Help in deposit issue?`;
-      document.getElementById('whatsappSupportBtn').href = `https://wa.me/918638707624?text=${encodeURIComponent(waText)}`;
+      // Calculate and display User Total Spent
+      await updateUserTotalSpent();
 
       if(currentUserEmail.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
         document.getElementById('menuAdminItem').style.display = 'flex';
@@ -613,6 +685,14 @@
       renderServiceOptions();
       switchNav('newOrder');
       showLoader(false);
+    }
+
+    // Calculate user total spent
+    async function updateUserTotalSpent() {
+      const allOrders = await fbGet('orders') || {};
+      const myOrders = Object.values(allOrders).filter(o => o.userId === currentUserId && !o.orderId.startsWith('DEP-') && o.status !== 'Failed');
+      const totalSpent = myOrders.reduce((sum, o) => sum + (parseFloat(o.charge) || 0), 0);
+      document.getElementById('displayTotalSpent').innerText = '₹' + totalSpent.toFixed(2);
     }
 
     // ================= NAVIGATION =================
@@ -759,6 +839,7 @@
       };
 
       await fbPut(`orders/${orderId}`, orderObj);
+      await updateUserTotalSpent(); // Update Total Spent
       showLoader(false);
       alert("Order Placed Successfully!");
       document.getElementById('orderLink').value = ''; document.getElementById('orderQty').value = ''; calcPrice();
@@ -869,10 +950,13 @@
       alert("Order Status updated!");
     }
 
+    // Admin Users View with Total Spent Calculation
     async function fetchAdminAllUsersList() {
       showLoader(true);
       const allUsers = await fbGet('users') || {};
+      const allOrders = await fbGet('orders') || {};
       allUsersCache = allUsers;
+      allOrdersCache = allOrders;
       renderUsersList(Object.values(allUsers));
       showLoader(false);
     }
@@ -886,10 +970,16 @@
       else {
         usersArray.forEach(u => {
           const safeUserId = u.email.replace(/[^a-zA-Z0-9]/g, '');
+          
+          // Calculate User Total Spent from orders
+          const userOrders = Object.values(allOrdersCache).filter(o => o.userId === safeUserId && !o.orderId.startsWith('DEP-') && o.status !== 'Failed');
+          const userTotalSpent = userOrders.reduce((sum, o) => sum + (parseFloat(o.charge) || 0), 0);
+
           divUsr.innerHTML += `
             <div class="list-item" style="border-left: 4px solid var(--primary); cursor: pointer;" onclick="viewSpecificUserOrders('${safeUserId}', '${u.email}')">
               <div class="list-row"><strong>${u.email}</strong> <i class="fa-solid fa-chevron-right" style="color:grey; font-size:12px;"></i></div>
-              <div class="list-row"><span style="color:grey;">Wallet:</span> <span style="font-weight:700; color:var(--success);">₹${parseFloat(u.balance || 0).toFixed(2)}</span></div>
+              <div class="list-row"><span style="color:grey;">Wallet Balance:</span> <span style="font-weight:700; color:var(--success);">₹${parseFloat(u.balance || 0).toFixed(2)}</span></div>
+              <div class="list-row"><span style="color:grey;">Total Spent:</span> <span style="font-weight:700; color:var(--primary);">₹${userTotalSpent.toFixed(2)}</span></div>
               <div class="list-row"><span style="color:grey;">Joined:</span> <span>${u.joinDate || "N/A"}</span></div>
             </div>
           `;
@@ -935,6 +1025,7 @@
   </script>
 </body>
 </html>
+
 
 
 

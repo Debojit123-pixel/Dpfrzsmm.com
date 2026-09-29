@@ -4,19 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   
-  <!-- Google Search Console Verification Tag -->
   <meta name="google-site-verification" content="EHTrJJ55MvODc3DQPrWk-x9HsTLxcstZ0sOAg_M9IC0" />
-
   <title>DPFRZ SMM Panel</title>
 
   <!-- Google Fonts & Icons -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-  <!-- Official Google Identity Services SDK -->
+  <!-- Google Identity & Razorpay SDK -->
   <script src="https://accounts.google.com/gsi/client" async defer></script>
-  
-  <!-- Razorpay SDK -->
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
   <style>
@@ -31,16 +27,13 @@
       --danger: #ef4444;
       --success: #10b981;
       --whatsapp: #25D366;
+      --warning: #f59e0b;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
     body { background-color: var(--bg-color); color: var(--text-main); display: flex; justify-content: center; height: 100vh; overflow: hidden; margin: 0; }
 
-    /* Container Setup */
-    .app-container {
-      width: 100%; max-width: 480px; background: var(--card-bg); height: 100vh; position: relative;
-      box-shadow: 0 0 20px rgba(0,0,0,0.05); display: flex; flex-direction: column; overflow-x: hidden;
-    }
+    .app-container { width: 100%; max-width: 480px; background: var(--card-bg); height: 100vh; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05); display: flex; flex-direction: column; overflow-x: hidden; }
 
     /* AUTH SCREENS */
     #authScreenPicker, #authScreenPassword { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; padding: 30px 20px; text-align: center; overflow-y: auto; }
@@ -51,42 +44,23 @@
     
     .form-group { margin-bottom: 15px; text-align: left; }
     .form-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: var(--text-main); }
-    
     .form-control-readonly { width: 100%; padding: 14px 15px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 14px; background: #e2e8f0; color: #475569; font-weight: 600; cursor: not-allowed; }
     .form-control { width: 100%; padding: 14px 15px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 14px; background: #f8fafc; }
     .form-control:focus { outline: none; border-color: var(--primary); background: #fff; }
     .btn-main { width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: 600; font-size: 15px; cursor: pointer; margin-top: 10px; }
 
-    /* MAIN APP */
+    /* MAIN APP HEADER */
     #mainApp { display: none; flex-direction: column; height: 100vh; position: relative; }
-    
     .header { background: var(--primary); color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; z-index: 10; flex-shrink: 0; }
-    .header-left { display: flex; align-items: center; gap: 12px; }
-    .header-right { display: flex; align-items: center; gap: 12px; }
+    .header-left, .header-right { display: flex; align-items: center; gap: 12px; }
     .header-title { font-weight: 700; font-size: 18px; }
-    
     .user-avatar { width: 34px; height: 34px; border-radius: 50%; background: white; display: flex; align-items: center; justify-content: center; overflow: hidden; font-weight: 700; color: var(--primary); border: 2px solid rgba(255,255,255,0.8); }
     .user-avatar img { width: 100%; height: 100%; object-fit: cover; }
     .menu-icon { font-size: 20px; cursor: pointer; color: white; }
 
-    /* Header Install App Button */
-    .btn-install {
-      background: rgba(255, 255, 255, 0.2);
-      border: 1px solid rgba(255, 255, 255, 0.4);
-      color: white;
-      padding: 5px 12px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      transition: background 0.2s;
-    }
-    .btn-install:hover { background: rgba(255, 255, 255, 0.35); }
+    .btn-install { background: rgba(255, 255, 255, 0.2); border: 1px solid rgba(255, 255, 255, 0.4); color: white; padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; }
 
-    /* Side Drawer Menu */
+    /* DRAWER MENU */
     .side-drawer { position: fixed; top: 0; right: -280px; width: 280px; height: 100%; background: white; z-index: 1000; box-shadow: -4px 0 15px rgba(0,0,0,0.1); transition: right 0.3s ease; display: flex; flex-direction: column; }
     .side-drawer.open { right: 0; }
     .drawer-header { background: var(--primary); color: white; padding: 20px; font-size: 18px; font-weight: 700; display: flex; justify-content: space-between; align-items: center; }
@@ -97,69 +71,59 @@
     .drawer-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 999; }
     .drawer-overlay.active { display: block; }
 
-    /* Balance Banner */
+    /* BALANCE BANNER */
     .balance-banner { background: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); flex-shrink: 0; }
     .balance-banner h3 { font-size: 22px; font-weight: 800; color: var(--text-main); }
     .btn-add-fund { background: var(--success); color: white; border: none; padding: 8px 15px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 13px; }
 
-    /* Scrollable Content Area */
+    /* APP CONTENT */
     .app-content { flex: 1; padding: 20px; overflow-y: auto; background: var(--bg-color); padding-bottom: 80px; }
     .screen { display: none; }
     .screen.active { display: block; }
-
     .card { background: #fff; border-radius: 12px; padding: 20px; border: 1px solid var(--border-color); margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
     .card-title { font-size: 16px; font-weight: 700; margin-bottom: 15px; border-bottom: 1px solid #f1f5f9; padding-bottom: 10px; color: var(--text-main); }
 
-    /* Premium Trust Banner */
-    .trust-banner { background: linear-gradient(135deg, #0ea5e9, #3b82f6); color: white; border-radius: 12px; padding: 20px; text-align: center; margin-top: 15px; margin-bottom: 25px; box-shadow: 0 4px 15px rgba(14,165,233,0.3); }
-    .trust-banner h3 { font-size: 16px; font-weight: 700; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; }
-    .trust-banner p { font-size: 12px; line-height: 1.5; opacity: 0.9; margin-bottom: 12px; }
-    .trust-icons { display: flex; justify-content: center; gap: 20px; }
-    .trust-icons div { display: flex; flex-direction: column; align-items: center; gap: 5px; font-size: 10px; font-weight: 600; }
-    .trust-icons i { font-size: 20px; }
+    /* SLIDING BANNER */
+    .sliding-banner {
+      width: 100%; overflow: hidden; background: linear-gradient(90deg, #10b981, #0ea5e9);
+      color: white; border-radius: 8px; margin-bottom: 20px; padding: 10px 0; font-size: 13px; font-weight: 600; position: relative;
+    }
+    .sliding-content { display: flex; width: 300%; animation: slideAnim 10s infinite; }
+    .slide-text { width: 33.333%; text-align: center; flex-shrink: 0; }
+    @keyframes slideAnim {
+      0%, 25% { transform: translateX(0); }
+      33%, 58% { transform: translateX(-33.333%); }
+      66%, 91% { transform: translateX(-66.666%); }
+      100% { transform: translateX(0); }
+    }
 
-    /* Custom Lists & Badges */
+    /* CUSTOM LISTS */
     .list-item { background: #f8fafc; border: 1px solid var(--border-color); border-radius: 8px; padding: 12px; margin-bottom: 10px; font-size: 13px; }
-    .list-item strong { display: block; font-size: 14px; margin-bottom: 6px; color: var(--text-main); }
     .list-row { display: flex; justify-content: space-between; margin-bottom: 6px; }
-    
     .status-badge { padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; }
     .status-Pending { background: #fef3c7; color: #d97706; }
     .status-Review { background: #e0f2fe; color: #0284c7; }
     .status-Success { background: #dcfce7; color: #166534; }
     .status-Failed { background: #fee2e2; color: #b91c1c; }
 
-    /* Admin specific */
+    /* ADMIN CSS */
     .admin-service-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px dashed #e2e8f0; }
-    .admin-service-info { font-size: 13px; font-weight: 600; width: 55%; }
     .admin-service-price { display: flex; gap: 8px; width: 45%; justify-content: flex-end; }
     .admin-service-price input { width: 70px; padding: 8px; border: 1px solid #ccc; border-radius: 6px; font-size: 13px; font-weight: 600; text-align: center; }
     .btn-save-price { background: var(--primary); color: white; border: none; border-radius: 6px; padding: 0 15px; cursor: pointer; font-size: 14px; }
-    
     .admin-select-status { padding: 6px; border: 1px solid #ccc; border-radius: 4px; font-size: 12px; font-weight: 600; background: #fff; }
-
     .btn-admin-action { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: 600; font-size: 14px; cursor: pointer; }
     .btn-back { background: transparent; border: 1px solid var(--primary); color: var(--primary); padding: 8px 15px; border-radius: 6px; font-weight: 600; cursor: pointer; margin-bottom: 15px; display: inline-flex; align-items: center; gap: 6px; font-size: 13px; }
-    
-    /* WhatsApp Support Buttons */
+
+    /* MISC */
     .btn-whatsapp { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 14px; background: var(--whatsapp); color: white; border: none; border-radius: 8px; font-weight: 700; font-size: 15px; cursor: pointer; text-decoration: none; margin-top: 10px; }
     
-    /* Firebase Status Box */
-    .db-status-box { display: flex; justify-content: space-between; align-items: center; background: #f8fafc; border: 1px solid var(--border-color); padding: 12px; border-radius: 8px; margin-bottom: 20px; font-size: 13px; font-weight: 600; }
-    .status-indicator { display: flex; align-items: center; gap: 6px; }
-    .dot { width: 10px; height: 10px; border-radius: 50%; }
-    .dot.connected { background: var(--success); box-shadow: 0 0 5px var(--success); }
-    .dot.disconnected { background: var(--danger); box-shadow: 0 0 5px var(--danger); }
-    .btn-reconnect { background: #e2e8f0; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: 600; color: #475569; }
-
-    /* Bottom Nav */
     .bottom-nav { background: white; border-top: 1px solid var(--border-color); display: flex; justify-content: space-around; padding: 10px 0; position: absolute; bottom: 0; left: 0; width: 100%; z-index: 100; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); }
     .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-muted); font-size: 11px; font-weight: 600; cursor: pointer; width: 33%; }
     .nav-item i { font-size: 20px; margin-bottom: 4px; }
     .nav-item.active { color: var(--primary); }
     #nav-admin { display: none; }
 
-    /* Loader Modal */
     #loader { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.85); z-index: 1000; justify-content: center; align-items: center; flex-direction: column; }
     .spinner { border: 4px solid #e2e8f0; border-top: 4px solid var(--primary); border-radius: 50%; width: 45px; height: 45px; animation: spin 1s linear infinite; margin-bottom: 15px; }
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
@@ -168,119 +132,81 @@
 </head>
 <body>
 
-  <div id="loader">
-    <div class="spinner"></div>
-    <h3 style="color:var(--primary); font-size: 16px;">Loading...</h3>
-  </div>
+  <div id="loader"><div class="spinner"></div><h3 style="color:var(--primary); font-size: 16px;">Loading...</h3></div>
 
   <div class="app-container">
     
-    <!-- ================= AUTH SCREEN 1: GOOGLE PICKER ================= -->
+    <!-- ================= AUTH SCREENS ================= -->
     <div id="authScreenPicker">
       <div class="brand-logo"><i class="fa-solid fa-bolt"></i> DPFRZ SMM</div>
       <p style="color: var(--primary-dark); font-weight: 600;">#1 Indian SMM Panel</p>
 
       <div class="auth-box">
-        <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 25px; line-height: 1.5;">
-          Select your Google account. Your email will be verified automatically.
-        </p>
+        <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 25px; line-height: 1.5;">Select Google account to continue securely.</p>
         <div style="display:flex; justify-content:center;">
-          <div id="g_id_onload"
-               data-client_id="480658857207-it2hotcqdkrhmljo37htfbjnjmvlgn6h.apps.googleusercontent.com"
-               data-context="use"
-               data-ux_mode="popup"
-               data-callback="handleGooglePicker"
-               data-auto_prompt="false">
-          </div>
-          <div class="g_id_signin"
-               data-type="standard"
-               data-shape="rectangular"
-               data-theme="outline"
-               data-text="continue_with"
-               data-size="large"
-               data-logo_alignment="center"
-               data-width="280">
-          </div>
+          <div id="g_id_onload" data-client_id="480658857207-it2hotcqdkrhmljo37htfbjnjmvlgn6h.apps.googleusercontent.com" data-context="use" data-ux_mode="popup" data-callback="handleGooglePicker" data-auto_prompt="false"></div>
+          <div class="g_id_signin" data-type="standard" data-shape="rectangular" data-theme="outline" data-text="continue_with" data-size="large" data-logo_alignment="center" data-width="280"></div>
         </div>
       </div>
     </div>
 
-    <!-- ================= AUTH SCREEN 2: PASSWORD SET/LOGIN ================= -->
     <div id="authScreenPassword">
       <div class="brand-logo"><i class="fa-solid fa-lock"></i> Secure Login</div>
       <div class="auth-box">
         <form onsubmit="handlePasswordSubmit(event)">
           <div class="form-group">
-            <label>Selected Email (Unchangeable)</label>
+            <label>Selected Email</label>
             <input type="email" id="authFixedEmail" class="form-control-readonly" readonly>
           </div>
           <div class="form-group">
             <label id="passLabel">Enter Password</label>
             <input type="password" id="authPassword" class="form-control" placeholder="••••••••" required minlength="6">
-            <small style="color:var(--text-muted); font-size:11px; margin-top:4px; display:block;" id="passHint">
-              If new user, this will be set as your panel password.
-            </small>
+            <small style="color:var(--text-muted); font-size:11px; margin-top:4px; display:block;">If new user, this will be your panel password.</small>
           </div>
           <button type="submit" class="btn-main">Proceed to Panel</button>
         </form>
       </div>
     </div>
 
-
     <!-- ================= MAIN APP ================= -->
     <div id="mainApp">
       
-      <!-- Header (Picture Left, Install App & Menu Right) -->
+      <!-- HEADER -->
       <div class="header">
         <div class="header-left">
           <div class="user-avatar" id="avatarIcon">U</div>
           <div class="header-title"><i class="fa-solid fa-bolt"></i> DPFRZ SMM</div>
         </div>
         <div class="header-right">
-          <!-- Install App Button -->
-          <button class="btn-install" id="btnInstallApp" onclick="installPWA()">
-            <i class="fa-solid fa-cloud-arrow-down"></i> App
-          </button>
+          <button class="btn-install" id="btnInstallApp" onclick="installPWA()"><i class="fa-solid fa-cloud-arrow-down"></i> App</button>
           <i class="fa-solid fa-bars menu-icon" onclick="toggleDrawer()"></i>
         </div>
       </div>
 
-      <!-- Side Drawer Menu -->
+      <!-- SIDE DRAWER MENU -->
       <div class="drawer-overlay" id="drawerOverlay" onclick="toggleDrawer()"></div>
       <div class="side-drawer" id="sideDrawer">
         <div class="drawer-header">
-          <span>Navigation Menu</span>
+          <span>Menu</span>
           <i class="fa-solid fa-xmark" style="cursor:pointer;" onclick="toggleDrawer()"></i>
         </div>
         <div class="drawer-menu-items">
-          <a class="drawer-item" onclick="toggleDrawer(); switchNav('newOrder')">
-            <i class="fa-solid fa-cart-plus"></i> Place New Order
-          </a>
-          <a class="drawer-item" onclick="toggleDrawer(); switchNav('history')">
-            <i class="fa-solid fa-clock-rotate-left"></i> Order & Deposit History
-          </a>
-          <a class="drawer-item" onclick="toggleDrawer(); switchNav('addBalance')">
-            <i class="fa-solid fa-wallet" style="color:var(--success);"></i> Add Balance
-          </a>
-          <!-- WhatsApp Support in Drawer -->
-          <a class="drawer-item" href="https://wa.me/918638707624?text=Hi%20please%20help%20me%20%3F" target="_blank" style="color:var(--whatsapp);">
-            <i class="fa-brands fa-whatsapp" style="color:var(--whatsapp);"></i> WhatsApp Support
-          </a>
-          <!-- Install App in Drawer -->
-          <a class="drawer-item" onclick="toggleDrawer(); installPWA();">
-            <i class="fa-solid fa-download" style="color:var(--primary);"></i> Install App
-          </a>
-          <!-- Admin Panel Link -->
-          <a class="drawer-item" id="menuAdminItem" style="display:none; color:var(--danger);" onclick="toggleDrawer(); switchNav('admin')">
-            <i class="fa-solid fa-shield-halved" style="color:var(--danger);"></i> Admin Panel
-          </a>
-          <a class="drawer-item" onclick="logout()" style="color:var(--danger); border-top: 1px solid #f1f5f9; margin-top: 20px;">
-            <i class="fa-solid fa-right-from-bracket" style="color:var(--danger);"></i> Logout
-          </a>
+          <a class="drawer-item" onclick="toggleDrawer(); switchNav('newOrder')"><i class="fa-solid fa-cart-plus"></i> Place New Order</a>
+          <a class="drawer-item" onclick="toggleDrawer(); switchNav('history')"><i class="fa-solid fa-clock-rotate-left"></i> Order & Deposit History</a>
+          <a class="drawer-item" onclick="toggleDrawer(); switchNav('addBalance')"><i class="fa-solid fa-wallet" style="color:var(--success);"></i> Add Balance</a>
+          
+          <!-- NEW: Referral Option -->
+          <a class="drawer-item" onclick="toggleDrawer(); switchNav('referral')"><i class="fa-solid fa-gift" style="color:var(--warning);"></i> Refer & Earn ₹10</a>
+
+          <a class="drawer-item" href="https://wa.me/918638707624?text=Hi%20please%20help%20me%20%3F" target="_blank" style="color:var(--whatsapp);"><i class="fa-brands fa-whatsapp" style="color:var(--whatsapp);"></i> WhatsApp Support</a>
+          <a class="drawer-item" onclick="toggleDrawer(); installPWA();"><i class="fa-solid fa-download" style="color:var(--primary);"></i> Install App</a>
+          
+          <a class="drawer-item" id="menuAdminItem" style="display:none; color:var(--danger);" onclick="toggleDrawer(); switchNav('admin')"><i class="fa-solid fa-shield-halved" style="color:var(--danger);"></i> Admin Panel</a>
+          <a class="drawer-item" onclick="logout()" style="color:var(--danger); border-top: 1px solid #f1f5f9; margin-top: 20px;"><i class="fa-solid fa-right-from-bracket" style="color:var(--danger);"></i> Logout</a>
         </div>
       </div>
 
-      <!-- Balance & Total Spent Banner -->
+      <!-- BALANCE BANNER -->
       <div class="balance-banner">
         <div>
           <div style="font-size:11px; color:var(--text-muted); font-weight:600;">Current Balance</div>
@@ -292,12 +218,21 @@
         <button class="btn-add-fund" onclick="switchNav('addBalance')">+ Add Funds</button>
       </div>
 
-      <!-- App Content -->
+      <!-- CONTENT AREA -->
       <div class="app-content">
         
         <!-- Screen: NEW ORDER -->
         <div id="screen-newOrder" class="screen active">
           
+          <!-- NEW: Sliding Banner -->
+          <div class="sliding-banner">
+            <div class="sliding-content">
+              <div class="slide-text">🎉 Refer Friends & Earn ₹10 Bonus!</div>
+              <div class="slide-text">🛡️ 100% Safe, Secure & Trusted Panel</div>
+              <div class="slide-text">⚡ Superfast Social Media Services!</div>
+            </div>
+          </div>
+
           <div class="card">
             <h2 class="card-title">Place New Order</h2>
             <form onsubmit="placeOrder(event)">
@@ -330,117 +265,93 @@
               <button type="submit" class="btn-main">Submit Order</button>
             </form>
           </div>
+        </div>
 
-          <!-- PREMIUM TRUST BANNER -->
-          <div class="trust-banner">
-            <h3><i class="fa-solid fa-shield-check"></i> 100% Safe & Secure</h3>
-            <p>We provide the best, cheapest and most reliable SMM services in India. Your accounts and payments are fully protected with 256-bit encryption.</p>
-            <div class="trust-icons">
-              <div><i class="fa-solid fa-bolt"></i> <span>Instant Delivery</span></div>
-              <div><i class="fa-solid fa-headset"></i> <span>24/7 Support</span></div>
-              <div><i class="fa-solid fa-money-bill-wave"></i> <span>Best Prices</span></div>
+        <!-- Screen: REFERRAL SYSTEM (NEW) -->
+        <div id="screen-referral" class="screen">
+          <button class="btn-back" onclick="switchNav('newOrder')"><i class="fa-solid fa-arrow-left"></i> Back to Home</button>
+          
+          <div class="card" style="text-align:center;">
+            <i class="fa-solid fa-gift" style="font-size:45px; color:var(--warning); margin-bottom:15px;"></i>
+            <h2 class="card-title" style="margin-bottom:5px;">Invite & Earn ₹10</h2>
+            <p style="font-size:13px; color:grey; margin-bottom:20px; line-height:1.5;">Share your code. If a new user uses it, YOU get ₹10 and THEY get ₹10 in wallet instantly!</p>
+            
+            <div style="background:#f8fafc; padding:15px; border-radius:8px; border:1px dashed #cbd5e1; margin-bottom:20px;">
+              <span style="font-size:12px; color:var(--text-muted); display:block; margin-bottom:5px;">Your Referral Code</span>
+              <strong style="font-size:22px; color:var(--primary); letter-spacing:2px;" id="myReferralCodeDisplay">---</strong>
+            </div>
+
+            <div id="applyReferralSection">
+              <div style="margin:20px 0; font-weight:600; font-size:14px; color:var(--text-main); text-align:left;">Have a Referral Code?</div>
+              <div style="display:flex; gap:10px;">
+                <input type="text" id="refCodeInput" class="form-control" placeholder="Enter Code Here" style="text-transform:uppercase;">
+                <button class="btn-main" style="margin:0; width:100px; background:var(--success);" onclick="applyReferralCode()">Apply</button>
+              </div>
+            </div>
+            <div id="alreadyReferredSection" style="display:none; color:var(--success); font-weight:600; font-size:14px; padding:15px; background:#dcfce7; border-radius:8px; margin-top:20px;">
+              <i class="fa-solid fa-circle-check"></i> You have already used a referral code!
             </div>
           </div>
-
         </div>
 
-        <!-- Screen: MY ORDER & DEPOSIT HISTORY -->
+        <!-- Screen: HISTORY -->
         <div id="screen-history" class="screen">
-          <button class="btn-back" onclick="switchNav('newOrder')">
-            <i class="fa-solid fa-arrow-left"></i> Back to Home
-          </button>
-          <div class="card">
-            <h2 class="card-title">Order & Deposit History</h2>
-            <div id="userOrdersList"></div>
-          </div>
+          <button class="btn-back" onclick="switchNav('newOrder')"><i class="fa-solid fa-arrow-left"></i> Back to Home</button>
+          <div class="card"><h2 class="card-title">Order & Deposit History</h2><div id="userOrdersList"></div></div>
         </div>
 
-        <!-- Screen: ADD BALANCE PAGE -->
+        <!-- Screen: ADD BALANCE -->
         <div id="screen-addBalance" class="screen">
-          <button class="btn-back" onclick="switchNav('newOrder')">
-            <i class="fa-solid fa-arrow-left"></i> Back to Home
-          </button>
+          <button class="btn-back" onclick="switchNav('newOrder')"><i class="fa-solid fa-arrow-left"></i> Back to Home</button>
           <div class="card" style="text-align: center; padding: 25px 15px;">
             <i class="fa-solid fa-shield-halved" style="font-size: 45px; color: var(--success); margin-bottom: 12px;"></i>
-            <h2 style="font-size: 20px; font-weight: 700; margin-bottom: 8px;">Secure Deposit Portal</h2>
-            <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 20px; line-height: 1.5;">
-              Your funds are 100% safe & secured with encrypted Razorpay gateway. Balance is credited instantly.
-            </p>
-            <div style="background: #f8fafc; border: 1px solid var(--border-color); padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-              <span style="font-size: 12px; color: var(--text-muted); display: block;">Current Balance</span>
-              <h3 style="font-size: 22px; font-weight: 800; color: var(--success);" id="addBalanceDisplay">₹0.00</h3>
-            </div>
-            
-            <div class="form-group" style="text-align: left;">
+            <h2 style="font-size: 20px; font-weight: 700; margin-bottom: 8px;">Secure Deposit</h2>
+            <div class="form-group" style="text-align: left; margin-top:20px;">
               <label>Enter Amount (₹)</label>
-              <input type="number" id="depositAmountInput" class="form-control" placeholder="e.g. 100" min="10" value="100">
+              <input type="number" id="depositAmountInput" class="form-control" placeholder="100" min="10" value="100">
             </div>
-
-            <button class="btn-main" onclick="triggerRazorpayFromScreen()" style="background: var(--success); margin-bottom: 10px;">
-              <i class="fa-solid fa-lock"></i> Pay Securely via Razorpay
-            </button>
-
-            <!-- Customer Care WhatsApp Button -->
-            <a id="whatsappSupportBtn" href="https://wa.me/918638707624?text=Hi%20please%20help%20me%20%3F" target="_blank" class="btn-whatsapp">
-              <i class="fa-brands fa-whatsapp" style="font-size: 18px;"></i> Customer Care Support
-            </a>
+            <button class="btn-main" onclick="triggerRazorpayFromScreen()" style="background: var(--success); margin-bottom: 10px;"><i class="fa-solid fa-lock"></i> Pay via Razorpay</button>
+            <a id="whatsappSupportBtn" href="#" target="_blank" class="btn-whatsapp"><i class="fa-brands fa-whatsapp"></i> Customer Support</a>
           </div>
         </div>
 
         <!-- Screen: ADMIN DASHBOARD -->
         <div id="screen-admin" class="screen">
-          <button class="btn-back" onclick="switchNav('newOrder')">
-            <i class="fa-solid fa-arrow-left"></i> Back to Home
-          </button>
+          <button class="btn-back" onclick="switchNav('newOrder')"><i class="fa-solid fa-arrow-left"></i> Back to Home</button>
           
-          <div class="db-status-box">
-            <div class="status-indicator">
-              <div class="dot connected" id="dbStatusDot"></div>
-              <span id="dbStatusText" style="color:var(--success);">Database Connected</span>
-            </div>
-            <button class="btn-reconnect" onclick="checkFirebaseConnection()"><i class="fa-solid fa-rotate"></i> Reconnect</button>
-          </div>
-
           <div class="card" style="border: 2px solid var(--primary);">
-            <h2 class="card-title" style="color:var(--primary); border-bottom:none; margin-bottom:0;"><i class="fa-solid fa-users"></i> User Database</h2>
-            <p style="font-size:12px; color:grey; margin-bottom:15px;">Search users, check total balances & order logs.</p>
+            <h2 class="card-title" style="color:var(--primary); margin-bottom:0;"><i class="fa-solid fa-users"></i> User Database</h2>
+            <p style="font-size:12px; color:grey; margin-bottom:15px; margin-top:5px;">Search users, give refunds & check logs.</p>
             <button class="btn-admin-action" onclick="switchNav('adminUsers')">View All Users & Search</button>
           </div>
 
-          <div class="card">
-            <h2 class="card-title" style="color:var(--danger);"><i class="fa-solid fa-tags"></i> Manage Prices (Per 1000)</h2>
-            <div id="adminServicesList"></div>
-          </div>
-
-          <div class="card">
-            <h2 class="card-title" style="color:var(--danger);"><i class="fa-solid fa-list-check"></i> All Users Orders</h2>
-            <div id="adminAllOrdersList"></div>
-          </div>
+          <div class="card"><h2 class="card-title" style="color:var(--danger);"><i class="fa-solid fa-tags"></i> Manage Prices</h2><div id="adminServicesList"></div></div>
+          <div class="card"><h2 class="card-title" style="color:var(--danger);"><i class="fa-solid fa-list-check"></i> All Users Orders</h2><div id="adminAllOrdersList"></div></div>
         </div>
 
-        <!-- Screen: ADMIN ALL USERS LIST & SEARCH -->
+        <!-- Screen: ADMIN ALL USERS -->
         <div id="screen-adminUsers" class="screen">
-          <button class="btn-back" onclick="switchNav('admin')">
-            <i class="fa-solid fa-arrow-left"></i> Back to Admin
-          </button>
+          <button class="btn-back" onclick="switchNav('admin')"><i class="fa-solid fa-arrow-left"></i> Back to Admin</button>
           <div class="card">
-            <h2 class="card-title" style="color:var(--primary);">
-              <i class="fa-solid fa-users"></i> Total Users: <span id="adminTotalUsersCount">0</span>
-            </h2>
-            
-            <div class="form-group" style="margin-bottom: 20px;">
-              <input type="text" id="userSearchInput" class="form-control" placeholder="Search user by Gmail..." oninput="filterAdminUsers()">
-            </div>
-
+            <h2 class="card-title" style="color:var(--primary);">Total Users: <span id="adminTotalUsersCount">0</span></h2>
+            <input type="text" id="userSearchInput" class="form-control" placeholder="Search user by Gmail..." oninput="filterAdminUsers()" style="margin-bottom: 20px;">
             <div id="adminUsersList"></div>
           </div>
         </div>
 
-        <!-- Screen: ADMIN SPECIFIC USER ORDERS -->
+        <!-- Screen: ADMIN USER SPECIFIC (With Refund) -->
         <div id="screen-adminUserOrders" class="screen">
-          <button class="btn-back" onclick="switchNav('adminUsers')">
-            <i class="fa-solid fa-arrow-left"></i> Back to Users List
-          </button>
+          <button class="btn-back" onclick="switchNav('adminUsers')"><i class="fa-solid fa-arrow-left"></i> Back to Users List</button>
+          
+          <div class="card" style="background:#e0f2fe; border-color:var(--primary);">
+            <h2 class="card-title" style="color:var(--primary-dark); border-bottom:1px solid #bae6fd;">Admin Tool: Refund / Add Balance</h2>
+            <div style="display:flex; gap:10px; margin-top:15px;">
+              <input type="number" id="adminRefundAmount" class="form-control" placeholder="Enter Amount (₹)">
+              <button class="btn-main" style="margin:0; width:auto; background:var(--primary-dark);" onclick="adminAddRefund()">Add Balance</button>
+            </div>
+            <p style="font-size:11px; color:grey; margin-top:8px;">Manually credit balance to this user for failed payments or bonuses.</p>
+          </div>
+
           <div class="card">
             <h2 class="card-title" style="color:var(--primary);" id="specificUserTitle">User Orders</h2>
             <div id="specificUserOrdersList"></div>
@@ -465,36 +376,11 @@
     const ADMIN_EMAIL = "pauldebojit629@gmail.com";
     const RAZORPAY_KEY_ID = "rzp_live_ThRNn6xsDj9d2D";
 
-    // UPDATED SERVICES LIST
     const defaultServices = {
-      instagram: { 
-        "ig_views": { name: "Instagram Views [Instant]", price: 10 }, 
-        "ig_likes": { name: "Instagram Likes [High Quality]", price: 30 }, 
-        "ig_comments": { name: "Instagram Comments [Custom/Real]", price: 80 },
-        "ig_comment_likes": { name: "Instagram Comment Likes", price: 60 },
-        "ig_shares": { name: "Instagram Shares", price: 40 },
-        "ig_reposts": { name: "Instagram Reposts", price: 50 },
-        "ig_followers": { name: "Instagram Followers [Non-Drop]", price: 120 } 
-      },
-      facebook: { 
-        "fb_views": { name: "Facebook Video Views", price: 20 }, 
-        "fb_likes": { name: "Facebook Page Likes", price: 90 }, 
-        "fb_post_likes": { name: "Facebook Post Likes/Reactions", price: 40 },
-        "fb_comments": { name: "Facebook Comments", price: 100 },
-        "fb_shares": { name: "Facebook Shares", price: 60 },
-        "fb_followers": { name: "Facebook Followers [Fast]", price: 110 }
-      },
-      youtube: { 
-        "yt_views": { name: "YouTube High Retention Views", price: 150 }, 
-        "yt_likes": { name: "YouTube Likes [Fast]", price: 200 }, 
-        "yt_comments": { name: "YouTube Comments", price: 250 },
-        "yt_watchtime": { name: "YouTube Watchtime Hours", price: 800 },
-        "yt_subs": { name: "YouTube Real Subscribers", price: 450 } 
-      },
-      telegram: {
-        "tg_members": { name: "Telegram Channel Members", price: 90 },
-        "tg_views": { name: "Telegram Post Views", price: 15 }
-      }
+      instagram: { "ig_views": { name: "Instagram Views [Instant]", price: 10 }, "ig_likes": { name: "Instagram Likes [High Quality]", price: 30 }, "ig_comments": { name: "Instagram Comments [Custom/Real]", price: 80 }, "ig_comment_likes": { name: "Instagram Comment Likes", price: 60 }, "ig_shares": { name: "Instagram Shares", price: 40 }, "ig_reposts": { name: "Instagram Reposts", price: 50 }, "ig_followers": { name: "Instagram Followers [Non-Drop]", price: 120 } },
+      facebook: { "fb_views": { name: "Facebook Video Views", price: 20 }, "fb_likes": { name: "Facebook Page Likes", price: 90 }, "fb_post_likes": { name: "Facebook Post Likes", price: 40 }, "fb_comments": { name: "Facebook Comments", price: 100 }, "fb_shares": { name: "Facebook Shares", price: 60 }, "fb_followers": { name: "Facebook Followers", price: 110 } },
+      youtube: { "yt_views": { name: "YouTube High Retention Views", price: 150 }, "yt_likes": { name: "YouTube Likes [Fast]", price: 200 }, "yt_comments": { name: "YouTube Comments", price: 250 }, "yt_watchtime": { name: "YouTube Watchtime Hours", price: 800 }, "yt_subs": { name: "YouTube Real Subscribers", price: 450 } },
+      telegram: { "tg_members": { name: "Telegram Channel Members", price: 90 }, "tg_views": { name: "Telegram Post Views", price: 15 } }
     };
 
     let tempGoogleData = null; 
@@ -505,145 +391,107 @@
     let allUsersCache = {};
     let allOrdersCache = {};
     let deferredPrompt = null;
+    let adminViewingUserId = null; // For Refund
 
     function showLoader(show) { document.getElementById('loader').style.display = show ? 'flex' : 'none'; }
     
     async function fbGet(path) { 
-      try {
-        const res = await fetch(`${FIREBASE_DB_URL}${path}.json`); 
-        if(!res.ok) throw new Error("Network response was not ok");
-        return await res.json(); 
-      } catch (error) {
-        return null;
-      }
+      try { const res = await fetch(`${FIREBASE_DB_URL}${path}.json`); if(!res.ok) return null; return await res.json(); } catch(e) { return null; }
     }
-    
-    async function initServices() {
-      let srv = await fbGet('services');
-      if(!srv) { 
-        await fbPut('services', defaultServices); 
-        globalServices = defaultServices; 
-      } else {
-        for(let cat in defaultServices) {
-          if(!srv[cat]) srv[cat] = {};
-          for(let key in defaultServices[cat]) {
-            if(!srv[cat][key]) {
-              srv[cat][key] = defaultServices[cat][key];
-            }
-          }
-        }
-        await fbPatch('services', srv);
-        globalServices = srv;
-      }
-    }
-
     async function fbPut(path, data) { await fetch(`${FIREBASE_DB_URL}${path}.json`, { method: 'PUT', body: JSON.stringify(data) }); }
     async function fbPatch(path, data) { await fetch(`${FIREBASE_DB_URL}${path}.json`, { method: 'PATCH', body: JSON.stringify(data) }); }
 
-    // Toggle Drawer Menu
-    function toggleDrawer() {
-      document.getElementById('sideDrawer').classList.toggle('open');
-      document.getElementById('drawerOverlay').classList.toggle('active');
-    }
+    function toggleDrawer() { document.getElementById('sideDrawer').classList.toggle('open'); document.getElementById('drawerOverlay').classList.toggle('active'); }
 
-    // App Install PWA Handler
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-    });
-
+    window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; });
     function installPWA() {
-      if (deferredPrompt) {
-        deferredPrompt.prompt();
-        deferredPrompt.userChoice.then((choiceResult) => {
-          deferredPrompt = null;
-        });
-      } else {
-        alert("To install DPFRZ SMM App on your phone:\n\n1. Tap the 3 dots (⋮) at top right of Chrome.\n2. Tap 'Install app' or 'Add to Home screen'.");
-      }
+      if (deferredPrompt) { deferredPrompt.prompt(); deferredPrompt.userChoice.then(() => { deferredPrompt = null; });
+      } else { alert("To install App:\n1. Tap 3 dots (⋮) at top right.\n2. Tap 'Install app' or 'Add to Home screen'."); }
     }
 
-    // ================= PERSISTENT LOGIN ON PAGE LOAD =================
+    // Generate unique ref code
+    function generateRefCode(email) { return email.split('@')[0].substring(0,4).toUpperCase() + Math.floor(1000 + Math.random() * 9000); }
+
+    // ================= DEVICE RESTRICTION LOGIC =================
+    function checkDeviceRestriction(incomingEmail) {
+      const savedDeviceOwner = localStorage.getItem('dpfrz_device_owner');
+      // If a different account tries to login on same device (Exclude Admin from restriction)
+      if(savedDeviceOwner && savedDeviceOwner !== incomingEmail && incomingEmail.toLowerCase() !== ADMIN_EMAIL.toLowerCase() && savedDeviceOwner.toLowerCase() !== ADMIN_EMAIL.toLowerCase()) {
+        alert("For the referral system, multiple account login from the same device is temporarily disabled. It will be opened later.");
+        return false;
+      }
+      return true;
+    }
+
     window.onload = async function() {
       const savedUserId = localStorage.getItem('dpfrz_userId');
       const savedEmail = localStorage.getItem('dpfrz_email');
-      const savedPic = localStorage.getItem('dpfrz_pic');
       
       if (savedUserId && savedEmail) {
         showLoader(true);
         const user = await fbGet(`users/${savedUserId}`);
         showLoader(false);
         if (user) {
-          currentUserId = savedUserId;
-          currentUserEmail = savedEmail;
-          currentUserData = user;
-          initApp(user.picture || savedPic);
-          return;
+          currentUserId = savedUserId; currentUserEmail = savedEmail; currentUserData = user;
+          initApp(user.picture || localStorage.getItem('dpfrz_pic'));
         }
       }
     };
 
-    // ================= 1. GOOGLE PICKER LOGIC =================
     async function handleGooglePicker(response) {
       try {
         const payload = JSON.parse(atob(response.credential.split('.')[1]));
+        if(!checkDeviceRestriction(payload.email)) return; // Restrict Multiple Accounts
+
         tempGoogleData = { email: payload.email, picture: payload.picture };
-        
         document.getElementById('authScreenPicker').style.display = 'none';
         document.getElementById('authScreenPassword').style.display = 'flex';
         document.getElementById('authFixedEmail').value = tempGoogleData.email;
-      } catch(e) { alert("Google account selection failed."); }
+      } catch(e) { alert("Google Auth Failed."); }
     }
 
-    // ================= 2. PASSWORD LOGIC =================
     async function handlePasswordSubmit(e) {
       e.preventDefault();
       const pass = document.getElementById('authPassword').value;
       const safeId = tempGoogleData.email.replace(/[^a-zA-Z0-9]/g, '');
       
+      if(!checkDeviceRestriction(tempGoogleData.email)) return;
+
       showLoader(true);
       let user = await fbGet(`users/${safeId}`);
       
       if(!user) {
         user = { 
-          email: tempGoogleData.email, 
-          password: pass, 
-          balance: 0.00, 
-          picture: tempGoogleData.picture || "", 
-          joinDate: new Date().toLocaleDateString()
+          email: tempGoogleData.email, password: pass, balance: 0.00, picture: tempGoogleData.picture || "", 
+          referralCode: generateRefCode(tempGoogleData.email), hasUsedReferral: false, joinDate: new Date().toLocaleDateString()
         };
         await fbPut(`users/${safeId}`, user);
       } else {
-        if(user.password !== pass) {
-          showLoader(false);
-          return alert("Incorrect Password! Please try again.");
+        if(user.password !== pass) { showLoader(false); return alert("Incorrect Password!"); }
+        // Ensure old users get a referral code
+        if(!user.referralCode) {
+          user.referralCode = generateRefCode(user.email);
+          user.hasUsedReferral = false;
+          await fbPatch(`users/${safeId}`, { referralCode: user.referralCode, hasUsedReferral: false });
         }
-        // Update user picture if missing or updated
         if(tempGoogleData.picture && user.picture !== tempGoogleData.picture) {
-          user.picture = tempGoogleData.picture;
-          await fbPatch(`users/${safeId}`, { picture: tempGoogleData.picture });
+          user.picture = tempGoogleData.picture; await fbPatch(`users/${safeId}`, { picture: tempGoogleData.picture });
         }
       }
 
-      currentUserId = safeId; 
-      currentUserEmail = tempGoogleData.email; 
-      currentUserData = user;
-
-      // Save picture and login locally
+      currentUserId = safeId; currentUserEmail = tempGoogleData.email; currentUserData = user;
+      
       localStorage.setItem('dpfrz_userId', safeId);
       localStorage.setItem('dpfrz_email', tempGoogleData.email);
-      if(user.picture || tempGoogleData.picture) {
-        localStorage.setItem('dpfrz_pic', user.picture || tempGoogleData.picture);
-      }
+      localStorage.setItem('dpfrz_device_owner', tempGoogleData.email); // Device Lock
+      if(user.picture) localStorage.setItem('dpfrz_pic', user.picture);
 
-      initApp(user.picture || tempGoogleData.picture);
+      initApp(user.picture);
     }
 
     function logout() {
-      localStorage.removeItem('dpfrz_userId');
-      localStorage.removeItem('dpfrz_email');
-      localStorage.removeItem('dpfrz_pic');
-
+      localStorage.removeItem('dpfrz_userId'); localStorage.removeItem('dpfrz_email'); localStorage.removeItem('dpfrz_pic');
+      // DO NOT REMOVE dpfrz_device_owner to enforce device restriction
       currentUserId = null; currentUserEmail = null; currentUserData = null; tempGoogleData = null;
       document.getElementById('mainApp').style.display = 'none';
       document.getElementById('authScreenPassword').style.display = 'none';
@@ -651,157 +499,128 @@
       document.getElementById('authPassword').value = '';
     }
 
-    // ================= APP INIT =================
     async function initApp(pictureUrl) {
       document.getElementById('authScreenPicker').style.display = 'none';
       document.getElementById('authScreenPassword').style.display = 'none';
       document.getElementById('mainApp').style.display = 'flex';
       
-      // DP Handling with referrerpolicy
       const avatarIcon = document.getElementById('avatarIcon');
-      const pic = pictureUrl || (currentUserData && currentUserData.picture) || localStorage.getItem('dpfrz_pic');
-      
-      if(pic) {
-        localStorage.setItem('dpfrz_pic', pic);
-        avatarIcon.innerHTML = `<img src="${pic}" alt="DP" referrerpolicy="no-referrer" onerror="this.parentElement.innerText=currentUserEmail.charAt(0).toUpperCase()">`;
-      } else if(currentUserEmail) {
-        avatarIcon.innerText = currentUserEmail.charAt(0).toUpperCase();
+      const pic = pictureUrl || localStorage.getItem('dpfrz_pic');
+      if(pic) { avatarIcon.innerHTML = `<img src="${pic}" alt="DP" referrerpolicy="no-referrer" onerror="this.parentElement.innerText=currentUserEmail.charAt(0).toUpperCase()">`; } 
+      else { avatarIcon.innerText = currentUserEmail.charAt(0).toUpperCase(); }
+
+      document.getElementById('displayBalance').innerText = '₹' + parseFloat(currentUserData.balance).toFixed(2);
+      document.getElementById('myReferralCodeDisplay').innerText = currentUserData.referralCode || "NONE";
+
+      if(currentUserData.hasUsedReferral) {
+        document.getElementById('applyReferralSection').style.display = 'none';
+        document.getElementById('alreadyReferredSection').style.display = 'block';
       }
 
-      const balanceText = '₹' + parseFloat(currentUserData.balance).toFixed(2);
-      document.getElementById('displayBalance').innerText = balanceText;
-      document.getElementById('addBalanceDisplay').innerText = balanceText;
+      document.getElementById('whatsappSupportBtn').href = `https://wa.me/918638707624?text=Hi%2C%20My%20gmail%20is%20${currentUserEmail}%20Help%20in%20deposit%20issue%3F`;
+      document.getElementById('menuAdminItem').style.display = (currentUserEmail.toLowerCase() === ADMIN_EMAIL.toLowerCase()) ? 'flex' : 'none';
 
-      // Calculate and display User Total Spent
       await updateUserTotalSpent();
+      
+      let srv = await fbGet('services');
+      if(!srv) { await fbPut('services', defaultServices); globalServices = defaultServices; } 
+      else { globalServices = srv; }
 
-      if(currentUserEmail.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
-        document.getElementById('menuAdminItem').style.display = 'flex';
-      } else {
-        document.getElementById('menuAdminItem').style.display = 'none';
-      }
-
-      await initServices();
-      renderServiceOptions();
-      switchNav('newOrder');
-      showLoader(false);
+      renderServiceOptions(); switchNav('newOrder'); showLoader(false);
     }
 
-    // Calculate user total spent
     async function updateUserTotalSpent() {
       const allOrders = await fbGet('orders') || {};
-      const myOrders = Object.values(allOrders).filter(o => o.userId === currentUserId && !o.orderId.startsWith('DEP-') && o.status !== 'Failed');
+      const myOrders = Object.values(allOrders).filter(o => o.userId === currentUserId && !o.orderId.startsWith('DEP-') && !o.orderId.startsWith('REF-') && o.status !== 'Failed');
       const totalSpent = myOrders.reduce((sum, o) => sum + (parseFloat(o.charge) || 0), 0);
       document.getElementById('displayTotalSpent').innerText = '₹' + totalSpent.toFixed(2);
     }
 
-    // ================= NAVIGATION =================
     function switchNav(screenName) {
       document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
       document.getElementById('screen-' + screenName).classList.add('active');
-
       document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-      if(screenName === 'newOrder') document.getElementById('navbtn-newOrder').classList.add('active');
-      if(screenName === 'history') document.getElementById('navbtn-history').classList.add('active');
-      if(screenName === 'admin') document.getElementById('nav-admin').classList.add('active');
+      if(document.getElementById('navbtn-'+screenName)) document.getElementById('navbtn-'+screenName).classList.add('active');
 
       if(screenName === 'history') fetchUserHistory();
-      if(screenName === 'admin') { fetchAdminData(); checkFirebaseConnection(); }
+      if(screenName === 'admin') fetchAdminData();
       if(screenName === 'adminUsers') fetchAdminAllUsersList();
     }
 
-    // ================= DB CONNECTION CHECK =================
-    async function checkFirebaseConnection() {
-      const dot = document.getElementById('dbStatusDot');
-      const text = document.getElementById('dbStatusText');
+    // ================= REFERRAL APPLY LOGIC =================
+    async function applyReferralCode() {
+      const code = document.getElementById('refCodeInput').value.trim().toUpperCase();
+      if(!code) return alert("Please enter a referral code.");
+      if(code === currentUserData.referralCode) return alert("You cannot use your own code!");
       
-      dot.className = "dot";
-      text.style.color = "grey";
-      text.innerText = "Checking...";
-
-      const res = await fbGet('services'); 
-      
-      if(res) {
-        dot.classList.add('connected');
-        text.style.color = "var(--success)";
-        text.innerText = "Database Connected";
-      } else {
-        dot.classList.add('disconnected');
-        text.style.color = "var(--danger)";
-        text.innerText = "Disconnected";
+      showLoader(true);
+      const allUsers = await fbGet('users') || {};
+      let referrerId = null; let referrerData = null;
+      for(let uid in allUsers) {
+        if(allUsers[uid].referralCode === code) { referrerId = uid; referrerData = allUsers[uid]; break; }
       }
+      
+      if(!referrerId) { showLoader(false); return alert("Invalid Referral Code!"); }
+
+      // Give 10 Rs to Referrer
+      const refNewBal = (parseFloat(referrerData.balance) || 0) + 10;
+      await fbPatch(`users/${referrerId}`, { balance: refNewBal });
+      // Give 10 Rs to Current User
+      const myNewBal = (parseFloat(currentUserData.balance) || 0) + 10;
+      await fbPatch(`users/${currentUserId}`, { balance: myNewBal, hasUsedReferral: true });
+
+      // Log transaction
+      const bonusId = Date.now().toString();
+      await fbPut(`orders/REF-${bonusId}`, { orderId: "REF-" + bonusId, paymentId: "N/A", userEmail: currentUserEmail, userId: currentUserId, service: "Referral Bonus", link: "N/A", qty: 1, charge: 10, status: "Success", timestamp: new Date().toLocaleString() });
+
+      currentUserData.balance = myNewBal; currentUserData.hasUsedReferral = true;
+      document.getElementById('displayBalance').innerText = '₹' + myNewBal.toFixed(2);
+      
+      showLoader(false);
+      alert("Referral Applied! ₹10 Bonus added to your wallet.");
+      document.getElementById('applyReferralSection').style.display = 'none';
+      document.getElementById('alreadyReferredSection').style.display = 'block';
     }
 
-    // ================= RAZORPAY PAYMENT =================
+    // ================= RAZORPAY =================
     function triggerRazorpayFromScreen() {
-      const amountInput = document.getElementById('depositAmountInput');
-      const amount = parseFloat(amountInput ? amountInput.value : 100);
-      if(isNaN(amount) || amount <= 0) return alert("Invalid amount entered!");
+      const amount = parseFloat(document.getElementById('depositAmountInput').value || 100);
+      if(isNaN(amount) || amount <= 0) return alert("Invalid amount!");
 
       var options = {
-        "key": RAZORPAY_KEY_ID, 
-        "amount": amount * 100, 
-        "currency": "INR",
-        "name": "DPFRZ SMM",
-        "description": "Wallet Deposit",
+        "key": RAZORPAY_KEY_ID, "amount": amount * 100, "currency": "INR", "name": "DPFRZ SMM", "description": "Wallet Deposit",
         "handler": async function (response) {
             showLoader(true);
             const paymentId = response.razorpay_payment_id || "PAY_" + Date.now();
-            
             const newBalance = parseFloat(currentUserData.balance) + amount;
             await fbPatch(`users/${currentUserId}`, { balance: newBalance });
-            currentUserData.balance = newBalance;
+            currentUserData.balance = newBalance; document.getElementById('displayBalance').innerText = '₹' + newBalance.toFixed(2);
             
-            const balanceText = '₹' + newBalance.toFixed(2);
-            document.getElementById('displayBalance').innerText = balanceText;
-            document.getElementById('addBalanceDisplay').innerText = balanceText;
-
-            const depositId = Date.now().toString();
-            const depositObj = {
-              orderId: "DEP-" + depositId, paymentId: paymentId, userEmail: currentUserEmail, userId: currentUserId,
-              service: "Wallet Deposit (Razorpay)", link: "N/A", qty: 1, charge: amount, status: "Success", timestamp: new Date().toLocaleString()
-            };
-            await fbPut(`orders/${depositId}`, depositObj);
-
-            showLoader(false);
-            alert("Payment Successful! ₹" + amount + " added to your wallet.");
-            switchNav('history');
+            await fbPut(`orders/${Date.now().toString()}`, { orderId: "DEP-" + Date.now(), paymentId: paymentId, userEmail: currentUserEmail, userId: currentUserId, service: "Wallet Deposit", link: "N/A", qty: 1, charge: amount, status: "Success", timestamp: new Date().toLocaleString() });
+            showLoader(false); alert("Payment Successful!"); switchNav('history');
         },
-        "prefill": { "email": currentUserEmail },
-        "theme": { "color": "#0ea5e9" }
+        "prefill": { "email": currentUserEmail }, "theme": { "color": "#0ea5e9" }
       };
-      
       var rzp = new Razorpay(options);
       rzp.on('payment.failed', async function (response){
         showLoader(true);
-        const depositId = Date.now().toString();
-        const depositObj = {
-          orderId: "DEP-" + depositId, paymentId: response.error.metadata?.payment_id || "FAILED_" + Date.now(), userEmail: currentUserEmail, userId: currentUserId,
-          service: "Wallet Deposit (Razorpay)", link: "N/A", qty: 1, charge: amount, status: "Failed", timestamp: new Date().toLocaleString()
-        };
-        await fbPut(`orders/${depositId}`, depositObj);
-        showLoader(false);
-        alert("Payment Failed! Recorded in your history.");
-        switchNav('history');
+        await fbPut(`orders/${Date.now().toString()}`, { orderId: "DEP-" + Date.now(), paymentId: response.error.metadata?.payment_id || "FAILED", userEmail: currentUserEmail, userId: currentUserId, service: "Wallet Deposit", link: "N/A", qty: 1, charge: amount, status: "Failed", timestamp: new Date().toLocaleString() });
+        showLoader(false); alert("Payment Failed! Recorded in history."); switchNav('history');
       });
       rzp.open();
     }
 
-    // ================= ORDERS LOGIC =================
+    // ================= NEW ORDER =================
     function renderServiceOptions() {
       const cat = document.getElementById('orderCategory').value;
       const select = document.getElementById('orderService');
       select.innerHTML = '';
       if(globalServices && globalServices[cat]) {
         for(let key in globalServices[cat]) {
-          let s = globalServices[cat][key];
-          let opt = document.createElement('option');
-          opt.value = key; opt.dataset.name = s.name; opt.dataset.price = s.price;
-          opt.innerText = `${s.name} - ₹${s.price} (per 1000)`;
-          select.appendChild(opt);
+          let opt = document.createElement('option'); opt.value = key; opt.dataset.name = globalServices[cat][key].name; opt.dataset.price = globalServices[cat][key].price;
+          opt.innerText = `${globalServices[cat][key].name} - ₹${globalServices[cat][key].price}`; select.appendChild(opt);
         }
-      }
-      calcPrice();
+      } calcPrice();
     }
 
     function calcPrice() {
@@ -815,216 +634,105 @@
     async function placeOrder(e) {
       e.preventDefault();
       const select = document.getElementById('orderService');
-      const serviceName = select.options[select.selectedIndex].dataset.name;
-      const link = document.getElementById('orderLink').value;
-      const qty = parseInt(document.getElementById('orderQty').value);
       const charge = parseFloat(document.getElementById('orderTotal').innerText);
+      const qty = parseInt(document.getElementById('orderQty').value);
 
-      if(qty < 100) return alert("Minimum quantity 100");
-      if(parseFloat(currentUserData.balance) < charge) return alert("Insufficient Wallet Balance! Please add funds.");
+      if(qty < 100) return alert("Min 100");
+      if(parseFloat(currentUserData.balance) < charge) return alert("Insufficient Balance!");
 
       showLoader(true);
       const newBal = parseFloat(currentUserData.balance) - charge;
       await fbPatch(`users/${currentUserId}`, { balance: newBal });
-      currentUserData.balance = newBal;
-      
-      const balanceText = '₹' + newBal.toFixed(2);
-      document.getElementById('displayBalance').innerText = balanceText;
-      document.getElementById('addBalanceDisplay').innerText = balanceText;
+      currentUserData.balance = newBal; document.getElementById('displayBalance').innerText = '₹' + newBal.toFixed(2);
 
       const orderId = Date.now().toString();
-      const orderObj = {
-        orderId: "ORD-" + orderId, paymentId: "N/A", userEmail: currentUserEmail, userId: currentUserId,
-        service: serviceName, link: link, qty: qty, charge: charge, status: "Pending", timestamp: new Date().toLocaleString()
-      };
+      await fbPut(`orders/${orderId}`, { orderId: "ORD-" + orderId, paymentId: "N/A", userEmail: currentUserEmail, userId: currentUserId, service: select.options[select.selectedIndex].dataset.name, link: document.getElementById('orderLink').value, qty: qty, charge: charge, status: "Pending", timestamp: new Date().toLocaleString() });
 
-      await fbPut(`orders/${orderId}`, orderObj);
-      await updateUserTotalSpent(); // Update Total Spent
-      showLoader(false);
-      alert("Order Placed Successfully!");
-      document.getElementById('orderLink').value = ''; document.getElementById('orderQty').value = ''; calcPrice();
+      await updateUserTotalSpent(); showLoader(false);
+      alert("Order Placed!"); document.getElementById('orderLink').value = ''; document.getElementById('orderQty').value = ''; calcPrice();
     }
 
     async function fetchUserHistory() {
       showLoader(true);
       const allOrders = await fbGet('orders') || {};
-      const div = document.getElementById('userOrdersList');
-      div.innerHTML = '';
+      const div = document.getElementById('userOrdersList'); div.innerHTML = '';
       const myOrders = Object.values(allOrders).filter(o => o.userId === currentUserId).reverse();
-
-      if(myOrders.length===0) { div.innerHTML = '<p style="text-align:center;font-size:13px;color:grey;">No History Found.</p>'; }
-      else {
-        myOrders.forEach(o => {
-          div.innerHTML += `
-            <div class="list-item">
-              <strong>${o.service}</strong>
-              <div class="list-row"><span style="color:grey;">ID / Ref:</span> <span>${o.orderId}</span></div>
-              ${o.paymentId !== 'N/A' ? `<div class="list-row"><span style="color:grey;">Payment ID:</span> <span style="font-size:11px;">${o.paymentId}</span></div>` : ''}
-              ${o.link !== 'N/A' ? `<div class="list-row"><span style="color:grey;">Link:</span> <span style="max-width:160px;overflow:hidden;text-overflow:ellipsis;">${o.link}</span></div>` : ''}
-              <div class="list-row"><span style="color:grey;">Qty / Amount:</span> <span>${o.link !== 'N/A' ? o.qty : '₹' + o.charge.toFixed(2)}</span></div>
-              <div class="list-row"><span style="color:grey;">Total Charge:</span> <span style="color:var(--primary);font-weight:700;">₹${parseFloat(o.charge).toFixed(2)}</span></div>
-              <div class="list-row" style="margin-top:5px;"><span class="status-badge status-${o.status}">${o.status}</span> <span style="font-size:10px; color:grey;">${o.timestamp}</span></div>
-            </div>
-          `;
-        });
-      }
-      showLoader(false);
+      if(myOrders.length===0) div.innerHTML = '<p style="text-align:center;color:grey;">No History.</p>';
+      else myOrders.forEach(o => {
+        div.innerHTML += `<div class="list-item"><strong>${o.service}</strong><div class="list-row"><span style="color:grey;">ID:</span> <span>${o.orderId}</span></div>${o.paymentId!=='N/A'?`<div class="list-row"><span style="color:grey;">PayID:</span><span style="font-size:11px;">${o.paymentId}</span></div>`:''}<div class="list-row"><span style="color:grey;">Amt:</span><span style="color:var(--primary);font-weight:700;">₹${parseFloat(o.charge).toFixed(2)}</span></div><div class="list-row"><span class="status-badge status-${o.status}">${o.status}</span> <span style="font-size:10px;color:grey;">${o.timestamp}</span></div></div>`;
+      }); showLoader(false);
     }
 
     // ================= ADMIN LOGIC =================
     async function fetchAdminData() {
       showLoader(true);
-      
       globalServices = await fbGet('services');
-      const divSrv = document.getElementById('adminServicesList');
-      
-      let htmlSrv = ''; 
-      for(let cat in globalServices) {
-        for(let key in globalServices[cat]) {
-          let s = globalServices[cat][key];
-          htmlSrv += `
-            <div class="admin-service-row">
-              <div class="admin-service-info">${s.name} <br><span style="font-size:10px;color:grey;text-transform:capitalize;">${cat}</span></div>
-              <div class="admin-service-price">
-                <input type="number" id="price-${cat}-${key}" value="${s.price}">
-                <button class="btn-save-price" onclick="updateAdminPrice('${cat}','${key}')"><i class="fa-solid fa-check"></i></button>
-              </div>
-            </div>
-          `;
-        }
-      }
-      divSrv.innerHTML = htmlSrv;
+      const divSrv = document.getElementById('adminServicesList'); let htmlSrv = ''; 
+      for(let cat in globalServices) for(let key in globalServices[cat]) {
+        htmlSrv += `<div class="admin-service-row"><div class="admin-service-info">${globalServices[cat][key].name} <br><span style="font-size:10px;color:grey;">${cat}</span></div><div class="admin-service-price"><input type="number" id="price-${cat}-${key}" value="${globalServices[cat][key].price}"><button class="btn-save-price" onclick="updateAdminPrice('${cat}','${key}')"><i class="fa-solid fa-check"></i></button></div></div>`;
+      } divSrv.innerHTML = htmlSrv;
 
-      const allOrders = await fbGet('orders') || {};
-      const divOrd = document.getElementById('adminAllOrdersList');
-      
-      const ordersArray = Object.values(allOrders).reverse();
-      let htmlOrd = '';
-      
-      if(ordersArray.length === 0) { htmlOrd = '<p style="text-align:center;font-size:13px;color:grey;">No Global Orders Yet</p>'; }
-      else {
-        ordersArray.forEach(o => {
-          htmlOrd += `
-            <div class="list-item" style="border-left: 4px solid var(--danger);">
-              <div class="list-row"><span style="color:grey;">Email:</span> <strong style="color:var(--danger);">${o.userEmail}</strong></div>
-              <strong>${o.service}</strong>
-              <div class="list-row"><span style="color:grey;">ID:</span> <span>${o.orderId}</span></div>
-              ${o.paymentId !== 'N/A' ? `<div class="list-row"><span style="color:grey;">Payment ID:</span> <span style="font-size:11px;">${o.paymentId}</span></div>` : ''}
-              ${o.link !== 'N/A' ? `<div class="list-row"><span style="color:grey;">Link:</span> <span style="max-width:140px;overflow:hidden;text-overflow:ellipsis;">${o.link}</span></div>` : ''}
-              <div class="list-row"><span style="color:grey;">Charge:</span> <span style="font-weight:700;">₹${parseFloat(o.charge).toFixed(2)}</span></div>
-              
-              <div class="list-row" style="margin-top:10px; border-top:1px dashed #ccc; padding-top:10px; align-items:center;">
-                <span style="font-size:13px; font-weight:600; color:var(--danger);">Status:</span>
-                <select class="admin-select-status" onchange="changeOrderStatus('${o.orderId.replace('ORD-', '').replace('DEP-', '')}', this.value)">
-                  <option value="Pending" ${o.status==='Pending'?'selected':''}>Pending</option>
-                  <option value="Review" ${o.status==='Review'?'selected':''}>Review</option>
-                  <option value="Success" ${o.status==='Success'?'selected':''}>Success</option>
-                  <option value="Failed" ${o.status==='Failed'?'selected':''}>Failed</option>
-                </select>
-              </div>
-            </div>
-          `;
-        });
-      }
-      divOrd.innerHTML = htmlOrd;
-      
-      showLoader(false);
+      const allOrders = await fbGet('orders') || {}; const divOrd = document.getElementById('adminAllOrdersList');
+      const ordersArray = Object.values(allOrders).reverse(); let htmlOrd = '';
+      ordersArray.forEach(o => {
+        htmlOrd += `<div class="list-item" style="border-left: 4px solid var(--danger);"><div class="list-row"><strong>${o.userEmail}</strong></div><strong>${o.service}</strong><div class="list-row"><span style="color:grey;">Charge:</span> <span style="font-weight:700;">₹${parseFloat(o.charge).toFixed(2)}</span></div><select class="admin-select-status" style="margin-top:10px;width:100%;" onchange="changeOrderStatus('${o.orderId.replace('ORD-','').replace('DEP-','').replace('REF-','')}', this.value)"><option value="Pending" ${o.status==='Pending'?'selected':''}>Pending</option><option value="Review" ${o.status==='Review'?'selected':''}>Review</option><option value="Success" ${o.status==='Success'?'selected':''}>Success</option><option value="Failed" ${o.status==='Failed'?'selected':''}>Failed</option></select></div>`;
+      }); divOrd.innerHTML = htmlOrd; showLoader(false);
     }
-
+    
     async function updateAdminPrice(cat, key) {
       const newPrice = parseFloat(document.getElementById(`price-${cat}-${key}`).value);
-      if(isNaN(newPrice) || newPrice <= 0) return alert("Invalid Price");
-      showLoader(true);
-      await fbPatch(`services/${cat}/${key}`, { price: newPrice });
-      globalServices[cat][key].price = newPrice;
-      showLoader(false);
-      alert("Price Updated!");
-      if(document.getElementById('orderCategory').value === cat) renderServiceOptions();
+      if(isNaN(newPrice)) return; showLoader(true);
+      await fbPatch(`services/${cat}/${key}`, { price: newPrice }); globalServices[cat][key].price = newPrice;
+      showLoader(false); alert("Updated!"); renderServiceOptions();
     }
-
     async function changeOrderStatus(orderKey, newStatus) {
-      if(!confirm("Change status to " + newStatus + "?")) return fetchAdminData();
-      showLoader(true);
-      await fbPatch(`orders/${orderKey}`, { status: newStatus });
-      showLoader(false);
-      alert("Order Status updated!");
+      if(!confirm("Change status?")) return; showLoader(true);
+      await fbPatch(`orders/${orderKey}`, { status: newStatus }); showLoader(false); alert("Updated!");
     }
 
-    // Admin Users View with Total Spent Calculation
+    // ADMIN USER SEARCH
     async function fetchAdminAllUsersList() {
       showLoader(true);
-      const allUsers = await fbGet('users') || {};
-      const allOrders = await fbGet('orders') || {};
-      allUsersCache = allUsers;
-      allOrdersCache = allOrders;
-      renderUsersList(Object.values(allUsers));
-      showLoader(false);
+      const allUsers = await fbGet('users') || {}; allOrdersCache = await fbGet('orders') || {};
+      allUsersCache = allUsers; renderUsersList(Object.values(allUsers)); showLoader(false);
     }
-
     function renderUsersList(usersArray) {
       document.getElementById('adminTotalUsersCount').innerText = usersArray.length;
-      const divUsr = document.getElementById('adminUsersList');
-      divUsr.innerHTML = '';
-      
-      if(usersArray.length === 0) { divUsr.innerHTML = '<p style="text-align:center;font-size:13px;color:grey;">No Users Found</p>'; }
-      else {
-        usersArray.forEach(u => {
-          const safeUserId = u.email.replace(/[^a-zA-Z0-9]/g, '');
-          
-          // Calculate User Total Spent from orders
-          const userOrders = Object.values(allOrdersCache).filter(o => o.userId === safeUserId && !o.orderId.startsWith('DEP-') && o.status !== 'Failed');
-          const userTotalSpent = userOrders.reduce((sum, o) => sum + (parseFloat(o.charge) || 0), 0);
-
-          divUsr.innerHTML += `
-            <div class="list-item" style="border-left: 4px solid var(--primary); cursor: pointer;" onclick="viewSpecificUserOrders('${safeUserId}', '${u.email}')">
-              <div class="list-row"><strong>${u.email}</strong> <i class="fa-solid fa-chevron-right" style="color:grey; font-size:12px;"></i></div>
-              <div class="list-row"><span style="color:grey;">Wallet Balance:</span> <span style="font-weight:700; color:var(--success);">₹${parseFloat(u.balance || 0).toFixed(2)}</span></div>
-              <div class="list-row"><span style="color:grey;">Total Spent:</span> <span style="font-weight:700; color:var(--primary);">₹${userTotalSpent.toFixed(2)}</span></div>
-              <div class="list-row"><span style="color:grey;">Joined:</span> <span>${u.joinDate || "N/A"}</span></div>
-            </div>
-          `;
-        });
-      }
+      const divUsr = document.getElementById('adminUsersList'); divUsr.innerHTML = '';
+      usersArray.forEach(u => {
+        const safeUserId = u.email.replace(/[^a-zA-Z0-9]/g, '');
+        const userOrders = Object.values(allOrdersCache).filter(o => o.userId === safeUserId && !o.orderId.startsWith('DEP-') && !o.orderId.startsWith('REF-') && o.status !== 'Failed');
+        const spent = userOrders.reduce((sum, o) => sum + (parseFloat(o.charge) || 0), 0);
+        divUsr.innerHTML += `<div class="list-item" style="border-left: 4px solid var(--primary); cursor:pointer;" onclick="viewSpecificUserOrders('${safeUserId}', '${u.email}')"><div class="list-row"><strong>${u.email}</strong> <i class="fa-solid fa-chevron-right"></i></div><div class="list-row"><span style="color:grey;">Wallet:</span> <span style="font-weight:700; color:var(--success);">₹${parseFloat(u.balance||0).toFixed(2)}</span></div><div class="list-row"><span style="color:grey;">Spent:</span> <span style="font-weight:700; color:var(--primary);">₹${spent.toFixed(2)}</span></div></div>`;
+      });
     }
+    function filterAdminUsers() { const q = document.getElementById('userSearchInput').value.toLowerCase(); renderUsersList(Object.values(allUsersCache).filter(u => u.email.toLowerCase().includes(q))); }
 
-    function filterAdminUsers() {
-      const query = document.getElementById('userSearchInput').value.toLowerCase();
-      const usersArray = Object.values(allUsersCache);
-      const filtered = usersArray.filter(u => u.email.toLowerCase().includes(query));
-      renderUsersList(filtered);
-    }
-
+    // ADMIN ADD BALANCE (REFUND)
     async function viewSpecificUserOrders(userId, userEmail) {
-      showLoader(true);
-      document.getElementById('specificUserTitle').innerText = `Orders: ${userEmail}`;
+      showLoader(true); adminViewingUserId = userId; document.getElementById('specificUserTitle').innerText = `Orders: ${userEmail}`;
       switchNav('adminUserOrders');
-
-      const allOrders = await fbGet('orders') || {};
-      const div = document.getElementById('specificUserOrdersList');
-      div.innerHTML = '';
+      const allOrders = await fbGet('orders') || {}; const div = document.getElementById('specificUserOrdersList'); div.innerHTML = '';
       const userOrders = Object.values(allOrders).filter(o => o.userId === userId).reverse();
-
-      if(userOrders.length === 0) {
-        div.innerHTML = '<p style="text-align:center;font-size:13px;color:grey;">No orders found for this user.</p>';
-      } else {
-        userOrders.forEach(o => {
-          div.innerHTML += `
-            <div class="list-item">
-              <strong>${o.service}</strong>
-              <div class="list-row"><span style="color:grey;">ID:</span> <span>${o.orderId}</span></div>
-              ${o.paymentId !== 'N/A' ? `<div class="list-row"><span style="color:grey;">Payment ID:</span> <span style="font-size:11px;">${o.paymentId}</span></div>` : ''}
-              ${o.link !== 'N/A' ? `<div class="list-row"><span style="color:grey;">Link:</span> <span style="max-width:160px;overflow:hidden;text-overflow:ellipsis;">${o.link}</span></div>` : ''}
-              <div class="list-row"><span style="color:grey;">Charge:</span> <span style="color:var(--primary);font-weight:700;">₹${parseFloat(o.charge).toFixed(2)}</span></div>
-              <div class="list-row" style="margin-top:5px;"><span class="status-badge status-${o.status}">${o.status}</span> <span style="font-size:10px; color:grey;">${o.timestamp}</span></div>
-            </div>
-          `;
-        });
-      }
+      userOrders.forEach(o => { div.innerHTML += `<div class="list-item"><strong>${o.service}</strong><div class="list-row"><span style="color:grey;">ID:</span> <span>${o.orderId}</span></div><div class="list-row"><span style="color:grey;">Charge:</span> <span style="color:var(--primary);font-weight:700;">₹${parseFloat(o.charge).toFixed(2)}</span></div><div class="list-row"><span class="status-badge status-${o.status}">${o.status}</span></div></div>`; });
       showLoader(false);
+    }
+
+    async function adminAddRefund() {
+      const amt = parseFloat(document.getElementById('adminRefundAmount').value);
+      if(isNaN(amt) || amt <= 0) return alert("Enter valid amount");
+      showLoader(true);
+      const u = await fbGet(`users/${adminViewingUserId}`);
+      const newBal = (parseFloat(u.balance)||0) + amt;
+      await fbPatch(`users/${adminViewingUserId}`, { balance: newBal });
+      await fbPut(`orders/REF-${Date.now()}`, { orderId: "REF-" + Date.now(), paymentId: "N/A", userEmail: u.email, userId: adminViewingUserId, service: "Admin Refund / Bonus", link: "N/A", qty: 1, charge: amt, status: "Success", timestamp: new Date().toLocaleString() });
+      showLoader(false); alert(`₹${amt} added successfully to ${u.email}'s wallet!`);
+      document.getElementById('adminRefundAmount').value = ''; viewSpecificUserOrders(adminViewingUserId, u.email);
     }
   </script>
 </body>
 </html>
+
 
 
 

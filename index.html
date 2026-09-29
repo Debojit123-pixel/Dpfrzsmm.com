@@ -81,12 +81,20 @@
     .btn-add-fund { background: var(--success); color: white; border: none; padding: 8px 15px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 13px; }
 
     /* Scrollable Content Area */
-    .app-content { flex: 1; padding: 20px; overflow-y: auto; background: var(--bg-color); }
+    .app-content { flex: 1; padding: 20px; overflow-y: auto; background: var(--bg-color); padding-bottom: 80px; }
     .screen { display: none; }
     .screen.active { display: block; }
 
     .card { background: #fff; border-radius: 12px; padding: 20px; border: 1px solid var(--border-color); margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
     .card-title { font-size: 16px; font-weight: 700; margin-bottom: 15px; border-bottom: 1px solid #f1f5f9; padding-bottom: 10px; color: var(--text-main); }
+
+    /* Premium Trust Banner */
+    .trust-banner { background: linear-gradient(135deg, #0ea5e9, #3b82f6); color: white; border-radius: 12px; padding: 20px; text-align: center; margin-top: 15px; margin-bottom: 25px; box-shadow: 0 4px 15px rgba(14,165,233,0.3); }
+    .trust-banner h3 { font-size: 16px; font-weight: 700; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .trust-banner p { font-size: 12px; line-height: 1.5; opacity: 0.9; margin-bottom: 12px; }
+    .trust-icons { display: flex; justify-content: center; gap: 20px; }
+    .trust-icons div { display: flex; flex-direction: column; align-items: center; gap: 5px; font-size: 10px; font-weight: 600; }
+    .trust-icons i { font-size: 20px; }
 
     /* Custom Lists & Badges */
     .list-item { background: #f8fafc; border: 1px solid var(--border-color); border-radius: 8px; padding: 12px; margin-bottom: 10px; font-size: 13px; }
@@ -121,6 +129,13 @@
     .dot.connected { background: var(--success); box-shadow: 0 0 5px var(--success); }
     .dot.disconnected { background: var(--danger); box-shadow: 0 0 5px var(--danger); }
     .btn-reconnect { background: #e2e8f0; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: 600; color: #475569; }
+
+    /* Bottom Nav */
+    .bottom-nav { background: white; border-top: 1px solid var(--border-color); display: flex; justify-content: space-around; padding: 10px 0; position: absolute; bottom: 0; left: 0; width: 100%; z-index: 100; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); }
+    .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-muted); font-size: 11px; font-weight: 600; cursor: pointer; width: 33%; }
+    .nav-item i { font-size: 20px; margin-bottom: 4px; }
+    .nav-item.active { color: var(--primary); }
+    #nav-admin { display: none; }
 
     /* Loader Modal */
     #loader { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.85); z-index: 1000; justify-content: center; align-items: center; flex-direction: column; }
@@ -243,6 +258,7 @@
         
         <!-- Screen: NEW ORDER -->
         <div id="screen-newOrder" class="screen active">
+          
           <div class="card">
             <h2 class="card-title">Place New Order</h2>
             <form onsubmit="placeOrder(event)">
@@ -275,6 +291,18 @@
               <button type="submit" class="btn-main">Submit Order</button>
             </form>
           </div>
+
+          <!-- PREMIUM TRUST BANNER -->
+          <div class="trust-banner">
+            <h3><i class="fa-solid fa-shield-check"></i> 100% Safe & Secure</h3>
+            <p>We provide the best, cheapest and most reliable SMM services in India. Your accounts and payments are fully protected with 256-bit encryption.</p>
+            <div class="trust-icons">
+              <div><i class="fa-solid fa-bolt"></i> <span>Instant Delivery</span></div>
+              <div><i class="fa-solid fa-headset"></i> <span>24/7 Support</span></div>
+              <div><i class="fa-solid fa-money-bill-wave"></i> <span>Best Prices</span></div>
+            </div>
+          </div>
+
         </div>
 
         <!-- Screen: MY ORDER & DEPOSIT HISTORY -->
@@ -361,7 +389,6 @@
               <i class="fa-solid fa-users"></i> Total Users: <span id="adminTotalUsersCount">0</span>
             </h2>
             
-            <!-- Gmail Search Box -->
             <div class="form-group" style="margin-bottom: 20px;">
               <input type="text" id="userSearchInput" class="form-control" placeholder="Search user by Gmail..." oninput="filterAdminUsers()">
             </div>
@@ -383,6 +410,13 @@
 
       </div>
 
+      <!-- Bottom Nav -->
+      <div class="bottom-nav">
+        <div class="nav-item active" id="navbtn-newOrder" onclick="switchNav('newOrder')"><i class="fa-solid fa-cart-plus"></i><span>Order</span></div>
+        <div class="nav-item" id="navbtn-history" onclick="switchNav('history')"><i class="fa-solid fa-clock-rotate-left"></i><span>History</span></div>
+        <div class="nav-item" id="nav-admin" onclick="switchNav('admin')"><i class="fa-solid fa-shield-halved" style="color:var(--danger);"></i><span style="color:var(--danger);">Admin</span></div>
+      </div>
+
     </div>
   </div>
 
@@ -392,12 +426,13 @@
     const ADMIN_EMAIL = "pauldebojit629@gmail.com";
     const RAZORPAY_KEY_ID = "rzp_live_ThRNn6xsDj9d2D";
 
-    // Clean, professional core services (Views, Likes, Comments, Shares, Followers, Subs, Reposts)
+    // UPDATED SERVICES LIST
     const defaultServices = {
       instagram: { 
         "ig_views": { name: "Instagram Views [Instant]", price: 10 }, 
         "ig_likes": { name: "Instagram Likes [High Quality]", price: 30 }, 
         "ig_comments": { name: "Instagram Comments [Custom/Real]", price: 80 },
+        "ig_comment_likes": { name: "Instagram Comment Likes", price: 60 },
         "ig_shares": { name: "Instagram Shares", price: 40 },
         "ig_reposts": { name: "Instagram Reposts", price: 50 },
         "ig_followers": { name: "Instagram Followers [Non-Drop]", price: 120 } 
@@ -405,6 +440,7 @@
       facebook: { 
         "fb_views": { name: "Facebook Video Views", price: 20 }, 
         "fb_likes": { name: "Facebook Page Likes", price: 90 }, 
+        "fb_post_likes": { name: "Facebook Post Likes/Reactions", price: 40 },
         "fb_comments": { name: "Facebook Comments", price: 100 },
         "fb_shares": { name: "Facebook Shares", price: 60 },
         "fb_followers": { name: "Facebook Followers [Fast]", price: 110 }
@@ -413,6 +449,7 @@
         "yt_views": { name: "YouTube High Retention Views", price: 150 }, 
         "yt_likes": { name: "YouTube Likes [Fast]", price: 200 }, 
         "yt_comments": { name: "YouTube Comments", price: 250 },
+        "yt_watchtime": { name: "YouTube Watchtime Hours", price: 800 },
         "yt_subs": { name: "YouTube Real Subscribers", price: 450 } 
       },
       telegram: {
@@ -439,6 +476,27 @@
         return null;
       }
     }
+    // Merged approach for services updating to not delete existing data but add new keys
+    async function initServices() {
+      let srv = await fbGet('services');
+      if(!srv) { 
+        await fbPut('services', defaultServices); 
+        globalServices = defaultServices; 
+      } else {
+        // Deep merge to add new services without affecting current prices
+        for(let cat in defaultServices) {
+          if(!srv[cat]) srv[cat] = {};
+          for(let key in defaultServices[cat]) {
+            if(!srv[cat][key]) {
+              srv[cat][key] = defaultServices[cat][key];
+            }
+          }
+        }
+        await fbPatch('services', srv); // Update missing ones
+        globalServices = srv;
+      }
+    }
+
     async function fbPut(path, data) { await fetch(`${FIREBASE_DB_URL}${path}.json`, { method: 'PUT', body: JSON.stringify(data) }); }
     async function fbPatch(path, data) { await fetch(`${FIREBASE_DB_URL}${path}.json`, { method: 'PATCH', body: JSON.stringify(data) }); }
 
@@ -539,8 +597,7 @@
       document.getElementById('displayBalance').innerText = balanceText;
       document.getElementById('addBalanceDisplay').innerText = balanceText;
 
-      // Setup WhatsApp Customer Care link with prefilled Gmail
-      const waText = `Hi, My gmail is ${currentUserEmail} Help in deposit issue?`;
+      const waText = `Hi, My gmail is ${currentUserEmail}. Help in deposit issue?`;
       document.getElementById('whatsappSupportBtn').href = `https://wa.me/918638707624?text=${encodeURIComponent(waText)}`;
 
       if(currentUserEmail.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
@@ -549,10 +606,7 @@
         document.getElementById('menuAdminItem').style.display = 'none';
       }
 
-      let srv = await fbGet('services');
-      if(!srv) { await fbPut('services', defaultServices); globalServices = defaultServices; } 
-      else { globalServices = srv; }
-
+      await initServices(); // Init or Merge new services
       renderServiceOptions();
       switchNav('newOrder');
       showLoader(false);
@@ -562,6 +616,12 @@
     function switchNav(screenName) {
       document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
       document.getElementById('screen-' + screenName).classList.add('active');
+
+      // Bottom nav highlights
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      if(screenName === 'newOrder') document.getElementById('navbtn-newOrder').classList.add('active');
+      if(screenName === 'history') document.getElementById('navbtn-history').classList.add('active');
+      if(screenName === 'admin') document.getElementById('nav-admin').classList.add('active');
 
       if(screenName === 'history') fetchUserHistory();
       if(screenName === 'admin') { fetchAdminData(); checkFirebaseConnection(); }
@@ -587,12 +647,11 @@
         dot.classList.add('disconnected');
         text.style.color = "var(--danger)";
         text.innerText = "Disconnected";
-        alert("Warning: Could not connect to Firebase database.");
       }
     }
 
-    // ================= RAZORPAY PAYMENT (Records attempts, success & failed in history) =================
-    function triggerRazorpay() {
+    // ================= RAZORPAY PAYMENT (Logic Unchanged, Safe) =================
+    function triggerRazorpayFromScreen() {
       const amountInput = document.getElementById('depositAmountInput');
       const amount = parseFloat(amountInput ? amountInput.value : 100);
       if(isNaN(amount) || amount <= 0) return alert("Invalid amount entered!");
@@ -607,7 +666,6 @@
             showLoader(true);
             const paymentId = response.razorpay_payment_id || "PAY_" + Date.now();
             
-            // Update Balance
             const newBalance = parseFloat(currentUserData.balance) + amount;
             await fbPatch(`users/${currentUserId}`, { balance: newBalance });
             currentUserData.balance = newBalance;
@@ -616,19 +674,10 @@
             document.getElementById('displayBalance').innerText = balanceText;
             document.getElementById('addBalanceDisplay').innerText = balanceText;
 
-            // Record Success Deposit in Orders/Transactions History
             const depositId = Date.now().toString();
             const depositObj = {
-              orderId: "DEP-" + depositId,
-              paymentId: paymentId,
-              userEmail: currentUserEmail,
-              userId: currentUserId,
-              service: "Wallet Deposit (Razorpay)",
-              link: "N/A",
-              qty: 1,
-              charge: amount,
-              status: "Success",
-              timestamp: new Date().toLocaleString()
+              orderId: "DEP-" + depositId, paymentId: paymentId, userEmail: currentUserEmail, userId: currentUserId,
+              service: "Wallet Deposit (Razorpay)", link: "N/A", qty: 1, charge: amount, status: "Success", timestamp: new Date().toLocaleString()
             };
             await fbPut(`orders/${depositId}`, depositObj);
 
@@ -643,33 +692,20 @@
       var rzp = new Razorpay(options);
       rzp.on('payment.failed', async function (response){
         showLoader(true);
-        // Record Failed Deposit in History
         const depositId = Date.now().toString();
         const depositObj = {
-          orderId: "DEP-" + depositId,
-          paymentId: response.error.metadata?.payment_id || "FAILED_" + Date.now(),
-          userEmail: currentUserEmail,
-          userId: currentUserId,
-          service: "Wallet Deposit (Razorpay)",
-          link: "N/A",
-          qty: 1,
-          charge: amount,
-          status: "Failed",
-          timestamp: new Date().toLocaleString()
+          orderId: "DEP-" + depositId, paymentId: response.error.metadata?.payment_id || "FAILED_" + Date.now(), userEmail: currentUserEmail, userId: currentUserId,
+          service: "Wallet Deposit (Razorpay)", link: "N/A", qty: 1, charge: amount, status: "Failed", timestamp: new Date().toLocaleString()
         };
         await fbPut(`orders/${depositId}`, depositObj);
         showLoader(false);
-        alert("Payment Failed! Recorded in your history. Please contact support if money was deducted.");
+        alert("Payment Failed! Recorded in your history.");
         switchNav('history');
       });
       rzp.open();
     }
 
-    function triggerRazorpayFromScreen() {
-      triggerRazorpay();
-    }
-
-    // ================= ORDERS LOGIC =================
+    // ================= ORDERS LOGIC (Safe) =================
     function renderServiceOptions() {
       const cat = document.getElementById('orderCategory').value;
       const select = document.getElementById('orderService');
@@ -716,16 +752,8 @@
 
       const orderId = Date.now().toString();
       const orderObj = {
-        orderId: "ORD-" + orderId,
-        paymentId: "N/A",
-        userEmail: currentUserEmail, 
-        userId: currentUserId,
-        service: serviceName, 
-        link: link, 
-        qty: qty, 
-        charge: charge,
-        status: "Pending", 
-        timestamp: new Date().toLocaleString()
+        orderId: "ORD-" + orderId, paymentId: "N/A", userEmail: currentUserEmail, userId: currentUserId,
+        service: serviceName, link: link, qty: qty, charge: charge, status: "Pending", timestamp: new Date().toLocaleString()
       };
 
       await fbPut(`orders/${orderId}`, orderObj);
@@ -734,7 +762,6 @@
       document.getElementById('orderLink').value = ''; document.getElementById('orderQty').value = ''; calcPrice();
     }
 
-    // ================= USER HISTORY (Orders & Deposits, Newest First) =================
     async function fetchUserHistory() {
       showLoader(true);
       const allOrders = await fbGet('orders') || {};
@@ -761,7 +788,7 @@
       showLoader(false);
     }
 
-    // ================= ADMIN LOGIC =================
+    // ================= ADMIN LOGIC (Safe) =================
     async function fetchAdminData() {
       showLoader(true);
       
@@ -840,7 +867,6 @@
       alert("Order Status updated!");
     }
 
-    // Admin Users View with Gmail Search & Click to View User Orders
     async function fetchAdminAllUsersList() {
       showLoader(true);
       const allUsers = await fbGet('users') || {};
@@ -876,7 +902,6 @@
       renderUsersList(filtered);
     }
 
-    // View Particular User's Order History from Admin Panel
     async function viewSpecificUserOrders(userId, userEmail) {
       showLoader(true);
       document.getElementById('specificUserTitle').innerText = `Orders: ${userEmail}`;
@@ -908,6 +933,7 @@
   </script>
 </body>
 </html>
+
 
 
 

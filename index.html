@@ -3,6 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  
+  <!-- Google Search Console Verification Tag -->
+  <meta name="google-site-verification" content="EHTrJJ55MvODc3DQPrWk-x9HsTLxcstZ0sOAg_M9IC0" />
+
   <title>DPFRZ SMM Panel</title>
 
   <!-- Google Fonts & Icons -->
@@ -476,14 +480,13 @@
         return null;
       }
     }
-    // Merged approach for services updating to not delete existing data but add new keys
+    
     async function initServices() {
       let srv = await fbGet('services');
       if(!srv) { 
         await fbPut('services', defaultServices); 
         globalServices = defaultServices; 
       } else {
-        // Deep merge to add new services without affecting current prices
         for(let cat in defaultServices) {
           if(!srv[cat]) srv[cat] = {};
           for(let key in defaultServices[cat]) {
@@ -492,7 +495,7 @@
             }
           }
         }
-        await fbPatch('services', srv); // Update missing ones
+        await fbPatch('services', srv);
         globalServices = srv;
       }
     }
@@ -606,7 +609,7 @@
         document.getElementById('menuAdminItem').style.display = 'none';
       }
 
-      await initServices(); // Init or Merge new services
+      await initServices();
       renderServiceOptions();
       switchNav('newOrder');
       showLoader(false);
@@ -617,7 +620,6 @@
       document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
       document.getElementById('screen-' + screenName).classList.add('active');
 
-      // Bottom nav highlights
       document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
       if(screenName === 'newOrder') document.getElementById('navbtn-newOrder').classList.add('active');
       if(screenName === 'history') document.getElementById('navbtn-history').classList.add('active');
@@ -650,7 +652,7 @@
       }
     }
 
-    // ================= RAZORPAY PAYMENT (Logic Unchanged, Safe) =================
+    // ================= RAZORPAY PAYMENT =================
     function triggerRazorpayFromScreen() {
       const amountInput = document.getElementById('depositAmountInput');
       const amount = parseFloat(amountInput ? amountInput.value : 100);
@@ -705,7 +707,7 @@
       rzp.open();
     }
 
-    // ================= ORDERS LOGIC (Safe) =================
+    // ================= ORDERS LOGIC =================
     function renderServiceOptions() {
       const cat = document.getElementById('orderCategory').value;
       const select = document.getElementById('orderService');
@@ -788,7 +790,7 @@
       showLoader(false);
     }
 
-    // ================= ADMIN LOGIC (Safe) =================
+    // ================= ADMIN LOGIC =================
     async function fetchAdminData() {
       showLoader(true);
       
@@ -933,6 +935,7 @@
   </script>
 </body>
 </html>
+
 
 
 

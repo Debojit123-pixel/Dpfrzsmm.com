@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   
+  <!-- Google Site Verification -->
   <meta name="google-site-verification" content="EHTrJJ55MvODc3DQPrWk-x9HsTLxcstZ0sOAg_M9IC0" />
   <title>DPFRZ SMM Panel</title>
 
@@ -52,13 +53,17 @@
     /* MAIN APP HEADER */
     #mainApp { display: none; flex-direction: column; height: 100vh; position: relative; }
     .header { background: var(--primary); color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; z-index: 10; flex-shrink: 0; }
-    .header-left, .header-right { display: flex; align-items: center; gap: 12px; }
+    .header-left, .header-right { display: flex; align-items: center; gap: 10px; }
     .header-title { font-weight: 700; font-size: 18px; }
     .user-avatar { width: 34px; height: 34px; border-radius: 50%; background: white; display: flex; align-items: center; justify-content: center; overflow: hidden; font-weight: 700; color: var(--primary); border: 2px solid rgba(255,255,255,0.8); }
     .user-avatar img { width: 100%; height: 100%; object-fit: cover; }
-    .menu-icon { font-size: 20px; cursor: pointer; color: white; }
+    .menu-icon { font-size: 20px; cursor: pointer; color: white; margin-left: 5px; }
 
-    .btn-install { background: rgba(255, 255, 255, 0.2); border: 1px solid rgba(255, 255, 255, 0.4); color: white; padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; }
+    /* Custom Header Buttons (Refresh & Install) */
+    .btn-install, .btn-refresh { background: rgba(255, 255, 255, 0.2); border: 1px solid rgba(255, 255, 255, 0.4); color: white; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: background 0.2s; }
+    .btn-install { padding: 5px 10px; gap: 5px; }
+    .btn-refresh { padding: 6px; width: 30px; height: 30px; border-radius: 50%; }
+    .btn-install:hover, .btn-refresh:hover { background: rgba(255, 255, 255, 0.35); }
 
     /* DRAWER MENU */
     .side-drawer { position: fixed; top: 0; right: -280px; width: 280px; height: 100%; background: white; z-index: 1000; box-shadow: -4px 0 15px rgba(0,0,0,0.1); transition: right 0.3s ease; display: flex; flex-direction: column; }
@@ -84,10 +89,7 @@
     .card-title { font-size: 16px; font-weight: 700; margin-bottom: 15px; border-bottom: 1px solid #f1f5f9; padding-bottom: 10px; color: var(--text-main); }
 
     /* SLIDING BANNER */
-    .sliding-banner {
-      width: 100%; overflow: hidden; background: linear-gradient(90deg, #10b981, #0ea5e9);
-      color: white; border-radius: 8px; margin-bottom: 20px; padding: 10px 0; font-size: 13px; font-weight: 600; position: relative;
-    }
+    .sliding-banner { width: 100%; overflow: hidden; background: linear-gradient(90deg, #10b981, #0ea5e9); color: white; border-radius: 8px; margin-bottom: 20px; padding: 10px 0; font-size: 13px; font-weight: 600; position: relative; }
     .sliding-content { display: flex; width: 300%; animation: slideAnim 10s infinite; }
     .slide-text { width: 33.333%; text-align: center; flex-shrink: 0; }
     @keyframes slideAnim {
@@ -178,7 +180,11 @@
           <div class="header-title"><i class="fa-solid fa-bolt"></i> DPFRZ SMM</div>
         </div>
         <div class="header-right">
+          <!-- Refresh Button -->
+          <button class="btn-refresh" onclick="window.location.reload()"><i class="fa-solid fa-rotate-right"></i></button>
+          <!-- Install App Button -->
           <button class="btn-install" id="btnInstallApp" onclick="installPWA()"><i class="fa-solid fa-cloud-arrow-down"></i> App</button>
+          
           <i class="fa-solid fa-bars menu-icon" onclick="toggleDrawer()"></i>
         </div>
       </div>
@@ -195,10 +201,12 @@
           <a class="drawer-item" onclick="toggleDrawer(); switchNav('history')"><i class="fa-solid fa-clock-rotate-left"></i> Order & Deposit History</a>
           <a class="drawer-item" onclick="toggleDrawer(); switchNav('addBalance')"><i class="fa-solid fa-wallet" style="color:var(--success);"></i> Add Balance</a>
           
-          <!-- NEW: Referral Option -->
+          <!-- Referral Option -->
           <a class="drawer-item" onclick="toggleDrawer(); switchNav('referral')"><i class="fa-solid fa-gift" style="color:var(--warning);"></i> Refer & Earn ₹10</a>
 
-          <a class="drawer-item" href="https://wa.me/918638707624?text=Hi%20please%20help%20me%20%3F" target="_blank" style="color:var(--whatsapp);"><i class="fa-brands fa-whatsapp" style="color:var(--whatsapp);"></i> WhatsApp Support</a>
+          <!-- Dynamic WhatsApp Link will be set via JS -->
+          <a class="drawer-item" id="menuWhatsappBtn" href="#" target="_blank" style="color:var(--whatsapp);"><i class="fa-brands fa-whatsapp" style="color:var(--whatsapp);"></i> WhatsApp Support</a>
+          
           <a class="drawer-item" onclick="toggleDrawer(); installPWA();"><i class="fa-solid fa-download" style="color:var(--primary);"></i> Install App</a>
           
           <a class="drawer-item" id="menuAdminItem" style="display:none; color:var(--danger);" onclick="toggleDrawer(); switchNav('admin')"><i class="fa-solid fa-shield-halved" style="color:var(--danger);"></i> Admin Panel</a>
@@ -224,7 +232,7 @@
         <!-- Screen: NEW ORDER -->
         <div id="screen-newOrder" class="screen active">
           
-          <!-- NEW: Sliding Banner -->
+          <!-- Sliding Banner -->
           <div class="sliding-banner">
             <div class="sliding-content">
               <div class="slide-text">🎉 Refer Friends & Earn ₹10 Bonus!</div>
@@ -267,7 +275,7 @@
           </div>
         </div>
 
-        <!-- Screen: REFERRAL SYSTEM (NEW) -->
+        <!-- Screen: REFERRAL SYSTEM -->
         <div id="screen-referral" class="screen">
           <button class="btn-back" onclick="switchNav('newOrder')"><i class="fa-solid fa-arrow-left"></i> Back to Home</button>
           
@@ -391,7 +399,7 @@
     let allUsersCache = {};
     let allOrdersCache = {};
     let deferredPrompt = null;
-    let adminViewingUserId = null; // For Refund
+    let adminViewingUserId = null; 
 
     function showLoader(show) { document.getElementById('loader').style.display = show ? 'flex' : 'none'; }
     
@@ -409,13 +417,11 @@
       } else { alert("To install App:\n1. Tap 3 dots (⋮) at top right.\n2. Tap 'Install app' or 'Add to Home screen'."); }
     }
 
-    // Generate unique ref code
     function generateRefCode(email) { return email.split('@')[0].substring(0,4).toUpperCase() + Math.floor(1000 + Math.random() * 9000); }
 
     // ================= DEVICE RESTRICTION LOGIC =================
     function checkDeviceRestriction(incomingEmail) {
       const savedDeviceOwner = localStorage.getItem('dpfrz_device_owner');
-      // If a different account tries to login on same device (Exclude Admin from restriction)
       if(savedDeviceOwner && savedDeviceOwner !== incomingEmail && incomingEmail.toLowerCase() !== ADMIN_EMAIL.toLowerCase() && savedDeviceOwner.toLowerCase() !== ADMIN_EMAIL.toLowerCase()) {
         alert("For the referral system, multiple account login from the same device is temporarily disabled. It will be opened later.");
         return false;
@@ -441,7 +447,7 @@
     async function handleGooglePicker(response) {
       try {
         const payload = JSON.parse(atob(response.credential.split('.')[1]));
-        if(!checkDeviceRestriction(payload.email)) return; // Restrict Multiple Accounts
+        if(!checkDeviceRestriction(payload.email)) return; 
 
         tempGoogleData = { email: payload.email, picture: payload.picture };
         document.getElementById('authScreenPicker').style.display = 'none';
@@ -468,10 +474,8 @@
         await fbPut(`users/${safeId}`, user);
       } else {
         if(user.password !== pass) { showLoader(false); return alert("Incorrect Password!"); }
-        // Ensure old users get a referral code
         if(!user.referralCode) {
-          user.referralCode = generateRefCode(user.email);
-          user.hasUsedReferral = false;
+          user.referralCode = generateRefCode(user.email); user.hasUsedReferral = false;
           await fbPatch(`users/${safeId}`, { referralCode: user.referralCode, hasUsedReferral: false });
         }
         if(tempGoogleData.picture && user.picture !== tempGoogleData.picture) {
@@ -483,7 +487,7 @@
       
       localStorage.setItem('dpfrz_userId', safeId);
       localStorage.setItem('dpfrz_email', tempGoogleData.email);
-      localStorage.setItem('dpfrz_device_owner', tempGoogleData.email); // Device Lock
+      localStorage.setItem('dpfrz_device_owner', tempGoogleData.email); 
       if(user.picture) localStorage.setItem('dpfrz_pic', user.picture);
 
       initApp(user.picture);
@@ -491,7 +495,6 @@
 
     function logout() {
       localStorage.removeItem('dpfrz_userId'); localStorage.removeItem('dpfrz_email'); localStorage.removeItem('dpfrz_pic');
-      // DO NOT REMOVE dpfrz_device_owner to enforce device restriction
       currentUserId = null; currentUserEmail = null; currentUserData = null; tempGoogleData = null;
       document.getElementById('mainApp').style.display = 'none';
       document.getElementById('authScreenPassword').style.display = 'none';
@@ -517,7 +520,11 @@
         document.getElementById('alreadyReferredSection').style.display = 'block';
       }
 
-      document.getElementById('whatsappSupportBtn').href = `https://wa.me/918638707624?text=Hi%2C%20My%20gmail%20is%20${currentUserEmail}%20Help%20in%20deposit%20issue%3F`;
+      // WhatsApp Dynamic links
+      const waLink = `https://wa.me/918638707624?text=${encodeURIComponent("Hi, My gmail is " + currentUserEmail + " Help in deposit issue?")}`;
+      document.getElementById('whatsappSupportBtn').href = waLink;
+      document.getElementById('menuWhatsappBtn').href = waLink;
+
       document.getElementById('menuAdminItem').style.display = (currentUserEmail.toLowerCase() === ADMIN_EMAIL.toLowerCase()) ? 'flex' : 'none';
 
       await updateUserTotalSpent();
@@ -547,7 +554,7 @@
       if(screenName === 'adminUsers') fetchAdminAllUsersList();
     }
 
-    // ================= REFERRAL APPLY LOGIC =================
+    // ================= REFERRAL LOGIC =================
     async function applyReferralCode() {
       const code = document.getElementById('refCodeInput').value.trim().toUpperCase();
       if(!code) return alert("Please enter a referral code.");
@@ -732,6 +739,7 @@
   </script>
 </body>
 </html>
+
 
 
 

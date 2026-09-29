@@ -26,6 +26,7 @@
       --border-color: #e2e8f0;
       --danger: #ef4444;
       --success: #10b981;
+      --whatsapp: #25D366;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
@@ -84,10 +85,10 @@
     .screen { display: none; }
     .screen.active { display: block; }
 
-    .card { background: #fff; border-radius: 12px; padding: 20px; border: 1px solid var(--border-color); margin-bottom: 20px; }
-    .card-title { font-size: 16px; font-weight: 700; margin-bottom: 15px; border-bottom: 1px solid #f1f5f9; padding-bottom: 10px; }
+    .card { background: #fff; border-radius: 12px; padding: 20px; border: 1px solid var(--border-color); margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
+    .card-title { font-size: 16px; font-weight: 700; margin-bottom: 15px; border-bottom: 1px solid #f1f5f9; padding-bottom: 10px; color: var(--text-main); }
 
-    /* Custom Lists */
+    /* Custom Lists & Badges */
     .list-item { background: #f8fafc; border: 1px solid var(--border-color); border-radius: 8px; padding: 12px; margin-bottom: 10px; font-size: 13px; }
     .list-item strong { display: block; font-size: 14px; margin-bottom: 6px; color: var(--text-main); }
     .list-row { display: flex; justify-content: space-between; margin-bottom: 6px; }
@@ -109,6 +110,9 @@
 
     .btn-admin-action { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: 600; font-size: 14px; cursor: pointer; }
     .btn-back { background: transparent; border: 1px solid var(--primary); color: var(--primary); padding: 8px 15px; border-radius: 6px; font-weight: 600; cursor: pointer; margin-bottom: 15px; display: inline-flex; align-items: center; gap: 6px; font-size: 13px; }
+    
+    /* WhatsApp Support Button */
+    .btn-whatsapp { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 14px; background: var(--whatsapp); color: white; border: none; border-radius: 8px; font-weight: 700; font-size: 15px; cursor: pointer; text-decoration: none; margin-top: 10px; }
     
     /* Firebase Status Box */
     .db-status-box { display: flex; justify-content: space-between; align-items: center; background: #f8fafc; border: 1px solid var(--border-color); padding: 12px; border-radius: 8px; margin-bottom: 20px; font-size: 13px; font-weight: 600; }
@@ -210,9 +214,8 @@
             <i class="fa-solid fa-cart-plus"></i> Place New Order
           </a>
           <a class="drawer-item" onclick="toggleDrawer(); switchNav('history')">
-            <i class="fa-solid fa-clock-rotate-left"></i> Order History
+            <i class="fa-solid fa-clock-rotate-left"></i> Order & Deposit History
           </a>
-          <!-- Add Balance Page Link in Menu -->
           <a class="drawer-item" onclick="toggleDrawer(); switchNav('addBalance')">
             <i class="fa-solid fa-wallet" style="color:var(--success);"></i> Add Balance
           </a>
@@ -232,7 +235,7 @@
           <span style="font-size:12px; color:var(--text-muted); font-weight:600;">Wallet Balance</span>
           <h3 id="displayBalance">₹0.00</h3>
         </div>
-        <button class="btn-add-fund" onclick="triggerRazorpay()">+ Add Funds</button>
+        <button class="btn-add-fund" onclick="switchNav('addBalance')">+ Add Funds</button>
       </div>
 
       <!-- App Content -->
@@ -249,6 +252,7 @@
                   <option value="instagram">Instagram Services</option>
                   <option value="facebook">Facebook Services</option>
                   <option value="youtube">YouTube Services</option>
+                  <option value="telegram">Telegram Services</option>
                 </select>
               </div>
               <div class="form-group">
@@ -273,13 +277,13 @@
           </div>
         </div>
 
-        <!-- Screen: MY ORDER HISTORY (With Back Button) -->
+        <!-- Screen: MY ORDER & DEPOSIT HISTORY -->
         <div id="screen-history" class="screen">
           <button class="btn-back" onclick="switchNav('newOrder')">
             <i class="fa-solid fa-arrow-left"></i> Back to Home
           </button>
           <div class="card">
-            <h2 class="card-title">My Order History</h2>
+            <h2 class="card-title">Order & Deposit History</h2>
             <div id="userOrdersList"></div>
           </div>
         </div>
@@ -289,19 +293,30 @@
           <button class="btn-back" onclick="switchNav('newOrder')">
             <i class="fa-solid fa-arrow-left"></i> Back to Home
           </button>
-          <div class="card" style="text-align: center; padding: 30px 20px;">
-            <i class="fa-solid fa-wallet" style="font-size: 50px; color: var(--success); margin-bottom: 15px;"></i>
-            <h2 style="font-size: 22px; font-weight: 700; margin-bottom: 10px;">Add Funds to Wallet</h2>
-            <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 25px; line-height: 1.5;">
-              Instantly add balance to your DPFRZ SMM account using secure Razorpay gateway. Funds will be credited immediately upon successful payment.
+          <div class="card" style="text-align: center; padding: 25px 15px;">
+            <i class="fa-solid fa-shield-halved" style="font-size: 45px; color: var(--success); margin-bottom: 12px;"></i>
+            <h2 style="font-size: 20px; font-weight: 700; margin-bottom: 8px;">Secure Deposit Portal</h2>
+            <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 20px; line-height: 1.5;">
+              Your funds are 100% safe & secured with encrypted Razorpay gateway. Balance is credited instantly.
             </p>
             <div style="background: #f8fafc; border: 1px solid var(--border-color); padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-              <span style="font-size: 13px; color: var(--text-muted); display: block;">Current Balance</span>
-              <h3 style="font-size: 24px; font-weight: 800; color: var(--success);" id="addBalanceDisplay">₹0.00</h3>
+              <span style="font-size: 12px; color: var(--text-muted); display: block;">Current Balance</span>
+              <h3 style="font-size: 22px; font-weight: 800; color: var(--success);" id="addBalanceDisplay">₹0.00</h3>
             </div>
-            <button class="btn-main" onclick="triggerRazorpay()" style="background: var(--success);">
-              <i class="fa-solid fa-plus-circle"></i> Add Funds Now
+            
+            <div class="form-group" style="text-align: left;">
+              <label>Enter Amount (₹)</label>
+              <input type="number" id="depositAmountInput" class="form-control" placeholder="e.g. 100" min="10" value="100">
+            </div>
+
+            <button class="btn-main" onclick="triggerRazorpayFromScreen()" style="background: var(--success); margin-bottom: 10px;">
+              <i class="fa-solid fa-lock"></i> Pay Securely via Razorpay
             </button>
+
+            <!-- Customer Care WhatsApp Button -->
+            <a id="whatsappSupportBtn" href="#" target="_blank" class="btn-whatsapp">
+              <i class="fa-brands fa-whatsapp" style="font-size: 18px;"></i> Customer Care Support
+            </a>
           </div>
         </div>
 
@@ -321,8 +336,8 @@
 
           <div class="card" style="border: 2px solid var(--primary);">
             <h2 class="card-title" style="color:var(--primary); border-bottom:none; margin-bottom:0;"><i class="fa-solid fa-users"></i> User Database</h2>
-            <p style="font-size:12px; color:grey; margin-bottom:15px;">Check total registered users and their balances.</p>
-            <button class="btn-admin-action" onclick="switchNav('adminUsers')">View All Users</button>
+            <p style="font-size:12px; color:grey; margin-bottom:15px;">Search users, check total balances & order logs.</p>
+            <button class="btn-admin-action" onclick="switchNav('adminUsers')">View All Users & Search</button>
           </div>
 
           <div class="card">
@@ -336,7 +351,7 @@
           </div>
         </div>
 
-        <!-- Screen: ADMIN ALL USERS LIST (Sub-screen) -->
+        <!-- Screen: ADMIN ALL USERS LIST & SEARCH -->
         <div id="screen-adminUsers" class="screen">
           <button class="btn-back" onclick="switchNav('admin')">
             <i class="fa-solid fa-arrow-left"></i> Back to Admin
@@ -345,7 +360,24 @@
             <h2 class="card-title" style="color:var(--primary);">
               <i class="fa-solid fa-users"></i> Total Users: <span id="adminTotalUsersCount">0</span>
             </h2>
+            
+            <!-- Gmail Search Box -->
+            <div class="form-group" style="margin-bottom: 20px;">
+              <input type="text" id="userSearchInput" class="form-control" placeholder="Search user by Gmail..." oninput="filterAdminUsers()">
+            </div>
+
             <div id="adminUsersList"></div>
+          </div>
+        </div>
+
+        <!-- Screen: ADMIN SPECIFIC USER ORDERS -->
+        <div id="screen-adminUserOrders" class="screen">
+          <button class="btn-back" onclick="switchNav('adminUsers')">
+            <i class="fa-solid fa-arrow-left"></i> Back to Users List
+          </button>
+          <div class="card">
+            <h2 class="card-title" style="color:var(--primary);" id="specificUserTitle">User Orders</h2>
+            <div id="specificUserOrdersList"></div>
           </div>
         </div>
 
@@ -360,10 +392,33 @@
     const ADMIN_EMAIL = "pauldebojit629@gmail.com";
     const RAZORPAY_KEY_ID = "rzp_live_ThRNn6xsDj9d2D";
 
+    // Clean, professional core services (Views, Likes, Comments, Shares, Followers, Subs, Reposts)
     const defaultServices = {
-      instagram: { "ig_views": { name: "Instagram Views", price: 10 }, "ig_likes": { name: "Instagram Likes", price: 30 }, "ig_followers": { name: "Instagram Followers", price: 120 } },
-      facebook: { "fb_views": { name: "Facebook Views", price: 20 }, "fb_likes": { name: "Facebook Likes", price: 40 }, "fb_followers": { name: "Facebook Followers", price: 90 } },
-      youtube: { "yt_views": { name: "YouTube Views", price: 150 }, "yt_likes": { name: "YouTube Likes", price: 200 }, "yt_subs": { name: "YouTube Subscribers", price: 450 } }
+      instagram: { 
+        "ig_views": { name: "Instagram Views [Instant]", price: 10 }, 
+        "ig_likes": { name: "Instagram Likes [High Quality]", price: 30 }, 
+        "ig_comments": { name: "Instagram Comments [Custom/Real]", price: 80 },
+        "ig_shares": { name: "Instagram Shares", price: 40 },
+        "ig_reposts": { name: "Instagram Reposts", price: 50 },
+        "ig_followers": { name: "Instagram Followers [Non-Drop]", price: 120 } 
+      },
+      facebook: { 
+        "fb_views": { name: "Facebook Video Views", price: 20 }, 
+        "fb_likes": { name: "Facebook Page Likes", price: 90 }, 
+        "fb_comments": { name: "Facebook Comments", price: 100 },
+        "fb_shares": { name: "Facebook Shares", price: 60 },
+        "fb_followers": { name: "Facebook Followers [Fast]", price: 110 }
+      },
+      youtube: { 
+        "yt_views": { name: "YouTube High Retention Views", price: 150 }, 
+        "yt_likes": { name: "YouTube Likes [Fast]", price: 200 }, 
+        "yt_comments": { name: "YouTube Comments", price: 250 },
+        "yt_subs": { name: "YouTube Real Subscribers", price: 450 } 
+      },
+      telegram: {
+        "tg_members": { name: "Telegram Channel Members", price: 90 },
+        "tg_views": { name: "Telegram Post Views", price: 15 }
+      }
     };
 
     let tempGoogleData = null; 
@@ -371,6 +426,7 @@
     let currentUserEmail = null;
     let currentUserData = null;
     let globalServices = null;
+    let allUsersCache = {};
 
     function showLoader(show) { document.getElementById('loader').style.display = show ? 'flex' : 'none'; }
     
@@ -483,6 +539,10 @@
       document.getElementById('displayBalance').innerText = balanceText;
       document.getElementById('addBalanceDisplay').innerText = balanceText;
 
+      // Setup WhatsApp Customer Care link with prefilled Gmail
+      const waText = `Hi, My gmail is ${currentUserEmail} Help in deposit issue?`;
+      document.getElementById('whatsappSupportBtn').href = `https://wa.me/918638707624?text=${encodeURIComponent(waText)}`;
+
       if(currentUserEmail.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
         document.getElementById('menuAdminItem').style.display = 'flex';
       } else {
@@ -503,7 +563,7 @@
       document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
       document.getElementById('screen-' + screenName).classList.add('active');
 
-      if(screenName === 'history') fetchUserOrders();
+      if(screenName === 'history') fetchUserHistory();
       if(screenName === 'admin') { fetchAdminData(); checkFirebaseConnection(); }
       if(screenName === 'adminUsers') fetchAdminAllUsersList();
     }
@@ -531,10 +591,10 @@
       }
     }
 
-    // ================= RAZORPAY PAYMENT =================
+    // ================= RAZORPAY PAYMENT (Records attempts, success & failed in history) =================
     function triggerRazorpay() {
-      const amountStr = prompt("Enter amount in Rupees (₹) to add:", "100");
-      const amount = parseFloat(amountStr);
+      const amountInput = document.getElementById('depositAmountInput');
+      const amount = parseFloat(amountInput ? amountInput.value : 100);
       if(isNaN(amount) || amount <= 0) return alert("Invalid amount entered!");
 
       var options = {
@@ -542,29 +602,71 @@
         "amount": amount * 100, 
         "currency": "INR",
         "name": "DPFRZ SMM",
-        "description": "Add Wallet Balance",
+        "description": "Wallet Deposit",
         "handler": async function (response) {
-            if(response.razorpay_payment_id) {
-              showLoader(true);
-              const newBalance = parseFloat(currentUserData.balance) + amount;
-              await fbPatch(`users/${currentUserId}`, { balance: newBalance });
-              currentUserData.balance = newBalance;
-              
-              const balanceText = '₹' + newBalance.toFixed(2);
-              document.getElementById('displayBalance').innerText = balanceText;
-              document.getElementById('addBalanceDisplay').innerText = balanceText;
+            showLoader(true);
+            const paymentId = response.razorpay_payment_id || "PAY_" + Date.now();
+            
+            // Update Balance
+            const newBalance = parseFloat(currentUserData.balance) + amount;
+            await fbPatch(`users/${currentUserId}`, { balance: newBalance });
+            currentUserData.balance = newBalance;
+            
+            const balanceText = '₹' + newBalance.toFixed(2);
+            document.getElementById('displayBalance').innerText = balanceText;
+            document.getElementById('addBalanceDisplay').innerText = balanceText;
 
-              showLoader(false);
-              alert("Payment Successful! ₹" + amount + " added to your wallet.");
-            }
+            // Record Success Deposit in Orders/Transactions History
+            const depositId = Date.now().toString();
+            const depositObj = {
+              orderId: "DEP-" + depositId,
+              paymentId: paymentId,
+              userEmail: currentUserEmail,
+              userId: currentUserId,
+              service: "Wallet Deposit (Razorpay)",
+              link: "N/A",
+              qty: 1,
+              charge: amount,
+              status: "Success",
+              timestamp: new Date().toLocaleString()
+            };
+            await fbPut(`orders/${depositId}`, depositObj);
+
+            showLoader(false);
+            alert("Payment Successful! ₹" + amount + " added to your wallet.");
+            switchNav('history');
         },
         "prefill": { "email": currentUserEmail },
         "theme": { "color": "#0ea5e9" }
       };
       
       var rzp = new Razorpay(options);
-      rzp.on('payment.failed', function (response){ alert("Payment Failed! No amount deducted."); });
+      rzp.on('payment.failed', async function (response){
+        showLoader(true);
+        // Record Failed Deposit in History
+        const depositId = Date.now().toString();
+        const depositObj = {
+          orderId: "DEP-" + depositId,
+          paymentId: response.error.metadata?.payment_id || "FAILED_" + Date.now(),
+          userEmail: currentUserEmail,
+          userId: currentUserId,
+          service: "Wallet Deposit (Razorpay)",
+          link: "N/A",
+          qty: 1,
+          charge: amount,
+          status: "Failed",
+          timestamp: new Date().toLocaleString()
+        };
+        await fbPut(`orders/${depositId}`, depositObj);
+        showLoader(false);
+        alert("Payment Failed! Recorded in your history. Please contact support if money was deducted.");
+        switchNav('history');
+      });
       rzp.open();
+    }
+
+    function triggerRazorpayFromScreen() {
+      triggerRazorpay();
     }
 
     // ================= ORDERS LOGIC =================
@@ -601,7 +703,7 @@
       const charge = parseFloat(document.getElementById('orderTotal').innerText);
 
       if(qty < 100) return alert("Minimum quantity 100");
-      if(parseFloat(currentUserData.balance) < charge) return alert("Insufficient Wallet Balance!");
+      if(parseFloat(currentUserData.balance) < charge) return alert("Insufficient Wallet Balance! Please add funds.");
 
       showLoader(true);
       const newBal = parseFloat(currentUserData.balance) - charge;
@@ -614,9 +716,16 @@
 
       const orderId = Date.now().toString();
       const orderObj = {
-        orderId: orderId, userEmail: currentUserEmail, userId: currentUserId,
-        service: serviceName, link: link, qty: qty, charge: charge,
-        status: "Pending", timestamp: new Date().toLocaleString()
+        orderId: "ORD-" + orderId,
+        paymentId: "N/A",
+        userEmail: currentUserEmail, 
+        userId: currentUserId,
+        service: serviceName, 
+        link: link, 
+        qty: qty, 
+        charge: charge,
+        status: "Pending", 
+        timestamp: new Date().toLocaleString()
       };
 
       await fbPut(`orders/${orderId}`, orderObj);
@@ -625,24 +734,26 @@
       document.getElementById('orderLink').value = ''; document.getElementById('orderQty').value = ''; calcPrice();
     }
 
-    async function fetchUserOrders() {
+    // ================= USER HISTORY (Orders & Deposits, Newest First) =================
+    async function fetchUserHistory() {
       showLoader(true);
       const allOrders = await fbGet('orders') || {};
       const div = document.getElementById('userOrdersList');
       div.innerHTML = '';
       const myOrders = Object.values(allOrders).filter(o => o.userId === currentUserId).reverse();
 
-      if(myOrders.length===0) { div.innerHTML = '<p style="text-align:center;font-size:13px;color:grey;">No Orders Found.</p>'; }
+      if(myOrders.length===0) { div.innerHTML = '<p style="text-align:center;font-size:13px;color:grey;">No History Found.</p>'; }
       else {
         myOrders.forEach(o => {
           div.innerHTML += `
             <div class="list-item">
               <strong>${o.service}</strong>
-              <div class="list-row"><span style="color:grey;">ID:</span> <span>${o.orderId}</span></div>
-              <div class="list-row"><span style="color:grey;">Link:</span> <span style="max-width:160px;overflow:hidden;text-overflow:ellipsis;">${o.link}</span></div>
-              <div class="list-row"><span style="color:grey;">Qty:</span> <span>${o.qty}</span></div>
-              <div class="list-row"><span style="color:grey;">Charge:</span> <span style="color:var(--primary);font-weight:700;">₹${parseFloat(o.charge).toFixed(2)}</span></div>
-              <div class="list-row" style="margin-top:5px;"><span class="status-badge status-${o.status}">${o.status}</span></div>
+              <div class="list-row"><span style="color:grey;">ID / Ref:</span> <span>${o.orderId}</span></div>
+              ${o.paymentId !== 'N/A' ? `<div class="list-row"><span style="color:grey;">Payment ID:</span> <span style="font-size:11px;">${o.paymentId}</span></div>` : ''}
+              ${o.link !== 'N/A' ? `<div class="list-row"><span style="color:grey;">Link:</span> <span style="max-width:160px;overflow:hidden;text-overflow:ellipsis;">${o.link}</span></div>` : ''}
+              <div class="list-row"><span style="color:grey;">Qty / Amount:</span> <span>${o.link !== 'N/A' ? o.qty : '₹' + o.charge.toFixed(2)}</span></div>
+              <div class="list-row"><span style="color:grey;">Total Charge:</span> <span style="color:var(--primary);font-weight:700;">₹${parseFloat(o.charge).toFixed(2)}</span></div>
+              <div class="list-row" style="margin-top:5px;"><span class="status-badge status-${o.status}">${o.status}</span> <span style="font-size:10px; color:grey;">${o.timestamp}</span></div>
             </div>
           `;
         });
@@ -687,13 +798,14 @@
             <div class="list-item" style="border-left: 4px solid var(--danger);">
               <div class="list-row"><span style="color:grey;">Email:</span> <strong style="color:var(--danger);">${o.userEmail}</strong></div>
               <strong>${o.service}</strong>
-              <div class="list-row"><span style="color:grey;">Link:</span> <span style="max-width:140px;overflow:hidden;text-overflow:ellipsis;">${o.link}</span></div>
-              <div class="list-row"><span style="color:grey;">Qty:</span> <span>${o.qty}</span></div>
+              <div class="list-row"><span style="color:grey;">ID:</span> <span>${o.orderId}</span></div>
+              ${o.paymentId !== 'N/A' ? `<div class="list-row"><span style="color:grey;">Payment ID:</span> <span style="font-size:11px;">${o.paymentId}</span></div>` : ''}
+              ${o.link !== 'N/A' ? `<div class="list-row"><span style="color:grey;">Link:</span> <span style="max-width:140px;overflow:hidden;text-overflow:ellipsis;">${o.link}</span></div>` : ''}
               <div class="list-row"><span style="color:grey;">Charge:</span> <span style="font-weight:700;">₹${parseFloat(o.charge).toFixed(2)}</span></div>
               
               <div class="list-row" style="margin-top:10px; border-top:1px dashed #ccc; padding-top:10px; align-items:center;">
                 <span style="font-size:13px; font-weight:600; color:var(--danger);">Status:</span>
-                <select class="admin-select-status" onchange="changeOrderStatus('${o.orderId}', this.value)">
+                <select class="admin-select-status" onchange="changeOrderStatus('${o.orderId.replace('ORD-', '').replace('DEP-', '')}', this.value)">
                   <option value="Pending" ${o.status==='Pending'?'selected':''}>Pending</option>
                   <option value="Review" ${o.status==='Review'?'selected':''}>Review</option>
                   <option value="Success" ${o.status==='Success'?'selected':''}>Success</option>
@@ -720,32 +832,73 @@
       if(document.getElementById('orderCategory').value === cat) renderServiceOptions();
     }
 
-    async function changeOrderStatus(orderId, newStatus) {
+    async function changeOrderStatus(orderKey, newStatus) {
       if(!confirm("Change status to " + newStatus + "?")) return fetchAdminData();
       showLoader(true);
-      await fbPatch(`orders/${orderId}`, { status: newStatus });
+      await fbPatch(`orders/${orderKey}`, { status: newStatus });
       showLoader(false);
       alert("Order Status updated!");
     }
 
+    // Admin Users View with Gmail Search & Click to View User Orders
     async function fetchAdminAllUsersList() {
       showLoader(true);
       const allUsers = await fbGet('users') || {};
-      const usersArray = Object.values(allUsers);
-      
+      allUsersCache = allUsers;
+      renderUsersList(Object.values(allUsers));
+      showLoader(false);
+    }
+
+    function renderUsersList(usersArray) {
       document.getElementById('adminTotalUsersCount').innerText = usersArray.length;
-      
       const divUsr = document.getElementById('adminUsersList');
       divUsr.innerHTML = '';
       
       if(usersArray.length === 0) { divUsr.innerHTML = '<p style="text-align:center;font-size:13px;color:grey;">No Users Found</p>'; }
       else {
         usersArray.forEach(u => {
+          const safeUserId = u.email.replace(/[^a-zA-Z0-9]/g, '');
           divUsr.innerHTML += `
-            <div class="list-item" style="border-left: 4px solid var(--primary);">
-              <div class="list-row"><strong>${u.email}</strong></div>
-              <div class="list-row"><span style="color:grey;">Wallet:</span> <span style="font-weight:700; color:var(--success);">₹${parseFloat(u.balance).toFixed(2)}</span></div>
+            <div class="list-item" style="border-left: 4px solid var(--primary); cursor: pointer;" onclick="viewSpecificUserOrders('${safeUserId}', '${u.email}')">
+              <div class="list-row"><strong>${u.email}</strong> <i class="fa-solid fa-chevron-right" style="color:grey; font-size:12px;"></i></div>
+              <div class="list-row"><span style="color:grey;">Wallet:</span> <span style="font-weight:700; color:var(--success);">₹${parseFloat(u.balance || 0).toFixed(2)}</span></div>
               <div class="list-row"><span style="color:grey;">Joined:</span> <span>${u.joinDate || "N/A"}</span></div>
+            </div>
+          `;
+        });
+      }
+    }
+
+    function filterAdminUsers() {
+      const query = document.getElementById('userSearchInput').value.toLowerCase();
+      const usersArray = Object.values(allUsersCache);
+      const filtered = usersArray.filter(u => u.email.toLowerCase().includes(query));
+      renderUsersList(filtered);
+    }
+
+    // View Particular User's Order History from Admin Panel
+    async function viewSpecificUserOrders(userId, userEmail) {
+      showLoader(true);
+      document.getElementById('specificUserTitle').innerText = `Orders: ${userEmail}`;
+      switchNav('adminUserOrders');
+
+      const allOrders = await fbGet('orders') || {};
+      const div = document.getElementById('specificUserOrdersList');
+      div.innerHTML = '';
+      const userOrders = Object.values(allOrders).filter(o => o.userId === userId).reverse();
+
+      if(userOrders.length === 0) {
+        div.innerHTML = '<p style="text-align:center;font-size:13px;color:grey;">No orders found for this user.</p>';
+      } else {
+        userOrders.forEach(o => {
+          div.innerHTML += `
+            <div class="list-item">
+              <strong>${o.service}</strong>
+              <div class="list-row"><span style="color:grey;">ID:</span> <span>${o.orderId}</span></div>
+              ${o.paymentId !== 'N/A' ? `<div class="list-row"><span style="color:grey;">Payment ID:</span> <span style="font-size:11px;">${o.paymentId}</span></div>` : ''}
+              ${o.link !== 'N/A' ? `<div class="list-row"><span style="color:grey;">Link:</span> <span style="max-width:160px;overflow:hidden;text-overflow:ellipsis;">${o.link}</span></div>` : ''}
+              <div class="list-row"><span style="color:grey;">Charge:</span> <span style="color:var(--primary);font-weight:700;">₹${parseFloat(o.charge).toFixed(2)}</span></div>
+              <div class="list-row" style="margin-top:5px;"><span class="status-badge status-${o.status}">${o.status}</span> <span style="font-size:10px; color:grey;">${o.timestamp}</span></div>
             </div>
           `;
         });
@@ -755,6 +908,7 @@
   </script>
 </body>
 </html>
+
 
 
 

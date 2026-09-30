@@ -51,7 +51,7 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
     body { background-color: var(--bg-color); color: var(--text-main); display: flex; justify-content: center; height: 100vh; overflow: hidden; margin: 0; transition: background 0.3s, color 0.3s; }
 
-    .app-container { width: 100%; max-width: 480px; background: var(--bg-color); height: 100vh; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.1); display: flex; flex-direction: column; overflow-x: hidden; }
+    .app-container { width: 100%; max-width: 480px; background: var(--card-bg); height: 100vh; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.1); display: flex; flex-direction: column; overflow-x: hidden; }
 
     /* AUTH SCREENS */
     #authScreenPicker, #authScreenPassword { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; padding: 30px 20px; text-align: center; overflow-y: auto; }
@@ -81,7 +81,7 @@
     .btn-install { padding: 5px 10px; gap: 5px; }
     .btn-refresh { padding: 6px; width: 30px; height: 30px; border-radius: 50%; }
 
-    /* CUSTOM SERVICE DROPDOWN */
+    /* CUSTOM SERVICE & CATEGORY DROPDOWN */
     .custom-select-wrapper { position: relative; user-select: none; width: 100%; }
     .custom-select-trigger { width: 100%; padding: 14px 15px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 14px; background: var(--input-bg); color: var(--text-main); cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 500; }
     .custom-select-trigger::after { content: '\f0d7'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: var(--text-muted); transition: transform 0.3s; }
@@ -215,7 +215,6 @@
           
           <a class="drawer-item" onclick="toggleDrawer(); switchNav('referral')"><i class="fa-solid fa-gift" style="color:var(--warning);"></i> Refer & Earn ₹10</a>
           
-          <!-- Theme Toggle Button -->
           <a class="drawer-item" onclick="toggleTheme()"><i class="fa-solid fa-moon" style="color:var(--text-muted);"></i> Dark / Light Theme</a>
 
           <a class="drawer-item" id="menuWhatsappBtn" href="#" target="_blank"><i class="fa-brands fa-whatsapp" style="color:var(--whatsapp);"></i> WhatsApp Support</a>
@@ -254,17 +253,17 @@
           <div class="card">
             <h2 class="card-title">Place New Order</h2>
             <form onsubmit="placeOrder(event)">
+              
+              <!-- CUSTOM CATEGORY DROPDOWN -->
               <div class="form-group">
                 <label>Category</label>
-                <select class="form-control" id="orderCategory" onchange="renderServiceOptions()">
-                  <option value="instagram">Instagram Services</option>
-                  <option value="facebook">Facebook Services</option>
-                  <option value="youtube">YouTube Services</option>
-                  <option value="telegram">Telegram Services</option>
-                </select>
+                <div class="custom-select-wrapper" id="categoryDropdownWrapper">
+                  <div class="custom-select-trigger" onclick="toggleCategoryDropdown()" id="categoryDropdownTrigger">Select a Category</div>
+                  <div class="custom-options" id="customCategoryOptions"></div>
+                </div>
               </div>
               
-              <!-- CUSTOM DROPDOWN FOR SERVICES -->
+              <!-- CUSTOM SERVICE DROPDOWN -->
               <div class="form-group">
                 <label>Service (Price per 1000)</label>
                 <div class="custom-select-wrapper" id="serviceDropdownWrapper">
@@ -326,7 +325,7 @@
           <div class="card"><h2 class="card-title">Order & Deposit History</h2><div id="userOrdersList"></div></div>
         </div>
 
-        <!-- Screen: ADD BALANCE -->
+        <!-- Screen: ADD BALANCE (With WhatsApp added explicitly) -->
         <div id="screen-addBalance" class="screen">
           <button class="btn-back" onclick="switchNav('newOrder')"><i class="fa-solid fa-arrow-left"></i> Back</button>
           <div class="card" style="text-align: center; padding: 25px 15px;">
@@ -336,11 +335,16 @@
               <label>Enter Amount (₹)</label>
               <input type="number" id="depositAmountInput" class="form-control" placeholder="100" min="10" value="100" style="font-size:18px; font-weight:700;">
             </div>
-            <button class="btn-main" onclick="triggerRazorpayFromScreen()" style="background: var(--success); margin-bottom: 15px;"><i class="fa-solid fa-lock"></i> Pay via Razorpay</button>
+            <button class="btn-main" onclick="triggerRazorpayFromScreen()" style="background: var(--success); margin-bottom: 20px;"><i class="fa-solid fa-lock"></i> Pay via Razorpay</button>
+            
+            <p style="font-size:12px; color:grey; margin-bottom:10px;">Payment failed or having issues?</p>
+            <a id="depositWhatsappBtn" href="https://wa.me/918638707624?text=Hi%20please%20help%20me%20in%20deposit%20%3F" target="_blank" style="display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 12px; background: transparent; color: var(--whatsapp); border: 1px solid var(--whatsapp); border-radius: 8px; font-weight: 700; font-size: 14px; text-decoration: none;">
+              <i class="fa-brands fa-whatsapp" style="font-size:18px;"></i> Customer Support
+            </a>
           </div>
         </div>
 
-        <!-- Screen: ADMIN DASHBOARD -->
+        <!-- Screen: ADMIN MAIN DASHBOARD -->
         <div id="screen-admin" class="screen">
           <button class="btn-back" onclick="switchNav('newOrder')"><i class="fa-solid fa-arrow-left"></i> Back</button>
           
@@ -350,8 +354,23 @@
             <button class="btn-admin-action" onclick="switchNav('adminUsers')">View All Users</button>
           </div>
 
-          <div class="card"><h2 class="card-title" style="color:var(--danger);"><i class="fa-solid fa-tags"></i> Edit Services & Prices</h2><div id="adminServicesList"></div></div>
+          <!-- NEW: Manage Services Button -->
+          <div class="card" style="border: 2px solid var(--danger);">
+            <h2 class="card-title" style="color:var(--danger); margin-bottom:0;"><i class="fa-solid fa-tags"></i> Manage Services & Categories</h2>
+            <p style="font-size:12px; color:var(--text-muted); margin-bottom:15px; margin-top:5px;">Add, Edit or Delete Categories and Services.</p>
+            <button class="btn-admin-action" style="background:var(--danger); color:white; border:none;" onclick="switchNav('adminServices')">Open Service Manager</button>
+          </div>
+
           <div class="card"><h2 class="card-title" style="color:var(--warning);"><i class="fa-solid fa-list-check"></i> All Users Orders</h2><div id="adminAllOrdersList"></div></div>
+        </div>
+
+        <!-- Screen: ADMIN MANAGE SERVICES (NEW SUB-SCREEN) -->
+        <div id="screen-adminServices" class="screen">
+          <button class="btn-back" onclick="switchNav('admin')"><i class="fa-solid fa-arrow-left"></i> Back to Admin</button>
+          <div class="card">
+            <h2 class="card-title" style="color:var(--danger);">Categories & Services Archive</h2>
+            <div id="adminServicesContainer"></div>
+          </div>
         </div>
 
         <!-- Screen: ADMIN ALL USERS -->
@@ -418,7 +437,8 @@
     let allOrdersCache = {};
     let deferredPrompt = null;
     let adminViewingUserId = null; 
-    let currentSelectedService = null; // For Custom Dropdown
+    let currentSelectedCategory = null; // For Custom Category Dropdown
+    let currentSelectedService = null; // For Custom Service Dropdown
 
     function showLoader(show) { document.getElementById('loader').style.display = show ? 'flex' : 'none'; }
     
@@ -519,13 +539,16 @@
 
       const waLink = `https://wa.me/918638707624?text=${encodeURIComponent("Hi, My gmail is " + currentUserEmail + " Help in deposit issue?")}`;
       document.getElementById('menuWhatsappBtn').href = waLink;
+      document.getElementById('depositWhatsappBtn').href = `https://wa.me/918638707624?text=${encodeURIComponent("Hi, My gmail is " + currentUserEmail + " Help in deposit issue?")}`;
       document.getElementById('menuAdminItem').style.display = (currentUserEmail.toLowerCase() === ADMIN_EMAIL.toLowerCase()) ? 'flex' : 'none';
 
       await updateUserTotalSpent();
       
       let srv = await fbGet('services');
       if(!srv) { await fbPut('services', defaultServices); globalServices = defaultServices; } else { globalServices = srv; }
-      renderServiceOptions(); switchNav('newOrder'); showLoader(false);
+      
+      renderCategoryOptions(); // Loads custom dropdowns
+      switchNav('newOrder'); showLoader(false);
     }
 
     async function updateUserTotalSpent() {
@@ -540,26 +563,60 @@
       document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
       if(document.getElementById('navbtn-'+screenName)) document.getElementById('navbtn-'+screenName).classList.add('active');
 
-      if(screenName === 'history') fetchUserHistory(); if(screenName === 'admin') fetchAdminData(); if(screenName === 'adminUsers') fetchAdminAllUsersList();
+      if(screenName === 'history') fetchUserHistory(); 
+      if(screenName === 'admin') fetchAdminData(); 
+      if(screenName === 'adminServices') renderAdminServices();
+      if(screenName === 'adminUsers') fetchAdminAllUsersList();
     }
 
-    // ================= CUSTOM SERVICE DROPDOWN =================
+    // ================= CUSTOM DROPDOWNS (Category & Service) =================
+    function toggleCategoryDropdown() { document.getElementById('categoryDropdownWrapper').classList.toggle('open'); document.getElementById('customCategoryOptions').classList.toggle('open'); }
     function toggleServiceDropdown() { document.getElementById('serviceDropdownWrapper').classList.toggle('open'); document.getElementById('customServiceOptions').classList.toggle('open'); }
     
-    // Close dropdown on outside click
+    // Close dropdowns on outside click
     window.addEventListener('click', function(e) {
-      if (!document.getElementById('serviceDropdownWrapper').contains(e.target)) {
-        document.getElementById('serviceDropdownWrapper').classList.remove('open'); document.getElementById('customServiceOptions').classList.remove('open');
-      }
+      const sWrap = document.getElementById('serviceDropdownWrapper');
+      const cWrap = document.getElementById('categoryDropdownWrapper');
+      if (sWrap && !sWrap.contains(e.target)) { sWrap.classList.remove('open'); document.getElementById('customServiceOptions').classList.remove('open'); }
+      if (cWrap && !cWrap.contains(e.target)) { cWrap.classList.remove('open'); document.getElementById('customCategoryOptions').classList.remove('open'); }
     });
 
+    function renderCategoryOptions() {
+      const optionsContainer = document.getElementById('customCategoryOptions');
+      const trigger = document.getElementById('categoryDropdownTrigger');
+      optionsContainer.innerHTML = '';
+      
+      if(globalServices && Object.keys(globalServices).length > 0) {
+        let first = true;
+        for(let catKey in globalServices) {
+          let catName = catKey.charAt(0).toUpperCase() + catKey.slice(1) + " Services";
+          let optDiv = document.createElement('div');
+          optDiv.className = 'custom-option';
+          optDiv.innerText = catName;
+          optDiv.onclick = function() {
+            currentSelectedCategory = catKey;
+            trigger.innerHTML = catName;
+            document.getElementById('categoryDropdownWrapper').classList.remove('open');
+            document.getElementById('customCategoryOptions').classList.remove('open');
+            renderServiceOptions();
+          };
+          optionsContainer.appendChild(optDiv);
+          
+          if(first) { currentSelectedCategory = catKey; trigger.innerHTML = catName; first = false; }
+        }
+      } else {
+        trigger.innerHTML = "No Categories Available"; currentSelectedCategory = null;
+      }
+      renderServiceOptions();
+    }
+
     function renderServiceOptions() {
-      const cat = document.getElementById('orderCategory').value;
+      const cat = currentSelectedCategory;
       const optionsContainer = document.getElementById('customServiceOptions');
       const trigger = document.getElementById('serviceDropdownTrigger');
       optionsContainer.innerHTML = ''; currentSelectedService = null; trigger.innerHTML = "Select a Service";
 
-      if(globalServices && globalServices[cat]) {
+      if(cat && globalServices && globalServices[cat]) {
         let first = true;
         for(let key in globalServices[cat]) {
           let s = globalServices[cat][key];
@@ -578,7 +635,8 @@
           optionsContainer.appendChild(optDiv);
           if(first) { currentSelectedService = { id: key, name: s.name, price: s.price }; trigger.innerHTML = `<span style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">${s.name} - ₹${s.price}</span>`; first = false; }
         }
-      } calcPrice();
+      } 
+      calcPrice();
     }
 
     function calcPrice() {
@@ -669,33 +727,18 @@
       try {
         const allOrders = await fbGet('orders') || {}; const div = document.getElementById('userOrdersList'); div.innerHTML = '';
         const myOrders = Object.values(allOrders).filter(o => o.userId === currentUserId).reverse();
-        if(myOrders.length===0) div.innerHTML = '<p style="text-align:center;color:grey;">No History.</p>';
+        if(myOrders.length===0) div.innerHTML = '<p style="text-align:center;color:grey;">No History Found.</p>';
         else myOrders.forEach(o => {
-          div.innerHTML += `<div class="list-item"><strong style="color:var(--primary);">${o.service}</strong><div class="list-row"><span style="color:var(--text-muted);">ID:</span> <span>${o.orderId||'N/A'}</span></div>${o.paymentId!=='N/A'?`<div class="list-row"><span style="color:var(--text-muted);">PayID:</span><span style="font-size:11px;">${o.paymentId}</span></div>`:''}<div class="list-row"><span style="color:var(--text-muted);">Amt:</span><span style="color:var(--primary);font-weight:700;">₹${parseFloat(o.charge).toFixed(2)}</span></div><div class="list-row"><span class="status-badge status-${o.status||'Pending'}">${o.status||'Pending'}</span> <span style="font-size:10px;color:grey;">${o.timestamp||''}</span></div></div>`;
+          div.innerHTML += `<div class="list-item"><strong>${o.service}</strong><div class="list-row"><span style="color:var(--text-muted);">ID:</span> <span>${o.orderId||'N/A'}</span></div>${o.paymentId!=='N/A'?`<div class="list-row"><span style="color:var(--text-muted);">PayID:</span><span style="font-size:11px;">${o.paymentId}</span></div>`:''}<div class="list-row"><span style="color:var(--text-muted);">Amt:</span><span style="color:var(--primary);font-weight:700;">₹${parseFloat(o.charge).toFixed(2)}</span></div><div class="list-row"><span class="status-badge status-${o.status||'Pending'}">${o.status||'Pending'}</span> <span style="font-size:10px;color:grey;">${o.timestamp||''}</span></div></div>`;
         });
       } catch(e){} finally { showLoader(false); }
     }
 
-    // ================= ADMIN LOGIC =================
+    // ================= ADMIN MAIN DASHBOARD LOGIC =================
     async function fetchAdminData() {
       showLoader(true);
       try {
         globalServices = await fbGet('services') || {};
-        const divSrv = document.getElementById('adminServicesList'); let htmlSrv = ''; 
-        for(let cat in globalServices) {
-          for(let key in globalServices[cat]) {
-            let s = globalServices[cat][key];
-            // NOW ADMIN CAN EDIT BOTH NAME AND PRICE
-            htmlSrv += `<div class="admin-service-row">
-              <input type="text" id="name-${cat}-${key}" value="${s.name}" class="form-control" style="margin-bottom:8px; font-size:13px; font-weight:600;">
-              <div class="admin-service-controls">
-                <input type="number" id="price-${cat}-${key}" value="${s.price}" class="form-control" style="width:100px;">
-                <button class="btn-save-price" onclick="updateAdminService('${cat}','${key}')">Save</button>
-              </div>
-            </div>`;
-          }
-        } divSrv.innerHTML = htmlSrv;
-
         const allOrders = await fbGet('orders') || {}; const divOrd = document.getElementById('adminAllOrdersList');
         const ordersArray = Object.values(allOrders).reverse(); let htmlOrd = '';
         ordersArray.forEach(o => {
@@ -704,9 +747,9 @@
           let statusOptions = '';
           // HIDE STATUS DROPDOWN FOR REFERRAL AND DEPOSITS
           if(o.orderId && (o.orderId.startsWith('REF-') || o.orderId.startsWith('DEP-'))) {
-            statusOptions = `<span class="status-badge status-${o.status}">${o.status}</span> <span style="font-size:11px; color:grey;">(Auto)</span>`;
+            statusOptions = `<span class="status-badge status-${o.status}">${o.status}</span> <span style="font-size:11px; color:grey;">(Auto Generated)</span>`;
           } else {
-            statusOptions = `<select class="admin-select-status" onchange="changeOrderStatus('${safeId}', this.value)">
+            statusOptions = `<select class="admin-select-status" style="margin-top:10px;width:100%;" onchange="changeOrderStatus('${safeId}', this.value)">
               <option value="Pending" ${(o.status==='Pending')?'selected':''}>Pending</option>
               <option value="Review" ${(o.status==='Review')?'selected':''}>Review</option>
               <option value="Success" ${(o.status==='Success')?'selected':''}>Success</option>
@@ -714,29 +757,105 @@
             </select>`;
           }
 
-          htmlOrd += `<div class="list-item" style="border-left: 3px solid var(--warning);"><div class="list-row"><strong style="color:var(--primary);">${o.userEmail||'Unknown'}</strong></div><strong style="color:var(--text-main);">${o.service}</strong><div class="list-row"><span style="color:grey;">Cost:</span> <span style="font-weight:700;color:var(--primary);">₹${parseFloat(o.charge||0).toFixed(2)}</span></div><div style="margin-top:10px;">${statusOptions}</div></div>`;
+          htmlOrd += `<div class="list-item" style="border-left: 3px solid var(--warning);"><div class="list-row"><strong style="color:var(--primary);">${o.userEmail||'Unknown'}</strong></div><strong style="color:var(--text-main);">${o.service}</strong><div class="list-row"><span style="color:var(--text-muted);">Cost:</span> <span style="font-weight:700;color:var(--primary);">₹${parseFloat(o.charge||0).toFixed(2)}</span></div><div style="margin-top:10px;">${statusOptions}</div></div>`;
         }); divOrd.innerHTML = htmlOrd;
       } catch(e) {} finally { showLoader(false); }
     }
     
-    // UPDATE SERVICE NAME AND PRICE
-    async function updateAdminService(cat, key) {
-      const newName = document.getElementById(`name-${cat}-${key}`).value.trim();
-      const newPrice = parseFloat(document.getElementById(`price-${cat}-${key}`).value);
-      if(!newName || isNaN(newPrice)) return alert("Invalid Name or Price"); 
-      showLoader(true);
-      try { 
-        await fbPatch(`services/${cat}/${key}`, { name: newName, price: newPrice }); 
-        globalServices[cat][key].name = newName; globalServices[cat][key].price = newPrice; 
-        alert("Service Updated Successfully!"); renderServiceOptions(); 
-      } catch(e){} finally { showLoader(false); }
-    }
-
     async function changeOrderStatus(orderKey, newStatus) {
       if(!orderKey) return; if(!confirm("Change status?")) return; showLoader(true);
       try { await fbPatch(`orders/ORD-${orderKey}`, { status: newStatus }); alert("Status Updated!"); } catch(e){} finally { showLoader(false); }
     }
 
+    // ================= ADMIN: MANAGE CATEGORIES & SERVICES =================
+    function renderAdminServices() {
+      const container = document.getElementById('adminServicesContainer');
+      let html = `<button class="btn-main" onclick="adminAddCategory()" style="margin-bottom:20px;"><i class="fa-solid fa-plus"></i> Add New Category</button>`;
+      
+      for(let cat in globalServices) {
+        html += `<div style="background:var(--input-bg); padding:15px; border-radius:10px; margin-bottom:20px; border:1px solid var(--border-color);">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; padding-bottom:10px; border-bottom:1px solid var(--border-color);">
+            <h3 style="color:var(--primary); text-transform:capitalize; font-size:16px;">${cat} Services</h3>
+            <button class="btn-action-small" onclick="adminDeleteCategory('${cat}')" style="background:var(--danger); color:#fff; border:none; padding:6px 10px;"><i class="fa-solid fa-trash"></i> Delete Cat</button>
+          </div>
+          <button class="btn-main" style="padding:8px; font-size:13px; margin-bottom:15px;" onclick="adminAddService('${cat}')"><i class="fa-solid fa-plus"></i> Add Service Here</button>
+        `;
+        
+        for(let key in globalServices[cat]) {
+          let s = globalServices[cat][key];
+          html += `<div class="admin-service-row">
+            <input type="text" id="editname-${cat}-${key}" value="${s.name}" class="form-control" style="margin-bottom:8px; font-size:13px; font-weight:600;">
+            <div class="admin-service-controls">
+              <input type="number" id="editprice-${cat}-${key}" value="${s.price}" class="form-control" style="width:100px;">
+              <button class="btn-save-price" onclick="adminUpdateService('${cat}','${key}')">Save</button>
+              <button class="btn-save-price" style="background:var(--danger);" onclick="adminDeleteService('${cat}','${key}')"><i class="fa-solid fa-trash"></i></button>
+            </div>
+          </div>`;
+        }
+        html += `</div>`;
+      }
+      container.innerHTML = html;
+    }
+
+    async function adminAddCategory() {
+      let catName = prompt("Enter new category ID (e.g., twitter, tiktok, website):");
+      if(!catName) return; catName = catName.toLowerCase().replace(/[^a-z0-9]/g, '');
+      if(globalServices[catName]) return alert("Category already exists!");
+      
+      showLoader(true);
+      try {
+        const dummyKey = catName + "_sample";
+        const dummyService = { name: "Sample Service (Edit Me)", price: 10 };
+        await fbPatch(`services/${catName}`, { [dummyKey]: dummyService });
+        globalServices = await fbGet('services'); renderAdminServices(); renderCategoryOptions();
+      } catch(e){ alert("Error"); } finally { showLoader(false); }
+    }
+
+    async function adminDeleteCategory(cat) {
+      if(!confirm(`WARNING: Are you sure you want to delete category "${cat}" and ALL its services?`)) return;
+      showLoader(true);
+      try {
+        await fetch(`${FIREBASE_DB_URL}services/${cat}.json`, { method: 'DELETE' });
+        globalServices = await fbGet('services'); if(!globalServices) globalServices = {};
+        renderAdminServices(); renderCategoryOptions();
+      } catch(e){ alert("Error"); } finally { showLoader(false); }
+    }
+
+    async function adminAddService(cat) {
+      let sName = prompt("Enter Service Name:"); if(!sName) return;
+      let sPrice = prompt("Enter Price per 1000:"); if(!sPrice || isNaN(sPrice)) return alert("Invalid price!");
+      let key = cat + "_" + Date.now();
+      
+      showLoader(true);
+      try {
+        await fbPatch(`services/${cat}/${key}`, { name: sName, price: parseFloat(sPrice) });
+        globalServices = await fbGet('services'); renderAdminServices(); renderCategoryOptions();
+      } catch(e){ alert("Error"); } finally { showLoader(false); }
+    }
+
+    async function adminUpdateService(cat, key) {
+      const newName = document.getElementById(`editname-${cat}-${key}`).value.trim();
+      const newPrice = parseFloat(document.getElementById(`editprice-${cat}-${key}`).value);
+      if(!newName || isNaN(newPrice)) return alert("Invalid Name or Price"); 
+      showLoader(true);
+      try { 
+        await fbPatch(`services/${cat}/${key}`, { name: newName, price: newPrice }); 
+        globalServices[cat][key].name = newName; globalServices[cat][key].price = newPrice; 
+        alert("Updated Successfully!"); renderAdminServices(); renderCategoryOptions();
+      } catch(e){} finally { showLoader(false); }
+    }
+
+    async function adminDeleteService(cat, key) {
+      if(!confirm("Delete this service permanently?")) return;
+      showLoader(true);
+      try {
+        await fetch(`${FIREBASE_DB_URL}services/${cat}/${key}.json`, { method: 'DELETE' });
+        globalServices = await fbGet('services'); renderAdminServices(); renderCategoryOptions();
+      } catch(e){ alert("Error"); } finally { showLoader(false); }
+    }
+
+
+    // ================= ADMIN USER SEARCH & REFUND =================
     async function fetchAdminAllUsersList() {
       showLoader(true);
       try { allUsersCache = await fbGet('users') || {}; allOrdersCache = await fbGet('orders') || {}; renderUsersList(Object.values(allUsersCache)); } catch(e) {} finally { showLoader(false); }
@@ -778,6 +897,7 @@
   </script>
 </body>
 </html>
+
 
 
 

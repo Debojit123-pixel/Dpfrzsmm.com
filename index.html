@@ -4,7 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="google-site-verification" content="EHTrJJ55MvODc3DQPrWk-x9HsTLxcstZ0sOAg_M9IC0" />
-  <title>DPFRZ SMM Panel</title>
+  
+  <!-- ================= SEO OPTIMIZATION TAGS ================= -->
+  <title>Dpfrzsmm - Official Website | Best SMM Panel</title>
+  <meta name="description" content="Welcome to Dpfrzsmm, the best and cheapest SMM panel in India. Get superfast social media services on dpfrzsmm.com today!">
+  <meta name="keywords" content="dpfrzsmm, dpfrzsmm.com, debojit123-pixel, smm panel, social media marketing">
+  <link rel="canonical" href="https://debojit123-pixel.github.io/Dpfrzsmm.com/" />
+
+  <!-- Open Graph Meta Tags (For Social Media Sharing) -->
+  <meta property="og:title" content="Dpfrzsmm - Official Website">
+  <meta property="og:description" content="Welcome to Dpfrzsmm. Get the fastest and cheapest social media services on dpfrzsmm.com.">
+  <meta property="og:url" content="https://debojit123-pixel.github.io/Dpfrzsmm.com/">
+  <meta property="og:type" content="website">
+  <!-- ========================================================= -->
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -154,9 +166,9 @@
 
   <div class="app-container">
     
-    <!-- ================= AUTH SCREENS ================= -->
+    <!-- ================= AUTH SCREENS (WITH H1 SEO TAGS) ================= -->
     <div id="authScreenPicker">
-      <div class="brand-logo"><i class="fa-solid fa-bolt"></i> DPFRZ SMM</div>
+      <h1 class="brand-logo" style="margin: 0 0 10px 0;"><i class="fa-solid fa-bolt"></i> Dpfrzsmm</h1>
       <p style="color: var(--text-main); font-weight: 600;">#1 Indian SMM Panel</p>
       <div class="auth-box">
         <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 25px; line-height: 1.5;">Select Google account to continue securely.</p>
@@ -168,7 +180,7 @@
     </div>
 
     <div id="authScreenPassword">
-      <div class="brand-logo"><i class="fa-solid fa-lock"></i> Secure Login</div>
+      <h1 class="brand-logo" style="margin: 0 0 10px 0;"><i class="fa-solid fa-lock"></i> Dpfrzsmm</h1>
       <div class="auth-box">
         <form onsubmit="handlePasswordSubmit(event)">
           <div class="form-group">
@@ -192,7 +204,8 @@
       <div class="header">
         <div class="header-left">
           <div class="user-avatar" id="avatarIcon">U</div>
-          <div class="header-title"><i class="fa-solid fa-bolt"></i> DPFRZ SMM</div>
+          <!-- H1 Tag for SEO -->
+          <h1 class="header-title" style="margin:0;"><i class="fa-solid fa-bolt"></i> Dpfrzsmm</h1>
         </div>
         <div class="header-right">
           <button class="btn-action-small btn-refresh" onclick="window.location.reload()"><i class="fa-solid fa-rotate-right"></i></button>
@@ -325,7 +338,7 @@
           <div class="card"><h2 class="card-title">Order & Deposit History</h2><div id="userOrdersList"></div></div>
         </div>
 
-        <!-- Screen: ADD BALANCE (With WhatsApp added explicitly) -->
+        <!-- Screen: ADD BALANCE -->
         <div id="screen-addBalance" class="screen">
           <button class="btn-back" onclick="switchNav('newOrder')"><i class="fa-solid fa-arrow-left"></i> Back</button>
           <div class="card" style="text-align: center; padding: 25px 15px;">
@@ -354,7 +367,6 @@
             <button class="btn-admin-action" onclick="switchNav('adminUsers')">View All Users</button>
           </div>
 
-          <!-- NEW: Manage Services Button -->
           <div class="card" style="border: 2px solid var(--danger);">
             <h2 class="card-title" style="color:var(--danger); margin-bottom:0;"><i class="fa-solid fa-tags"></i> Manage Services & Categories</h2>
             <p style="font-size:12px; color:var(--text-muted); margin-bottom:15px; margin-top:5px;">Add, Edit or Delete Categories and Services.</p>
@@ -364,7 +376,7 @@
           <div class="card"><h2 class="card-title" style="color:var(--warning);"><i class="fa-solid fa-list-check"></i> All Users Orders</h2><div id="adminAllOrdersList"></div></div>
         </div>
 
-        <!-- Screen: ADMIN MANAGE SERVICES (NEW SUB-SCREEN) -->
+        <!-- Screen: ADMIN MANAGE SERVICES -->
         <div id="screen-adminServices" class="screen">
           <button class="btn-back" onclick="switchNav('admin')"><i class="fa-solid fa-arrow-left"></i> Back to Admin</button>
           <div class="card">
@@ -437,8 +449,8 @@
     let allOrdersCache = {};
     let deferredPrompt = null;
     let adminViewingUserId = null; 
-    let currentSelectedCategory = null; // For Custom Category Dropdown
-    let currentSelectedService = null; // For Custom Service Dropdown
+    let currentSelectedCategory = null; 
+    let currentSelectedService = null; 
 
     function showLoader(show) { document.getElementById('loader').style.display = show ? 'flex' : 'none'; }
     
@@ -539,7 +551,7 @@
 
       const waLink = `https://wa.me/918638707624?text=${encodeURIComponent("Hi, My gmail is " + currentUserEmail + " Help in deposit issue?")}`;
       document.getElementById('menuWhatsappBtn').href = waLink;
-      document.getElementById('depositWhatsappBtn').href = `https://wa.me/918638707624?text=${encodeURIComponent("Hi, My gmail is " + currentUserEmail + " Help in deposit issue?")}`;
+      document.getElementById('depositWhatsappBtn').href = waLink;
       document.getElementById('menuAdminItem').style.display = (currentUserEmail.toLowerCase() === ADMIN_EMAIL.toLowerCase()) ? 'flex' : 'none';
 
       await updateUserTotalSpent();
@@ -547,7 +559,7 @@
       let srv = await fbGet('services');
       if(!srv) { await fbPut('services', defaultServices); globalServices = defaultServices; } else { globalServices = srv; }
       
-      renderCategoryOptions(); // Loads custom dropdowns
+      renderCategoryOptions(); 
       switchNav('newOrder'); showLoader(false);
     }
 
@@ -573,7 +585,6 @@
     function toggleCategoryDropdown() { document.getElementById('categoryDropdownWrapper').classList.toggle('open'); document.getElementById('customCategoryOptions').classList.toggle('open'); }
     function toggleServiceDropdown() { document.getElementById('serviceDropdownWrapper').classList.toggle('open'); document.getElementById('customServiceOptions').classList.toggle('open'); }
     
-    // Close dropdowns on outside click
     window.addEventListener('click', function(e) {
       const sWrap = document.getElementById('serviceDropdownWrapper');
       const cWrap = document.getElementById('categoryDropdownWrapper');
@@ -738,14 +749,11 @@
     async function fetchAdminData() {
       showLoader(true);
       try {
-        globalServices = await fbGet('services') || {};
         const allOrders = await fbGet('orders') || {}; const divOrd = document.getElementById('adminAllOrdersList');
         const ordersArray = Object.values(allOrders).reverse(); let htmlOrd = '';
         ordersArray.forEach(o => {
           const safeId = (o.orderId || '').replace('ORD-','').replace('DEP-','').replace('REF-','');
-          
           let statusOptions = '';
-          // HIDE STATUS DROPDOWN FOR REFERRAL AND DEPOSITS
           if(o.orderId && (o.orderId.startsWith('REF-') || o.orderId.startsWith('DEP-'))) {
             statusOptions = `<span class="status-badge status-${o.status}">${o.status}</span> <span style="font-size:11px; color:grey;">(Auto Generated)</span>`;
           } else {
@@ -756,7 +764,6 @@
               <option value="Failed" ${(o.status==='Failed')?'selected':''}>Failed</option>
             </select>`;
           }
-
           htmlOrd += `<div class="list-item" style="border-left: 3px solid var(--warning);"><div class="list-row"><strong style="color:var(--primary);">${o.userEmail||'Unknown'}</strong></div><strong style="color:var(--text-main);">${o.service}</strong><div class="list-row"><span style="color:var(--text-muted);">Cost:</span> <span style="font-weight:700;color:var(--primary);">₹${parseFloat(o.charge||0).toFixed(2)}</span></div><div style="margin-top:10px;">${statusOptions}</div></div>`;
         }); divOrd.innerHTML = htmlOrd;
       } catch(e) {} finally { showLoader(false); }
@@ -776,9 +783,9 @@
         html += `<div style="background:var(--input-bg); padding:15px; border-radius:10px; margin-bottom:20px; border:1px solid var(--border-color);">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; padding-bottom:10px; border-bottom:1px solid var(--border-color);">
             <h3 style="color:var(--primary); text-transform:capitalize; font-size:16px;">${cat} Services</h3>
-            <button class="btn-action-small" onclick="adminDeleteCategory('${cat}')" style="background:var(--danger); color:#fff; border:none; padding:6px 10px;"><i class="fa-solid fa-trash"></i> Delete Cat</button>
+            <button class="btn-action-small" onclick="adminDeleteCategory('${cat}')" style="background:var(--danger); color:#fff; border:none; padding:6px 10px;"><i class="fa-solid fa-trash"></i> Delete</button>
           </div>
-          <button class="btn-main" style="padding:8px; font-size:13px; margin-bottom:15px;" onclick="adminAddService('${cat}')"><i class="fa-solid fa-plus"></i> Add Service Here</button>
+          <button class="btn-main" style="padding:8px; font-size:13px; margin-bottom:15px;" onclick="adminAddService('${cat}')"><i class="fa-solid fa-plus"></i> Add Service</button>
         `;
         
         for(let key in globalServices[cat]) {
@@ -897,6 +904,7 @@
   </script>
 </body>
 </html>
+
 
 
 

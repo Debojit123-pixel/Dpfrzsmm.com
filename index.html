@@ -5,18 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="google-site-verification" content="EHTrJJ55MvODc3DQPrWk-x9HsTLxcstZ0sOAg_M9IC0" />
   
-  <!-- ================= SEO OPTIMIZATION TAGS ================= -->
+  <!-- ================= SEO OPTIMIZATION & FAVICON ================= -->
   <title>Dpfrzsmm - Official Website | Best SMM Panel</title>
   <meta name="description" content="Welcome to Dpfrzsmm, the best and cheapest SMM panel in India. Get superfast social media services on dpfrzsmm.com today!">
   <meta name="keywords" content="dpfrzsmm, dpfrzsmm.com, debojit123-pixel, smm panel, social media marketing">
   <link rel="canonical" href="https://debojit123-pixel.github.io/Dpfrzsmm.com/" />
+
+  <!-- Favicon (Browser Tab & Google Search Icon) -->
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="apple-touch-icon" href="favicon.png">
 
   <!-- Open Graph Meta Tags (For Social Media Sharing) -->
   <meta property="og:title" content="Dpfrzsmm - Official Website">
   <meta property="og:description" content="Welcome to Dpfrzsmm. Get the fastest and cheapest social media services on dpfrzsmm.com.">
   <meta property="og:url" content="https://debojit123-pixel.github.io/Dpfrzsmm.com/">
   <meta property="og:type" content="website">
-  <!-- ========================================================= -->
+  <meta property="og:image" content="https://debojit123-pixel.github.io/Dpfrzsmm.com/favicon.png">
+  <!-- ============================================================== -->
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -193,14 +198,12 @@
       var isInstagramOrFB = (ua.indexOf('Instagram') > -1 || ua.indexOf('FBAN') > -1 || ua.indexOf('FBAV') > -1);
       
       if (isInstagramOrFB) {
-        // Show the warning overlay and hide the main app wrapper
         document.addEventListener("DOMContentLoaded", function() {
           document.getElementById('inAppWarningOverlay').style.display = 'flex';
           var appWrapper = document.getElementById('mainAppContainerWrapper');
           if(appWrapper) appWrapper.style.display = 'none';
         });
 
-        // Try to force redirect on Android using Intent
         var isAndroid = /android/i.test(ua);
         if (isAndroid) {
           var cleanUrl = window.location.href.replace(/^https?:\/\//, '');
@@ -216,7 +219,7 @@
     
     <!-- ================= AUTH SCREENS (WITH H1 SEO TAGS) ================= -->
     <div id="authScreenPicker">
-      <h1 class="brand-logo" style="margin: 0 0 10px 0;"><i class="fa-solid fa-bolt"></i> Dpfrzsmm</h1>
+      <h1 class="brand-logo" style="margin: 0 0 10px 0;"><img src="favicon.png" width="40" height="40" alt="Dpfrzsmm Logo"> Dpfrzsmm</h1>
       <p style="color: var(--text-main); font-weight: 600;">#1 Indian SMM Panel</p>
       <div class="auth-box">
         <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 25px; line-height: 1.5;">Select Google account to continue securely.</p>
@@ -252,7 +255,7 @@
       <div class="header">
         <div class="header-left">
           <div class="user-avatar" id="avatarIcon">U</div>
-          <h1 class="header-title" style="margin:0;"><i class="fa-solid fa-bolt"></i> Dpfrzsmm</h1>
+          <h1 class="header-title" style="margin:0;">Dpfrzsmm</h1>
         </div>
         <div class="header-right">
           <button class="btn-action-small btn-refresh" onclick="window.location.reload()"><i class="fa-solid fa-rotate-right"></i></button>
@@ -951,6 +954,7 @@
   </script>
 </body>
 </html>
+
 
 
 

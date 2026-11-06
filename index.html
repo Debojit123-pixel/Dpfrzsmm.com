@@ -1,959 +1,439 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="google-site-verification" content="EHTrJJ55MvODc3DQPrWk-x9HsTLxcstZ0sOAg_M9IC0" />
-  
-  <!-- ================= SEO OPTIMIZATION & FAVICON ================= -->
-  <title>Dpfrzsmm - Official Website | Best SMM Panel</title>
-  <meta name="description" content="Welcome to Dpfrzsmm, the best and cheapest SMM panel in India. Get superfast social media services on dpfrzsmm.com today!">
-  <meta name="keywords" content="dpfrzsmm, dpfrzsmm.com, debojit123-pixel, smm panel, social media marketing">
-  <link rel="canonical" href="https://debojit123-pixel.github.io/Dpfrzsmm.com/" />
-
-  <!-- Favicon (Browser Tab & Google Search Icon) -->
-  <link rel="icon" type="image/png" href="favicon.png">
-  <link rel="apple-touch-icon" href="favicon.png">
-
-  <!-- Open Graph Meta Tags (For Social Media Sharing) -->
-  <meta property="og:title" content="Dpfrzsmm - Official Website">
-  <meta property="og:description" content="Welcome to Dpfrzsmm. Get the fastest and cheapest social media services on dpfrzsmm.com.">
-  <meta property="og:url" content="https://debojit123-pixel.github.io/Dpfrzsmm.com/">
-  <meta property="og:type" content="website">
-  <meta property="og:image" content="https://debojit123-pixel.github.io/Dpfrzsmm.com/favicon.png">
-  <!-- ============================================================== -->
-
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
-  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-
-  <style>
-    /* ================= LIGHT THEME (DEFAULT) ================= */
-    :root {
-      --primary: #0ea5e9;
-      --primary-dark: #0284c7;
-      --bg-color: #f1f5f9;
-      --card-bg: #ffffff;
-      --text-main: #0f172a;
-      --text-muted: #64748b;
-      --border-color: #e2e8f0;
-      --input-bg: #f8fafc;
-      --danger: #ef4444;
-      --success: #10b981;
-      --whatsapp: #25D366;
-      --warning: #f59e0b;
-      --header-bg: #0ea5e9;
-      --header-text: #ffffff;
-      --drawer-bg: #ffffff;
-      --bottom-nav-bg: #ffffff;
-    }
-
-    /* ================= DARK THEME ================= */
-    body.dark-theme {
-      --primary: #38bdf8;
-      --primary-dark: #0ea5e9;
-      --bg-color: #0f172a;
-      --card-bg: #1e293b;
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-      --border-color: #334155;
-      --input-bg: #0f172a;
-      --header-bg: #020617;
-      --header-text: #38bdf8;
-      --drawer-bg: #1e293b;
-      --bottom-nav-bg: #020617;
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
-    body { background-color: var(--bg-color); color: var(--text-main); display: flex; justify-content: center; height: 100vh; overflow: hidden; margin: 0; transition: background 0.3s, color 0.3s; }
-
-    .app-container { width: 100%; max-width: 480px; background: var(--card-bg); height: 100vh; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.1); display: flex; flex-direction: column; overflow-x: hidden; }
-
-    /* AUTH SCREENS */
-    #authScreenPicker, #authScreenPassword { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; padding: 30px 20px; text-align: center; overflow-y: auto; }
-    #authScreenPassword { display: none; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Study Notes to PDF</title>
     
-    .brand-logo { font-size: 32px; font-weight: 800; color: var(--primary); margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
-    .auth-box { width: 100%; border: 1px solid var(--border-color); border-radius: 16px; padding: 30px 20px; background: var(--card-bg); margin-top: 20px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+    <!-- Tailwind CSS with Typography Plugin for beautiful default HTML styling -->
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
     
-    .form-group { margin-bottom: 15px; text-align: left; }
-    .form-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: var(--text-main); }
-    .form-control-readonly { width: 100%; padding: 14px 15px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 14px; background: var(--input-bg); color: var(--text-muted); font-weight: 600; cursor: not-allowed; }
-    .form-control { width: 100%; padding: 14px 15px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 14px; background: var(--input-bg); color: var(--text-main); transition: border 0.3s; }
-    .form-control:focus { outline: none; border-color: var(--primary); }
-    .btn-main { width: 100%; padding: 14px; background: var(--primary); color: #fff; border: none; border-radius: 8px; font-weight: 700; font-size: 15px; cursor: pointer; margin-top: 10px; transition: opacity 0.2s; }
-    .btn-main:hover { opacity: 0.9; }
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- html2pdf.js for converting HTML to PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    
+    <!-- Google Fonts: Inter for UI, Merriweather for document body -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:wght@300;400;700&display=swap" rel="stylesheet">
 
-    /* HEADER */
-    #mainApp { display: none; flex-direction: column; height: 100vh; position: relative; }
-    .header { background: var(--header-bg); color: var(--header-text); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; z-index: 10; flex-shrink: 0; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-    .header-left, .header-right { display: flex; align-items: center; gap: 10px; }
-    .header-title { font-weight: 800; font-size: 18px; }
-    .user-avatar { width: 34px; height: 34px; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; overflow: hidden; font-weight: 700; color: var(--primary); border: 2px solid rgba(255,255,255,0.8); }
-    .user-avatar img { width: 100%; height: 100%; object-fit: cover; }
-    .menu-icon { font-size: 20px; cursor: pointer; color: var(--header-text); margin-left: 5px; }
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
 
-    .btn-action-small { background: rgba(255, 255, 255, 0.2); border: 1px solid rgba(255, 255, 255, 0.4); color: var(--header-text); border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: background 0.2s; }
-    .btn-install { padding: 5px 10px; gap: 5px; }
-    .btn-refresh { padding: 6px; width: 30px; height: 30px; border-radius: 50%; }
+        /* Custom Scrollbar for better UI */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
 
-    /* CUSTOM SERVICE & CATEGORY DROPDOWN */
-    .custom-select-wrapper { position: relative; user-select: none; width: 100%; }
-    .custom-select-trigger { width: 100%; padding: 14px 15px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 14px; background: var(--input-bg); color: var(--text-main); cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 500; }
-    .custom-select-trigger::after { content: '\f0d7'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: var(--text-muted); transition: transform 0.3s; }
-    .custom-options { position: absolute; display: none; top: 100%; left: 0; right: 0; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; margin-top: 5px; box-shadow: 0 4px 15px rgba(0,0,0,0.15); z-index: 100; max-height: 250px; overflow-y: auto; }
-    .custom-options.open { display: block; }
-    .custom-select-wrapper.open .custom-select-trigger::after { transform: rotate(180deg); }
-    .custom-option { padding: 12px 15px; font-size: 13px; color: var(--text-main); cursor: pointer; border-bottom: 1px solid var(--border-color); line-height: 1.4; }
-    .custom-option:last-child { border-bottom: none; }
-    .custom-option:hover { background: var(--bg-color); color: var(--primary); }
+        /* Specific styles for the PDF rendering area with strict, consistent spacing */
+        #pdf-content {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif; /* Clean sans-serif is best for Assamese font rendering */
+            background-color: white;
+            color: #1f2937;
+            font-size: 11pt;
+        }
 
-    /* DRAWER MENU */
-    .side-drawer { position: fixed; top: 0; right: -280px; width: 280px; height: 100%; background: var(--drawer-bg); z-index: 1000; transition: right 0.3s ease; display: flex; flex-direction: column; box-shadow: -2px 0 10px rgba(0,0,0,0.1); }
-    .side-drawer.open { right: 0; }
-    .drawer-header { background: var(--header-bg); color: var(--header-text); padding: 20px; font-size: 18px; font-weight: 700; display: flex; justify-content: space-between; align-items: center; }
-    .drawer-menu-items { padding: 15px 0; flex: 1; overflow-y: auto; }
-    .drawer-item { padding: 14px 20px; display: flex; align-items: center; gap: 15px; font-size: 14px; font-weight: 600; color: var(--text-main); cursor: pointer; border-bottom: 1px solid var(--border-color); text-decoration: none; transition: background 0.2s; }
-    .drawer-item:hover { background: var(--bg-color); }
-    .drawer-item i { width: 20px; text-align: center; }
-    .drawer-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 999; }
-    .drawer-overlay.active { display: block; }
+        #pdf-content h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #111827;
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 0.5rem;
+            line-height: 1.3;
+        }
 
-    /* BALANCE BANNER */
-    .balance-banner { background: var(--card-bg); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); flex-shrink: 0; }
-    .balance-banner h3 { font-size: 24px; font-weight: 800; color: var(--text-main); }
-    .btn-add-fund { background: var(--success); color: #fff; border: none; padding: 8px 15px; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 13px; }
+        #pdf-content h2 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
 
-    /* APP CONTENT */
-    .app-content { flex: 1; padding: 20px; overflow-y: auto; background: var(--bg-color); padding-bottom: 80px; }
-    .screen { display: none; }
-    .screen.active { display: block; }
-    .card { background: var(--card-bg); border-radius: 12px; padding: 20px; border: 1px solid var(--border-color); margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-    .card-title { font-size: 16px; font-weight: 700; margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; color: var(--text-main); }
+        #pdf-content h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #374151;
+            margin-top: 1.2rem;
+            margin-bottom: 0.75rem;
+            line-height: 1.4;
+        }
 
-    /* SLIDING BANNER */
-    .sliding-banner { width: 100%; overflow: hidden; background: linear-gradient(90deg, var(--primary), var(--success)); color: white; border-radius: 8px; margin-bottom: 20px; padding: 10px 0; font-size: 13px; font-weight: 600; position: relative; }
-    .sliding-content { display: flex; width: 300%; animation: slideAnim 10s infinite; }
-    .slide-text { width: 33.333%; text-align: center; flex-shrink: 0; }
-    @keyframes slideAnim { 0%, 25% { transform: translateX(0); } 33%, 58% { transform: translateX(-33.333%); } 66%, 91% { transform: translateX(-66.666%); } 100% { transform: translateX(0); } }
+        #pdf-content p {
+            line-height: 1.6;
+            margin-top: 0;
+            margin-bottom: 1rem;
+        }
 
-    /* CUSTOM LISTS */
-    .list-item { background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 12px; margin-bottom: 10px; font-size: 13px; color: var(--text-main); }
-    .list-row { display: flex; justify-content: space-between; margin-bottom: 6px; align-items: center; }
-    .status-badge { padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; }
-    .status-Pending { background: #fef3c7; color: #d97706; }
-    .status-Review { background: #e0f2fe; color: #0284c7; }
-    .status-Success { background: #dcfce7; color: #166534; }
-    .status-Failed { background: #fee2e2; color: #b91c1c; }
+        #pdf-content ul, #pdf-content ol {
+            margin-top: 0;
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+            line-height: 1.6;
+            list-style-position: outside;
+        }
+        
+        #pdf-content ul {
+            list-style-type: disc;
+        }
+        
+        #pdf-content ol {
+            list-style-type: decimal;
+        }
 
-    /* ADMIN CSS */
-    .admin-service-row { display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px dashed var(--border-color); }
-    .admin-service-controls { display: flex; gap: 8px; width: 100%; }
-    .admin-select-status { padding: 8px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 13px; font-weight: 600; background: var(--input-bg); color: var(--text-main); width: 100%; }
-    .btn-admin-action { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: 600; font-size: 14px; cursor: pointer; }
-    .btn-back { background: transparent; border: 1px solid var(--primary); color: var(--primary); padding: 8px 15px; border-radius: 6px; font-weight: 600; cursor: pointer; margin-bottom: 15px; display: inline-flex; align-items: center; gap: 6px; font-size: 13px; }
+        #pdf-content li {
+            margin-bottom: 0.5rem;
+        }
 
-    .bottom-nav { background: var(--bottom-nav-bg); border-top: 1px solid var(--border-color); display: flex; justify-content: space-around; padding: 10px 0; position: absolute; bottom: 0; left: 0; width: 100%; z-index: 100; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); }
-    .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-muted); font-size: 11px; font-weight: 600; cursor: pointer; width: 33%; }
-    .nav-item i { font-size: 20px; margin-bottom: 4px; }
-    .nav-item.active { color: var(--primary); }
-    #nav-admin { display: none; }
+        #pdf-content strong {
+            font-weight: 700;
+            color: #1e40af; /* Deep blue text color for highlights - no background color! */
+        }
 
-    #loader { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 100000; justify-content: center; align-items: center; flex-direction: column; }
-    .spinner { border: 4px solid var(--border-color); border-top: 4px solid var(--primary); border-radius: 50%; width: 45px; height: 45px; animation: spin 1s linear infinite; margin-bottom: 15px; }
-    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        /* Page break utilities for PDF generation */
+        .page-break-before { page-break-before: always; }
+        .page-break-after { page-break-after: always; }
+        
+        /* Prevent breaking inside paragraphs or list items */
+        p, li, h1, h2, h3 { page-break-inside: avoid; }
 
-    /* ================= INSTAGRAM / FB IN-APP BROWSER WARNING ================= */
-    #inAppWarningOverlay {
-      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: var(--bg-color); z-index: 999999; flex-direction: column;
-      align-items: center; justify-content: center; padding: 30px; text-align: center;
-    }
-    #inAppWarningOverlay i { font-size: 60px; color: var(--danger); margin-bottom: 20px; }
-    #inAppWarningOverlay h2 { color: var(--text-main); font-size: 22px; font-weight: 800; margin-bottom: 15px; }
-    #inAppWarningOverlay p { color: var(--text-muted); font-size: 15px; margin-bottom: 25px; line-height: 1.6; }
-    .step-box { background: var(--card-bg); padding: 20px; border-radius: 12px; border: 1px dashed var(--primary); text-align: left; width: 100%; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-    .step-box strong { color: var(--text-main); font-size: 15px; }
-  </style>
+        /* Loader Animation */
+        .loader {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3b82f6;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 8px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
 </head>
-<body>
+<body class="text-gray-800 h-screen flex flex-col overflow-hidden">
 
-  <!-- ================= IN-APP BROWSER DETECTOR OVERLAY ================= -->
-  <div id="inAppWarningOverlay">
-    <i class="fa-solid fa-triangle-exclamation"></i>
-    <h2>Browser Blocked</h2>
-    <p>Google Secure Login does not work inside the Instagram or Facebook app browser.</p>
-    <div class="step-box">
-      <strong style="color:var(--primary); font-size:16px; margin-bottom:10px; display:block;">How to open the panel:</strong>
-      <div style="margin-bottom:10px; color:var(--text-muted);"><span style="background:var(--bg-color); padding:2px 8px; border-radius:4px; font-weight:bold; color:var(--text-main);">Step 1:</span> Tap the <strong>3 dots (⋮)</strong> at the top right corner.</div>
-      <div style="color:var(--text-muted);"><span style="background:var(--bg-color); padding:2px 8px; border-radius:4px; font-weight:bold; color:var(--text-main);">Step 2:</span> Select <strong>"Open in Chrome"</strong> or <strong>"Open in Browser"</strong>.</div>
-    </div>
-  </div>
-
-  <script>
-    // IN-APP BROWSER DETECTION & AUTO-REDIRECT
-    (function() {
-      var ua = navigator.userAgent || navigator.vendor || window.opera;
-      var isInstagramOrFB = (ua.indexOf('Instagram') > -1 || ua.indexOf('FBAN') > -1 || ua.indexOf('FBAV') > -1);
-      
-      if (isInstagramOrFB) {
-        document.addEventListener("DOMContentLoaded", function() {
-          document.getElementById('inAppWarningOverlay').style.display = 'flex';
-          var appWrapper = document.getElementById('mainAppContainerWrapper');
-          if(appWrapper) appWrapper.style.display = 'none';
-        });
-
-        var isAndroid = /android/i.test(ua);
-        if (isAndroid) {
-          var cleanUrl = window.location.href.replace(/^https?:\/\//, '');
-          window.location.href = 'intent://' + cleanUrl + '#Intent;scheme=https;package=com.android.chrome;end;';
-        }
-      }
-    })();
-  </script>
-
-  <div id="loader"><div class="spinner"></div><h3 style="color:var(--primary); font-size: 16px;">Loading...</h3></div>
-
-  <div class="app-container" id="mainAppContainerWrapper">
-    
-    <!-- ================= AUTH SCREENS (WITH H1 SEO TAGS) ================= -->
-    <div id="authScreenPicker">
-      <h1 class="brand-logo" style="margin: 0 0 10px 0;"><img src="favicon.png" width="40" height="40" alt="Dpfrzsmm Logo"> Dpfrzsmm</h1>
-      <p style="color: var(--text-main); font-weight: 600;">#1 Indian SMM Panel</p>
-      <div class="auth-box">
-        <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 25px; line-height: 1.5;">Select Google account to continue securely.</p>
-        <div style="display:flex; justify-content:center;">
-          <div id="g_id_onload" data-client_id="480658857207-it2hotcqdkrhmljo37htfbjnjmvlgn6h.apps.googleusercontent.com" data-context="use" data-ux_mode="popup" data-callback="handleGooglePicker" data-auto_prompt="false"></div>
-          <div class="g_id_signin" data-type="standard" data-shape="rectangular" data-theme="outline" data-text="continue_with" data-size="large" data-logo_alignment="center" data-width="280"></div>
-        </div>
-      </div>
-    </div>
-
-    <div id="authScreenPassword">
-      <h1 class="brand-logo" style="margin: 0 0 10px 0;"><i class="fa-solid fa-lock"></i> Dpfrzsmm</h1>
-      <div class="auth-box">
-        <form onsubmit="handlePasswordSubmit(event)">
-          <div class="form-group">
-            <label>Selected Email</label>
-            <input type="email" id="authFixedEmail" class="form-control-readonly" readonly>
-          </div>
-          <div class="form-group">
-            <label id="passLabel">Enter Password</label>
-            <input type="password" id="authPassword" class="form-control" placeholder="••••••••" required minlength="6">
-            <small style="color:var(--text-muted); font-size:11px; margin-top:4px; display:block;">If new user, this will be your panel password.</small>
-          </div>
-          <button type="submit" class="btn-main">Proceed to Panel</button>
-        </form>
-      </div>
-    </div>
-
-    <!-- ================= MAIN APP ================= -->
-    <div id="mainApp">
-      
-      <!-- HEADER -->
-      <div class="header">
-        <div class="header-left">
-          <div class="user-avatar" id="avatarIcon">U</div>
-          <h1 class="header-title" style="margin:0;">Dpfrzsmm</h1>
-        </div>
-        <div class="header-right">
-          <button class="btn-action-small btn-refresh" onclick="window.location.reload()"><i class="fa-solid fa-rotate-right"></i></button>
-          <button class="btn-action-small btn-install" onclick="installPWA()"><i class="fa-solid fa-cloud-arrow-down"></i> App</button>
-          <i class="fa-solid fa-bars menu-icon" onclick="toggleDrawer()"></i>
-        </div>
-      </div>
-
-      <!-- SIDE DRAWER MENU -->
-      <div class="drawer-overlay" id="drawerOverlay" onclick="toggleDrawer()"></div>
-      <div class="side-drawer" id="sideDrawer">
-        <div class="drawer-header">
-          <span>Menu</span>
-          <i class="fa-solid fa-xmark" style="cursor:pointer;" onclick="toggleDrawer()"></i>
-        </div>
-        <div class="drawer-menu-items">
-          <a class="drawer-item" onclick="toggleDrawer(); switchNav('newOrder')"><i class="fa-solid fa-cart-plus" style="color:var(--primary);"></i> Place New Order</a>
-          <a class="drawer-item" onclick="toggleDrawer(); switchNav('history')"><i class="fa-solid fa-clock-rotate-left" style="color:var(--primary);"></i> Order History</a>
-          <a class="drawer-item" onclick="toggleDrawer(); switchNav('addBalance')"><i class="fa-solid fa-wallet" style="color:var(--success);"></i> Add Funds</a>
-          
-          <a class="drawer-item" onclick="toggleDrawer(); switchNav('referral')"><i class="fa-solid fa-gift" style="color:var(--warning);"></i> Refer & Earn ₹10</a>
-          
-          <a class="drawer-item" onclick="toggleTheme()"><i class="fa-solid fa-moon" style="color:var(--text-muted);"></i> Dark / Light Theme</a>
-
-          <a class="drawer-item" id="menuWhatsappBtn" href="#" target="_blank"><i class="fa-brands fa-whatsapp" style="color:var(--whatsapp);"></i> WhatsApp Support</a>
-          
-          <a class="drawer-item" id="menuAdminItem" style="display:none;" onclick="toggleDrawer(); switchNav('admin')"><i class="fa-solid fa-shield-halved" style="color:var(--danger);"></i> Admin Panel</a>
-          <a class="drawer-item" onclick="logout()" style="margin-top:20px;"><i class="fa-solid fa-right-from-bracket" style="color:var(--danger);"></i> Logout</a>
-        </div>
-      </div>
-
-      <!-- BALANCE BANNER -->
-      <div class="balance-banner">
-        <div>
-          <div style="font-size:11px; color:var(--text-muted); font-weight:600;">Current Balance</div>
-          <h3 id="displayBalance">₹0.00</h3>
-          <div style="font-size:12px; color:var(--text-muted); font-weight:600; margin-top:2px;">
-            Total Spent: <span id="displayTotalSpent" style="color:var(--primary); font-weight:700;">₹0.00</span>
-          </div>
-        </div>
-        <button class="btn-add-fund" onclick="switchNav('addBalance')">+ Add Funds</button>
-      </div>
-
-      <!-- CONTENT AREA -->
-      <div class="app-content">
-        
-        <!-- Screen: NEW ORDER -->
-        <div id="screen-newOrder" class="screen active">
-          
-          <div class="sliding-banner">
-            <div class="sliding-content">
-              <div class="slide-text">🎉 Refer Friends & Earn ₹10 Bonus!</div>
-              <div class="slide-text">🛡️ 100% Safe, Secure & Trusted Panel</div>
-              <div class="slide-text">⚡ Superfast Social Media Services!</div>
+    <!-- Navbar -->
+    <nav class="bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center shrink-0 shadow-sm z-10">
+        <div class="flex items-center gap-3">
+            <div class="bg-blue-600 text-white p-2 rounded-lg">
+                <i class="fa-solid fa-graduation-cap text-xl"></i>
             </div>
-          </div>
+            <div>
+                <h1 class="font-bold text-xl leading-tight">StudyNotes AI</h1>
+                <p class="text-xs text-gray-500">Messy Text to Beautiful PDFs</p>
+            </div>
+        </div>
+        <button id="settings-toggle" class="text-gray-500 hover:text-blue-600 transition-colors p-2 rounded-full hover:bg-gray-100 focus:outline-none">
+            <i class="fa-solid fa-gear text-lg"></i>
+        </button>
+    </nav>
 
-          <div class="card">
-            <h2 class="card-title">Place New Order</h2>
-            <form onsubmit="placeOrder(event)">
-              
-              <!-- CUSTOM CATEGORY DROPDOWN -->
-              <div class="form-group">
-                <label>Category</label>
-                <div class="custom-select-wrapper" id="categoryDropdownWrapper">
-                  <div class="custom-select-trigger" onclick="toggleCategoryDropdown()" id="categoryDropdownTrigger">Select a Category</div>
-                  <div class="custom-options" id="customCategoryOptions"></div>
+    <!-- Settings Panel (Hidden by default) -->
+    <div id="settings-panel" class="hidden bg-white border-b border-gray-200 px-6 py-4 shadow-inner shrink-0 transition-all duration-300">
+        <div class="max-w-3xl mx-auto flex flex-col md:flex-row gap-4 items-center justify-between">
+            <div class="flex-1 w-full">
+                <label for="api-key" class="block text-sm font-medium text-gray-700 mb-1">Gemini API Key (Optional in Canvas)</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fa-solid fa-key text-gray-400"></i>
+                    </div>
+                    <input type="password" id="api-key" placeholder="Enter your API key here..." class="pl-10 block w-full sm:text-sm border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 border p-2 bg-gray-50">
                 </div>
-              </div>
-              
-              <!-- CUSTOM SERVICE DROPDOWN -->
-              <div class="form-group">
-                <label>Service (Price per 1000)</label>
-                <div class="custom-select-wrapper" id="serviceDropdownWrapper">
-                  <div class="custom-select-trigger" onclick="toggleServiceDropdown()" id="serviceDropdownTrigger">Select a Service</div>
-                  <div class="custom-options" id="customServiceOptions"></div>
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label>Target Link</label>
-                <input type="url" id="orderLink" class="form-control" placeholder="Paste link here" required>
-              </div>
-              <div class="form-group">
-                <label>Quantity (Min 100)</label>
-                <input type="number" id="orderQty" class="form-control" placeholder="1000" min="100" oninput="calcPrice()" required>
-              </div>
-
-              <div style="background: var(--input-bg); border: 1px solid var(--border-color); padding:15px; border-radius:8px; margin-bottom:15px; display:flex; justify-content:space-between; align-items:center;">
-                <span style="font-weight:600; color:var(--text-main);">Total Charge:</span>
-                <span style="font-weight:800; color:var(--primary); font-size:22px;">₹<span id="orderTotal">0.00</span></span>
-              </div>
-              <button type="submit" class="btn-main">Submit Order</button>
-            </form>
-          </div>
-        </div>
-
-        <!-- Screen: REFERRAL SYSTEM -->
-        <div id="screen-referral" class="screen">
-          <button class="btn-back" onclick="switchNav('newOrder')"><i class="fa-solid fa-arrow-left"></i> Back</button>
-          
-          <div class="card" style="text-align:center;">
-            <i class="fa-solid fa-gift" style="font-size:45px; color:var(--warning); margin-bottom:15px;"></i>
-            <h2 class="card-title" style="margin-bottom:5px; border:none;">Invite & Earn ₹10</h2>
-            <p style="font-size:13px; color:var(--text-muted); margin-bottom:20px; line-height:1.5;">Share your code. If a new user uses it, YOU get ₹10 and THEY get ₹10 in wallet instantly!</p>
-            
-            <div style="background:var(--input-bg); padding:15px; border-radius:8px; border:1px dashed var(--primary); margin-bottom:20px;">
-              <span style="font-size:12px; color:var(--text-muted); display:block; margin-bottom:5px;">Your Referral Code</span>
-              <strong style="font-size:24px; color:var(--primary); letter-spacing:2px;" id="myReferralCodeDisplay">---</strong>
+                <p class="text-xs text-gray-500 mt-1">If left blank in this environment, it will attempt to use the default system key.</p>
             </div>
-
-            <button class="btn-main" onclick="shareReferralCode()" style="margin-bottom:20px; font-size:14px;"><i class="fa-solid fa-share-nodes"></i> Share Code</button>
-
-            <div id="applyReferralSection" style="border-top:1px solid var(--border-color); padding-top:20px;">
-              <div style="margin-bottom:10px; font-weight:600; font-size:13px; color:var(--text-main); text-align:left;">Have a Referral Code?</div>
-              <div style="display:flex; gap:10px;">
-                <input type="text" id="refCodeInput" class="form-control" placeholder="Enter Code" style="text-transform:uppercase;">
-                <button class="btn-main" style="margin:0; width:100px; background:var(--success);" onclick="applyReferralCode()">Apply</button>
-              </div>
-            </div>
-            <div id="alreadyReferredSection" style="display:none; color:var(--success); font-weight:600; font-size:13px; padding:15px; background:rgba(16,185,129,0.1); border:1px solid var(--success); border-radius:8px; margin-top:20px;">
-              <i class="fa-solid fa-circle-check"></i> You have already used a referral code!
-            </div>
-          </div>
+            <button id="save-settings" class="w-full md:w-auto bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold py-2 px-4 border border-gray-300 rounded shadow-sm">
+                Save & Close
+            </button>
         </div>
-
-        <!-- Screen: HISTORY -->
-        <div id="screen-history" class="screen">
-          <button class="btn-back" onclick="switchNav('newOrder')"><i class="fa-solid fa-arrow-left"></i> Back</button>
-          <div class="card"><h2 class="card-title">Order & Deposit History</h2><div id="userOrdersList"></div></div>
-        </div>
-
-        <!-- Screen: ADD BALANCE -->
-        <div id="screen-addBalance" class="screen">
-          <button class="btn-back" onclick="switchNav('newOrder')"><i class="fa-solid fa-arrow-left"></i> Back</button>
-          <div class="card" style="text-align: center; padding: 25px 15px;">
-            <i class="fa-solid fa-wallet" style="font-size: 45px; color: var(--success); margin-bottom: 12px;"></i>
-            <h2 class="card-title" style="border:none; margin-bottom:8px;">Add Funds</h2>
-            <div class="form-group" style="text-align: left; margin-top:20px;">
-              <label>Enter Amount (₹)</label>
-              <input type="number" id="depositAmountInput" class="form-control" placeholder="100" min="10" value="100" style="font-size:18px; font-weight:700;">
-            </div>
-            <button class="btn-main" onclick="triggerRazorpayFromScreen()" style="background: var(--success); margin-bottom: 20px;"><i class="fa-solid fa-lock"></i> Pay via Razorpay</button>
-            
-            <p style="font-size:12px; color:grey; margin-bottom:10px;">Payment failed or having issues?</p>
-            <a id="depositWhatsappBtn" href="https://wa.me/918638707624?text=Hi%20please%20help%20me%20in%20deposit%20%3F" target="_blank" style="display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 12px; background: transparent; color: var(--whatsapp); border: 1px solid var(--whatsapp); border-radius: 8px; font-weight: 700; font-size: 14px; text-decoration: none;">
-              <i class="fa-brands fa-whatsapp" style="font-size:18px;"></i> Customer Support
-            </a>
-          </div>
-        </div>
-
-        <!-- Screen: ADMIN MAIN DASHBOARD -->
-        <div id="screen-admin" class="screen">
-          <button class="btn-back" onclick="switchNav('newOrder')"><i class="fa-solid fa-arrow-left"></i> Back</button>
-          
-          <div class="card" style="border: 2px solid var(--primary);">
-            <h2 class="card-title" style="color:var(--primary); margin-bottom:0;"><i class="fa-solid fa-users"></i> User Database</h2>
-            <p style="font-size:12px; color:var(--text-muted); margin-bottom:15px; margin-top:5px;">Search users, view orders & add/deduct balance.</p>
-            <button class="btn-admin-action" onclick="switchNav('adminUsers')">View All Users</button>
-          </div>
-
-          <div class="card" style="border: 2px solid var(--danger);">
-            <h2 class="card-title" style="color:var(--danger); margin-bottom:0;"><i class="fa-solid fa-tags"></i> Manage Services & Categories</h2>
-            <p style="font-size:12px; color:var(--text-muted); margin-bottom:15px; margin-top:5px;">Add, Edit or Delete Categories and Services.</p>
-            <button class="btn-admin-action" style="background:var(--danger); color:white; border:none;" onclick="switchNav('adminServices')">Open Service Manager</button>
-          </div>
-
-          <div class="card"><h2 class="card-title" style="color:var(--warning);"><i class="fa-solid fa-list-check"></i> All Users Orders</h2><div id="adminAllOrdersList"></div></div>
-        </div>
-
-        <!-- Screen: ADMIN MANAGE SERVICES -->
-        <div id="screen-adminServices" class="screen">
-          <button class="btn-back" onclick="switchNav('admin')"><i class="fa-solid fa-arrow-left"></i> Back to Admin</button>
-          <div class="card">
-            <h2 class="card-title" style="color:var(--danger);">Categories & Services Archive</h2>
-            <div id="adminServicesContainer"></div>
-          </div>
-        </div>
-
-        <!-- Screen: ADMIN ALL USERS -->
-        <div id="screen-adminUsers" class="screen">
-          <button class="btn-back" onclick="switchNav('admin')"><i class="fa-solid fa-arrow-left"></i> Back</button>
-          <div class="card">
-            <h2 class="card-title">Total Users: <span id="adminTotalUsersCount" style="color:var(--primary);">0</span></h2>
-            <input type="text" id="userSearchInput" class="form-control" placeholder="Search user by Gmail..." oninput="filterAdminUsers()" style="margin-bottom: 20px;">
-            <div id="adminUsersList"></div>
-          </div>
-        </div>
-
-        <!-- Screen: ADMIN USER SPECIFIC -->
-        <div id="screen-adminUserOrders" class="screen">
-          <button class="btn-back" onclick="switchNav('adminUsers')"><i class="fa-solid fa-arrow-left"></i> Back to Users</button>
-          
-          <div class="card" style="border: 1px solid var(--primary);">
-            <h2 class="card-title" style="color:var(--primary);">Manage User Balance</h2>
-            <div style="display:flex; gap:10px; margin-top:10px;">
-              <input type="number" id="adminRefundAmount" class="form-control" placeholder="Amount (₹)">
-              <button class="btn-main" style="margin:0; width:auto; background:var(--success);" onclick="adminModifyBalance('add')">Add</button>
-              <button class="btn-main" style="margin:0; width:auto; background:var(--danger);" onclick="adminModifyBalance('deduct')">Deduct</button>
-            </div>
-          </div>
-
-          <div class="card">
-            <h2 class="card-title" id="specificUserTitle">User Orders</h2>
-            <div id="specificUserOrdersList"></div>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Bottom Nav -->
-      <div class="bottom-nav">
-        <div class="nav-item active" id="navbtn-newOrder" onclick="switchNav('newOrder')"><i class="fa-solid fa-cart-plus"></i><span>Order</span></div>
-        <div class="nav-item" id="navbtn-history" onclick="switchNav('history')"><i class="fa-solid fa-clock-rotate-left"></i><span>History</span></div>
-        <div class="nav-item" id="nav-admin" onclick="switchNav('admin')"><i class="fa-solid fa-shield-halved" style="color:var(--danger);"></i><span style="color:var(--danger);">Admin</span></div>
-      </div>
-
     </div>
-  </div>
 
-  <script>
-    // ================= CONFIGURATION =================
-    const FIREBASE_DB_URL = "https://dpfrzsmm-default-rtdb.firebaseio.com/";
-    const ADMIN_EMAIL = "pauldebojit629@gmail.com";
-    const RAZORPAY_KEY_ID = "rzp_live_ThRNn6xsDj9d2D";
-    const SITE_URL = "https://debojit123-pixel.github.io/Dpfrzsmm.com/";
-
-    const defaultServices = {
-      instagram: { "ig_views": { name: "Instagram Views [Instant]", price: 10 }, "ig_likes": { name: "Instagram Likes [High Quality]", price: 30 }, "ig_comments": { name: "Instagram Comments", price: 80 }, "ig_followers": { name: "Instagram Followers", price: 120 } },
-      facebook: { "fb_views": { name: "Facebook Video Views", price: 20 }, "fb_likes": { name: "Facebook Page Likes", price: 90 }, "fb_followers": { name: "Facebook Followers", price: 110 } },
-      youtube: { "yt_views": { name: "YouTube Views", price: 150 }, "yt_likes": { name: "YouTube Likes", price: 200 }, "yt_subs": { name: "YouTube Subscribers", price: 450 } },
-      telegram: { "tg_members": { name: "Telegram Channel Members", price: 90 }, "tg_views": { name: "Telegram Post Views", price: 15 } }
-    };
-
-    let tempGoogleData = null; 
-    let currentUserId = null;
-    let currentUserEmail = null;
-    let currentUserData = null;
-    let globalServices = null;
-    let allUsersCache = {};
-    let allOrdersCache = {};
-    let deferredPrompt = null;
-    let adminViewingUserId = null; 
-    let currentSelectedCategory = null; 
-    let currentSelectedService = null; 
-
-    function showLoader(show) { document.getElementById('loader').style.display = show ? 'flex' : 'none'; }
-    
-    async function fbGet(path) { 
-      try { const res = await fetch(`${FIREBASE_DB_URL}${path}.json`); if(!res.ok) return null; return await res.json(); } catch(e) { return null; }
-    }
-    async function fbPut(path, data) { await fetch(`${FIREBASE_DB_URL}${path}.json`, { method: 'PUT', body: JSON.stringify(data) }); }
-    async function fbPatch(path, data) { await fetch(`${FIREBASE_DB_URL}${path}.json`, { method: 'PATCH', body: JSON.stringify(data) }); }
-
-    // ================= THEME TOGGLE =================
-    function toggleTheme() {
-      document.body.classList.toggle('dark-theme');
-      const isDark = document.body.classList.contains('dark-theme');
-      localStorage.setItem('dpfrz_theme', isDark ? 'dark' : 'light');
-    }
-    if(localStorage.getItem('dpfrz_theme') === 'dark') { document.body.classList.add('dark-theme'); }
-
-    function toggleDrawer() { document.getElementById('sideDrawer').classList.toggle('open'); document.getElementById('drawerOverlay').classList.toggle('active'); }
-
-    window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; });
-    function installPWA() {
-      if (deferredPrompt) { deferredPrompt.prompt(); deferredPrompt.userChoice.then(() => { deferredPrompt = null; });
-      } else { alert("To install App:\n1. Tap 3 dots (⋮) at top right.\n2. Tap 'Install app' or 'Add to Home screen'."); }
-    }
-
-    function generateRefCode(email) { return email.split('@')[0].substring(0,4).toUpperCase() + Math.floor(1000 + Math.random() * 9000); }
-
-    function checkDeviceRestriction(incomingEmail) {
-      const savedDeviceOwner = localStorage.getItem('dpfrz_device_owner');
-      if(savedDeviceOwner && savedDeviceOwner !== incomingEmail && incomingEmail.toLowerCase() !== ADMIN_EMAIL.toLowerCase() && savedDeviceOwner.toLowerCase() !== ADMIN_EMAIL.toLowerCase()) {
-        alert("For the referral system, multiple account login from the same device is temporarily disabled. It will be opened later.");
-        return false;
-      } return true;
-    }
-
-    window.onload = async function() {
-      const savedUserId = localStorage.getItem('dpfrz_userId');
-      const savedEmail = localStorage.getItem('dpfrz_email');
-      if (savedUserId && savedEmail) {
-        showLoader(true);
-        try {
-          const user = await fbGet(`users/${savedUserId}`);
-          if (user) { currentUserId = savedUserId; currentUserEmail = savedEmail; currentUserData = user; initApp(user.picture || localStorage.getItem('dpfrz_pic')); }
-        } catch(e) {} finally { showLoader(false); }
-      }
-    };
-
-    async function handleGooglePicker(response) {
-      try {
-        const payload = JSON.parse(atob(response.credential.split('.')[1]));
-        if(!checkDeviceRestriction(payload.email)) return; 
-        tempGoogleData = { email: payload.email, picture: payload.picture };
-        document.getElementById('authScreenPicker').style.display = 'none'; document.getElementById('authScreenPassword').style.display = 'flex'; document.getElementById('authFixedEmail').value = tempGoogleData.email;
-      } catch(e) { alert("Auth Failed."); }
-    }
-
-    async function handlePasswordSubmit(e) {
-      e.preventDefault();
-      const pass = document.getElementById('authPassword').value;
-      const safeId = tempGoogleData.email.replace(/[^a-zA-Z0-9]/g, '');
-      if(!checkDeviceRestriction(tempGoogleData.email)) return;
-      showLoader(true);
-      try {
-        let user = await fbGet(`users/${safeId}`);
-        if(!user) {
-          user = { email: tempGoogleData.email, password: pass, balance: 0.00, picture: tempGoogleData.picture || "", referralCode: generateRefCode(tempGoogleData.email), hasUsedReferral: false, joinDate: new Date().toLocaleDateString() };
-          await fbPut(`users/${safeId}`, user);
-        } else {
-          if(user.password !== pass) { showLoader(false); return alert("Incorrect Password!"); }
-          if(!user.referralCode) { user.referralCode = generateRefCode(user.email); user.hasUsedReferral = false; await fbPatch(`users/${safeId}`, { referralCode: user.referralCode, hasUsedReferral: false }); }
-          if(tempGoogleData.picture && user.picture !== tempGoogleData.picture) { user.picture = tempGoogleData.picture; await fbPatch(`users/${safeId}`, { picture: tempGoogleData.picture }); }
-        }
-        currentUserId = safeId; currentUserEmail = tempGoogleData.email; currentUserData = user;
-        localStorage.setItem('dpfrz_userId', safeId); localStorage.setItem('dpfrz_email', tempGoogleData.email); localStorage.setItem('dpfrz_device_owner', tempGoogleData.email); 
-        if(user.picture) localStorage.setItem('dpfrz_pic', user.picture);
-        initApp(user.picture);
-      } catch(e) { alert("Network Error"); showLoader(false); }
-    }
-
-    function logout() {
-      localStorage.removeItem('dpfrz_userId'); localStorage.removeItem('dpfrz_email'); localStorage.removeItem('dpfrz_pic');
-      currentUserId = null; currentUserEmail = null; currentUserData = null; tempGoogleData = null;
-      document.getElementById('mainApp').style.display = 'none'; document.getElementById('authScreenPassword').style.display = 'none'; document.getElementById('authScreenPicker').style.display = 'flex'; document.getElementById('authPassword').value = '';
-    }
-
-    async function initApp(pictureUrl) {
-      document.getElementById('authScreenPicker').style.display = 'none'; document.getElementById('authScreenPassword').style.display = 'none'; document.getElementById('mainApp').style.display = 'flex';
-      
-      const avatarIcon = document.getElementById('avatarIcon');
-      const pic = pictureUrl || localStorage.getItem('dpfrz_pic');
-      if(pic) { avatarIcon.innerHTML = `<img src="${pic}" alt="DP" referrerpolicy="no-referrer" onerror="this.parentElement.innerText=currentUserEmail.charAt(0).toUpperCase()">`; } 
-      else { avatarIcon.innerText = currentUserEmail.charAt(0).toUpperCase(); }
-
-      document.getElementById('displayBalance').innerText = '₹' + parseFloat(currentUserData.balance).toFixed(2);
-      document.getElementById('myReferralCodeDisplay').innerText = currentUserData.referralCode || "NONE";
-
-      if(currentUserData.hasUsedReferral) { document.getElementById('applyReferralSection').style.display = 'none'; document.getElementById('alreadyReferredSection').style.display = 'block'; }
-
-      const waLink = `https://wa.me/918638707624?text=${encodeURIComponent("Hi, My gmail is " + currentUserEmail + " Help in deposit issue?")}`;
-      document.getElementById('menuWhatsappBtn').href = waLink;
-      document.getElementById('depositWhatsappBtn').href = waLink;
-      document.getElementById('menuAdminItem').style.display = (currentUserEmail.toLowerCase() === ADMIN_EMAIL.toLowerCase()) ? 'flex' : 'none';
-
-      await updateUserTotalSpent();
-      
-      let srv = await fbGet('services');
-      if(!srv) { await fbPut('services', defaultServices); globalServices = defaultServices; } else { globalServices = srv; }
-      
-      renderCategoryOptions(); 
-      switchNav('newOrder'); showLoader(false);
-    }
-
-    async function updateUserTotalSpent() {
-      const allOrders = await fbGet('orders') || {};
-      const myOrders = Object.values(allOrders).filter(o => o.userId === currentUserId && !(o.orderId||'').startsWith('DEP-') && !(o.orderId||'').startsWith('REF-') && o.status !== 'Failed');
-      const totalSpent = myOrders.reduce((sum, o) => sum + (parseFloat(o.charge) || 0), 0);
-      document.getElementById('displayTotalSpent').innerText = '₹' + totalSpent.toFixed(2);
-    }
-
-    function switchNav(screenName) {
-      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); document.getElementById('screen-' + screenName).classList.add('active');
-      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-      if(document.getElementById('navbtn-'+screenName)) document.getElementById('navbtn-'+screenName).classList.add('active');
-
-      if(screenName === 'history') fetchUserHistory(); 
-      if(screenName === 'admin') fetchAdminData(); 
-      if(screenName === 'adminServices') renderAdminServices();
-      if(screenName === 'adminUsers') fetchAdminAllUsersList();
-    }
-
-    // ================= CUSTOM DROPDOWNS (Category & Service) =================
-    function toggleCategoryDropdown() { document.getElementById('categoryDropdownWrapper').classList.toggle('open'); document.getElementById('customCategoryOptions').classList.toggle('open'); }
-    function toggleServiceDropdown() { document.getElementById('serviceDropdownWrapper').classList.toggle('open'); document.getElementById('customServiceOptions').classList.toggle('open'); }
-    
-    window.addEventListener('click', function(e) {
-      const sWrap = document.getElementById('serviceDropdownWrapper');
-      const cWrap = document.getElementById('categoryDropdownWrapper');
-      if (sWrap && !sWrap.contains(e.target)) { sWrap.classList.remove('open'); document.getElementById('customServiceOptions').classList.remove('open'); }
-      if (cWrap && !cWrap.contains(e.target)) { cWrap.classList.remove('open'); document.getElementById('customCategoryOptions').classList.remove('open'); }
-    });
-
-    function renderCategoryOptions() {
-      const optionsContainer = document.getElementById('customCategoryOptions');
-      const trigger = document.getElementById('categoryDropdownTrigger');
-      optionsContainer.innerHTML = '';
-      
-      if(globalServices && Object.keys(globalServices).length > 0) {
-        let first = true;
-        for(let catKey in globalServices) {
-          let catName = catKey.charAt(0).toUpperCase() + catKey.slice(1) + " Services";
-          let optDiv = document.createElement('div');
-          optDiv.className = 'custom-option';
-          optDiv.innerText = catName;
-          optDiv.onclick = function() {
-            currentSelectedCategory = catKey;
-            trigger.innerHTML = catName;
-            document.getElementById('categoryDropdownWrapper').classList.remove('open');
-            document.getElementById('customCategoryOptions').classList.remove('open');
-            renderServiceOptions();
-          };
-          optionsContainer.appendChild(optDiv);
-          
-          if(first) { currentSelectedCategory = catKey; trigger.innerHTML = catName; first = false; }
-        }
-      } else {
-        trigger.innerHTML = "No Categories Available"; currentSelectedCategory = null;
-      }
-      renderServiceOptions();
-    }
-
-    function renderServiceOptions() {
-      const cat = currentSelectedCategory;
-      const optionsContainer = document.getElementById('customServiceOptions');
-      const trigger = document.getElementById('serviceDropdownTrigger');
-      optionsContainer.innerHTML = ''; currentSelectedService = null; trigger.innerHTML = "Select a Service";
-
-      if(cat && globalServices && globalServices[cat]) {
-        let first = true;
-        for(let key in globalServices[cat]) {
-          let s = globalServices[cat][key];
-          let optDiv = document.createElement('div');
-          optDiv.className = 'custom-option';
-          optDiv.innerHTML = `${s.name} <br><span style="font-weight:700; color:var(--primary);">₹${s.price} per 1000</span>`;
-          
-          optDiv.onclick = function() {
-            currentSelectedService = { id: key, name: s.name, price: s.price };
-            trigger.innerHTML = `<span style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">${s.name} - ₹${s.price}</span>`;
-            document.getElementById('serviceDropdownWrapper').classList.remove('open');
-            document.getElementById('customServiceOptions').classList.remove('open');
-            calcPrice();
-          };
-          
-          optionsContainer.appendChild(optDiv);
-          if(first) { currentSelectedService = { id: key, name: s.name, price: s.price }; trigger.innerHTML = `<span style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">${s.name} - ₹${s.price}</span>`; first = false; }
-        }
-      } 
-      calcPrice();
-    }
-
-    function calcPrice() {
-      if(!currentSelectedService) { document.getElementById('orderTotal').innerText = '0.00'; return; }
-      const rate = parseFloat(currentSelectedService.price);
-      const qty = parseInt(document.getElementById('orderQty').value) || 0;
-      document.getElementById('orderTotal').innerText = ((rate/1000) * qty).toFixed(2);
-    }
-
-    async function placeOrder(e) {
-      e.preventDefault();
-      if(!currentSelectedService) return alert("Please select a service");
-      const charge = parseFloat(document.getElementById('orderTotal').innerText);
-      const qty = parseInt(document.getElementById('orderQty').value);
-
-      if(qty < 100) return alert("Min 100"); if(parseFloat(currentUserData.balance) < charge) return alert("Insufficient Balance! Please Add Funds.");
-
-      showLoader(true);
-      try {
-        const newBal = parseFloat(currentUserData.balance) - charge;
-        await fbPatch(`users/${currentUserId}`, { balance: newBal }); currentUserData.balance = newBal; document.getElementById('displayBalance').innerText = '₹' + newBal.toFixed(2);
-        const orderId = Date.now().toString();
-        await fbPut(`orders/${orderId}`, { orderId: "ORD-" + orderId, paymentId: "N/A", userEmail: currentUserEmail, userId: currentUserId, service: currentSelectedService.name, link: document.getElementById('orderLink').value, qty: qty, charge: charge, status: "Pending", timestamp: new Date().toLocaleString() });
-        await updateUserTotalSpent(); alert("Order Placed!"); document.getElementById('orderLink').value = ''; document.getElementById('orderQty').value = ''; calcPrice();
-      } catch(e){ alert("Error placing order"); } finally { showLoader(false); }
-    }
-
-    // ================= REFERRAL SYSTEM =================
-    function shareReferralCode() {
-      const textToShare = `🔥 Join DPFRZ SMM Panel!\nUse my invite code: ${currentUserData.referralCode}\nGet ₹10 instantly in your wallet.\nLink: ${SITE_URL}`;
-      if (navigator.share) { navigator.share({ title: 'DPFRZ SMM Referral', text: textToShare }).catch(console.error); } else { navigator.clipboard.writeText(textToShare); alert("Copied to clipboard! Share it anywhere."); }
-    }
-
-    async function applyReferralCode() {
-      const code = document.getElementById('refCodeInput').value.trim().toUpperCase();
-      if(!code) return alert("Enter a code."); if(code === currentUserData.referralCode) return alert("Cannot use your own code.");
-      
-      showLoader(true);
-      try {
-        const allUsers = await fbGet('users') || {};
-        let referrerId = null; let referrerData = null;
-        for(let uid in allUsers) { if(allUsers[uid].referralCode === code) { referrerId = uid; referrerData = allUsers[uid]; break; } }
+    <!-- Main Content Area -->
+    <main class="flex-1 flex flex-col md:flex-row overflow-hidden">
         
-        if(!referrerId) { showLoader(false); return alert("Invalid Code!"); }
-
-        const refNewBal = (parseFloat(referrerData.balance) || 0) + 10;
-        await fbPatch(`users/${referrerId}`, { balance: refNewBal });
-        const myNewBal = (parseFloat(currentUserData.balance) || 0) + 10;
-        await fbPatch(`users/${currentUserId}`, { balance: myNewBal, hasUsedReferral: true });
-
-        const bonusId = Date.now().toString();
-        await fbPut(`orders/REF-${bonusId}`, { orderId: "REF-" + bonusId, paymentId: "N/A", userEmail: currentUserEmail, userId: currentUserId, service: "Referral Bonus", link: "N/A", qty: 1, charge: 10, status: "Success", timestamp: new Date().toLocaleString() });
-
-        currentUserData.balance = myNewBal; currentUserData.hasUsedReferral = true; document.getElementById('displayBalance').innerText = '₹' + myNewBal.toFixed(2);
-        alert("Success! ₹10 added to wallet."); document.getElementById('applyReferralSection').style.display = 'none'; document.getElementById('alreadyReferredSection').style.display = 'block';
-      } catch(e) { alert("Error applying code"); } finally { showLoader(false); }
-    }
-
-    // ================= RAZORPAY =================
-    function triggerRazorpayFromScreen() {
-      const amount = parseFloat(document.getElementById('depositAmountInput').value || 100);
-      if(isNaN(amount) || amount <= 0) return alert("Invalid amount!");
-      var options = {
-        "key": RAZORPAY_KEY_ID, "amount": amount * 100, "currency": "INR", "name": "DPFRZ SMM", "description": "Add Funds",
-        "handler": async function (response) {
-            showLoader(true);
-            try {
-              const paymentId = response.razorpay_payment_id || "PAY_" + Date.now();
-              const newBalance = parseFloat(currentUserData.balance) + amount;
-              await fbPatch(`users/${currentUserId}`, { balance: newBalance });
-              currentUserData.balance = newBalance; document.getElementById('displayBalance').innerText = '₹' + newBalance.toFixed(2);
-              await fbPut(`orders/DEP-${Date.now()}`, { orderId: "DEP-" + Date.now(), paymentId: paymentId, userEmail: currentUserEmail, userId: currentUserId, service: "Wallet Deposit", link: "N/A", qty: 1, charge: amount, status: "Success", timestamp: new Date().toLocaleString() });
-              alert("Payment Successful!"); switchNav('history');
-            } catch(e){} finally { showLoader(false); }
-        },
-        "prefill": { "email": currentUserEmail }, "theme": { "color": "#0ea5e9" }
-      };
-      var rzp = new Razorpay(options);
-      rzp.on('payment.failed', async function (response){
-        showLoader(true);
-        try { await fbPut(`orders/DEP-${Date.now()}`, { orderId: "DEP-" + Date.now(), paymentId: response.error.metadata?.payment_id || "FAILED", userEmail: currentUserEmail, userId: currentUserId, service: "Wallet Deposit", link: "N/A", qty: 1, charge: amount, status: "Failed", timestamp: new Date().toLocaleString() });
-        alert("Payment Failed! Recorded in history."); switchNav('history'); } catch(e){} finally { showLoader(false); }
-      }); rzp.open();
-    }
-
-    async function fetchUserHistory() {
-      showLoader(true);
-      try {
-        const allOrders = await fbGet('orders') || {}; const div = document.getElementById('userOrdersList'); div.innerHTML = '';
-        const myOrders = Object.values(allOrders).filter(o => o.userId === currentUserId).reverse();
-        if(myOrders.length===0) div.innerHTML = '<p style="text-align:center;color:grey;">No History Found.</p>';
-        else myOrders.forEach(o => {
-          div.innerHTML += `<div class="list-item"><strong>${o.service}</strong><div class="list-row"><span style="color:var(--text-muted);">ID:</span> <span>${o.orderId||'N/A'}</span></div>${o.paymentId!=='N/A'?`<div class="list-row"><span style="color:var(--text-muted);">PayID:</span><span style="font-size:11px;">${o.paymentId}</span></div>`:''}<div class="list-row"><span style="color:var(--text-muted);">Amt:</span><span style="color:var(--primary);font-weight:700;">₹${parseFloat(o.charge).toFixed(2)}</span></div><div class="list-row"><span class="status-badge status-${o.status||'Pending'}">${o.status||'Pending'}</span> <span style="font-size:10px;color:grey;">${o.timestamp||''}</span></div></div>`;
-        });
-      } catch(e){} finally { showLoader(false); }
-    }
-
-    // ================= ADMIN MAIN DASHBOARD LOGIC =================
-    async function fetchAdminData() {
-      showLoader(true);
-      try {
-        const allOrders = await fbGet('orders') || {}; const divOrd = document.getElementById('adminAllOrdersList');
-        const ordersArray = Object.values(allOrders).reverse(); let htmlOrd = '';
-        ordersArray.forEach(o => {
-          const safeId = (o.orderId || '').replace('ORD-','').replace('DEP-','').replace('REF-','');
-          let statusOptions = '';
-          if(o.orderId && (o.orderId.startsWith('REF-') || o.orderId.startsWith('DEP-'))) {
-            statusOptions = `<span class="status-badge status-${o.status}">${o.status}</span> <span style="font-size:11px; color:grey;">(Auto Generated)</span>`;
-          } else {
-            statusOptions = `<select class="admin-select-status" style="margin-top:10px;width:100%;" onchange="changeOrderStatus('${safeId}', this.value)">
-              <option value="Pending" ${(o.status==='Pending')?'selected':''}>Pending</option>
-              <option value="Review" ${(o.status==='Review')?'selected':''}>Review</option>
-              <option value="Success" ${(o.status==='Success')?'selected':''}>Success</option>
-              <option value="Failed" ${(o.status==='Failed')?'selected':''}>Failed</option>
-            </select>`;
-          }
-          htmlOrd += `<div class="list-item" style="border-left: 3px solid var(--warning);"><div class="list-row"><strong style="color:var(--primary);">${o.userEmail||'Unknown'}</strong></div><strong style="color:var(--text-main);">${o.service}</strong><div class="list-row"><span style="color:var(--text-muted);">Cost:</span> <span style="font-weight:700;color:var(--primary);">₹${parseFloat(o.charge||0).toFixed(2)}</span></div><div style="margin-top:10px;">${statusOptions}</div></div>`;
-        }); divOrd.innerHTML = htmlOrd;
-      } catch(e) {} finally { showLoader(false); }
-    }
-    
-    async function changeOrderStatus(orderKey, newStatus) {
-      if(!orderKey) return; if(!confirm("Change status?")) return; showLoader(true);
-      try { await fbPatch(`orders/ORD-${orderKey}`, { status: newStatus }); alert("Status Updated!"); } catch(e){} finally { showLoader(false); }
-    }
-
-    // ================= ADMIN: MANAGE CATEGORIES & SERVICES =================
-    function renderAdminServices() {
-      const container = document.getElementById('adminServicesContainer');
-      let html = `<button class="btn-main" onclick="adminAddCategory()" style="margin-bottom:20px;"><i class="fa-solid fa-plus"></i> Add New Category</button>`;
-      
-      for(let cat in globalServices) {
-        html += `<div style="background:var(--input-bg); padding:15px; border-radius:10px; margin-bottom:20px; border:1px solid var(--border-color);">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; padding-bottom:10px; border-bottom:1px solid var(--border-color);">
-            <h3 style="color:var(--primary); text-transform:capitalize; font-size:16px;">${cat} Services</h3>
-            <button class="btn-action-small" onclick="adminDeleteCategory('${cat}')" style="background:var(--danger); color:#fff; border:none; padding:6px 10px;"><i class="fa-solid fa-trash"></i> Delete</button>
-          </div>
-          <button class="btn-main" style="padding:8px; font-size:13px; margin-bottom:15px;" onclick="adminAddService('${cat}')"><i class="fa-solid fa-plus"></i> Add Service</button>
-        `;
-        
-        for(let key in globalServices[cat]) {
-          let s = globalServices[cat][key];
-          html += `<div class="admin-service-row">
-            <input type="text" id="editname-${cat}-${key}" value="${s.name}" class="form-control" style="margin-bottom:8px; font-size:13px; font-weight:600;">
-            <div class="admin-service-controls">
-              <input type="number" id="editprice-${cat}-${key}" value="${s.price}" class="form-control" style="width:100px;">
-              <button class="btn-save-price" onclick="adminUpdateService('${cat}','${key}')">Save</button>
-              <button class="btn-save-price" style="background:var(--danger);" onclick="adminDeleteService('${cat}','${key}')"><i class="fa-solid fa-trash"></i></button>
+        <!-- Left Pane: Input -->
+        <section class="w-full md:w-1/2 flex flex-col border-r border-gray-200 bg-white">
+            <div class="p-4 border-b border-gray-100 bg-gray-50 flex justify-between items-center">
+                <h2 class="font-semibold text-gray-700 flex items-center gap-2">
+                    <i class="fa-solid fa-paste text-blue-500"></i> Raw Input Text
+                </h2>
+                <button id="clear-btn" class="text-xs text-gray-500 hover:text-red-500 transition-colors">
+                    <i class="fa-solid fa-trash mr-1"></i>Clear
+                </button>
             </div>
-          </div>`;
-        }
-        html += `</div>`;
-      }
-      container.innerHTML = html;
-    }
+            
+            <div class="flex-1 p-4 relative">
+                <textarea id="raw-text" class="w-full h-full p-4 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm leading-relaxed" placeholder="Paste your messy notes, copied website text, or disorganized thoughts here...&#10;&#10;Example:&#10;mitochondria is powerhouse of cell it generates atp through cellular respiration. there are 3 main stages glycolysis krebs cycle electron transport chain. glycolysis happens in cytoplasm others in mitochondria."></textarea>
+            </div>
+            
+            <div class="p-4 border-t border-gray-200 bg-gray-50">
+                <button id="generate-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg shadow-md transition-colors flex justify-center items-center gap-2">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    <span>Analyze & Format Notes</span>
+                </button>
+            </div>
+        </section>
 
-    async function adminAddCategory() {
-      let catName = prompt("Enter new category ID (e.g., twitter, tiktok, website):");
-      if(!catName) return; catName = catName.toLowerCase().replace(/[^a-z0-9]/g, '');
-      if(globalServices[catName]) return alert("Category already exists!");
-      
-      showLoader(true);
-      try {
-        const dummyKey = catName + "_sample";
-        const dummyService = { name: "Sample Service (Edit Me)", price: 10 };
-        await fbPatch(`services/${catName}`, { [dummyKey]: dummyService });
-        globalServices = await fbGet('services'); renderAdminServices(); renderCategoryOptions();
-      } catch(e){ alert("Error"); } finally { showLoader(false); }
-    }
+        <!-- Right Pane: Preview & Output -->
+        <section class="w-full md:w-1/2 flex flex-col bg-gray-100 relative">
+            <div class="p-4 border-b border-gray-200 bg-white flex justify-between items-center z-10 shadow-sm">
+                <h2 class="font-semibold text-gray-700 flex items-center gap-2">
+                    <i class="fa-solid fa-file-pdf text-red-500"></i> Document Preview
+                </h2>
+                <button id="download-btn" disabled class="bg-green-600 hover:bg-green-700 text-white font-semibold py-1.5 px-4 rounded shadow transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 text-sm">
+                    <i class="fa-solid fa-download"></i> Download PDF
+                </button>
+            </div>
+            
+            <!-- Document Viewer Canvas -->
+            <div class="flex-1 overflow-y-auto p-4 md:p-8 flex justify-center bg-gray-200" id="preview-wrapper">
+                
+                <!-- This is the container that will be converted to PDF -->
+                <div id="pdf-container" class="bg-white shadow-lg rounded-sm w-full max-w-[210mm] min-h-[297mm] p-8 md:p-12 hidden">
+                    
+                    <!-- Clean container for strict custom CSS rendering (Removed Tailwind Prose) -->
+                    <div id="pdf-content" class="w-full">
+                        <!-- Content will be injected here -->
+                    </div>
+                    
+                </div>
 
-    async function adminDeleteCategory(cat) {
-      if(!confirm(`WARNING: Are you sure you want to delete category "${cat}" and ALL its services?`)) return;
-      showLoader(true);
-      try {
-        await fetch(`${FIREBASE_DB_URL}services/${cat}.json`, { method: 'DELETE' });
-        globalServices = await fbGet('services'); if(!globalServices) globalServices = {};
-        renderAdminServices(); renderCategoryOptions();
-      } catch(e){ alert("Error"); } finally { showLoader(false); }
-    }
+                <!-- Empty State -->
+                <div id="empty-state" class="flex flex-col items-center justify-center h-full text-gray-400">
+                    <i class="fa-regular fa-file-lines text-6xl mb-4 opacity-50"></i>
+                    <p class="text-lg font-medium text-gray-500">Preview will appear here</p>
+                    <p class="text-sm text-center max-w-xs mt-2">Paste text on the left and click "Analyze & Format" to generate beautiful study notes.</p>
+                </div>
 
-    async function adminAddService(cat) {
-      let sName = prompt("Enter Service Name:"); if(!sName) return;
-      let sPrice = prompt("Enter Price per 1000:"); if(!sPrice || isNaN(sPrice)) return alert("Invalid price!");
-      let key = cat + "_" + Date.now();
-      
-      showLoader(true);
-      try {
-        await fbPatch(`services/${cat}/${key}`, { name: sName, price: parseFloat(sPrice) });
-        globalServices = await fbGet('services'); renderAdminServices(); renderCategoryOptions();
-      } catch(e){ alert("Error"); } finally { showLoader(false); }
-    }
+                <!-- Loading State -->
+                <div id="loading-state" class="hidden flex-col items-center justify-center h-full text-blue-600">
+                    <div class="loader mb-4" style="width: 40px; height: 40px; border-width: 4px;"></div>
+                    <p class="text-lg font-medium animate-pulse">AI is reading and formatting your notes...</p>
+                </div>
+            </div>
+        </section>
 
-    async function adminUpdateService(cat, key) {
-      const newName = document.getElementById(`editname-${cat}-${key}`).value.trim();
-      const newPrice = parseFloat(document.getElementById(`editprice-${cat}-${key}`).value);
-      if(!newName || isNaN(newPrice)) return alert("Invalid Name or Price"); 
-      showLoader(true);
-      try { 
-        await fbPatch(`services/${cat}/${key}`, { name: newName, price: newPrice }); 
-        globalServices[cat][key].name = newName; globalServices[cat][key].price = newPrice; 
-        alert("Updated Successfully!"); renderAdminServices(); renderCategoryOptions();
-      } catch(e){} finally { showLoader(false); }
-    }
+    </main>
 
-    async function adminDeleteService(cat, key) {
-      if(!confirm("Delete this service permanently?")) return;
-      showLoader(true);
-      try {
-        await fetch(`${FIREBASE_DB_URL}services/${cat}/${key}.json`, { method: 'DELETE' });
-        globalServices = await fbGet('services'); renderAdminServices(); renderCategoryOptions();
-      } catch(e){ alert("Error"); } finally { showLoader(false); }
-    }
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // UI Elements
+            const rawTextArea = document.getElementById('raw-text');
+            const generateBtn = document.getElementById('generate-btn');
+            const downloadBtn = document.getElementById('download-btn');
+            const clearBtn = document.getElementById('clear-btn');
+            const pdfContainer = document.getElementById('pdf-container');
+            const pdfContent = document.getElementById('pdf-content');
+            const emptyState = document.getElementById('empty-state');
+            const loadingState = document.getElementById('loading-state');
+            
+            // Settings Elements
+            const settingsToggle = document.getElementById('settings-toggle');
+            const settingsPanel = document.getElementById('settings-panel');
+            const saveSettingsBtn = document.getElementById('save-settings');
+            const apiKeyInput = document.getElementById('api-key');
 
+            // Load saved API key if any
+            const savedKey = localStorage.getItem('studyNoteApiKey');
+            if (savedKey) {
+                apiKeyInput.value = savedKey;
+            }
 
-    // ================= ADMIN USER SEARCH & REFUND =================
-    async function fetchAdminAllUsersList() {
-      showLoader(true);
-      try { allUsersCache = await fbGet('users') || {}; allOrdersCache = await fbGet('orders') || {}; renderUsersList(Object.values(allUsersCache)); } catch(e) {} finally { showLoader(false); }
-    }
-    function renderUsersList(usersArray) {
-      document.getElementById('adminTotalUsersCount').innerText = usersArray.length;
-      const divUsr = document.getElementById('adminUsersList'); divUsr.innerHTML = '';
-      usersArray.forEach(u => {
-        const safeUserId = (u.email||'').replace(/[^a-zA-Z0-9]/g, '');
-        const userOrders = Object.values(allOrdersCache).filter(o => o.userId === safeUserId && !(o.orderId||'').startsWith('DEP-') && !(o.orderId||'').startsWith('REF-') && o.status !== 'Failed');
-        const spent = userOrders.reduce((sum, o) => sum + (parseFloat(o.charge) || 0), 0);
-        divUsr.innerHTML += `<div class="list-item" style="border-left: 3px solid var(--primary); cursor:pointer;" onclick="viewSpecificUserOrders('${safeUserId}', '${u.email}')"><div class="list-row"><strong style="color:var(--text-main);">${u.email}</strong> <i class="fa-solid fa-chevron-right" style="color:var(--primary);"></i></div><div class="list-row"><span style="color:var(--text-muted);">Wallet:</span> <span style="font-weight:700; color:var(--success);">₹${parseFloat(u.balance||0).toFixed(2)}</span></div><div class="list-row"><span style="color:var(--text-muted);">Spent:</span> <span style="font-weight:700; color:var(--primary);">₹${spent.toFixed(2)}</span></div></div>`;
-      });
-    }
-    function filterAdminUsers() { const q = document.getElementById('userSearchInput').value.toLowerCase(); renderUsersList(Object.values(allUsersCache).filter(u => (u.email||'').toLowerCase().includes(q))); }
+            // Toggle Settings
+            settingsToggle.addEventListener('click', () => {
+                settingsPanel.classList.toggle('hidden');
+            });
 
-    async function viewSpecificUserOrders(userId, userEmail) {
-      showLoader(true);
-      try {
-        adminViewingUserId = userId; document.getElementById('specificUserTitle').innerText = `Orders: ${userEmail}`; switchNav('adminUserOrders');
-        const allOrders = await fbGet('orders') || {}; const div = document.getElementById('specificUserOrdersList'); div.innerHTML = '';
-        const userOrders = Object.values(allOrders).filter(o => o.userId === userId).reverse();
-        userOrders.forEach(o => { div.innerHTML += `<div class="list-item"><strong style="color:var(--primary);">${o.service}</strong><div class="list-row"><span style="color:var(--text-muted);">ID:</span> <span>${o.orderId||''}</span></div><div class="list-row"><span style="color:var(--text-muted);">Charge:</span> <span style="color:var(--text-main);font-weight:700;">₹${parseFloat(o.charge||0).toFixed(2)}</span></div><div class="list-row"><span class="status-badge status-${o.status||'Pending'}">${o.status||'Pending'}</span></div></div>`; });
-      } catch(e){} finally { showLoader(false); }
-    }
+            saveSettingsBtn.addEventListener('click', () => {
+                localStorage.setItem('studyNoteApiKey', apiKeyInput.value.trim());
+                settingsPanel.classList.add('hidden');
+                // Optional: Show a brief toast notification here
+            });
 
-    async function adminModifyBalance(action) {
-      const amt = parseFloat(document.getElementById('adminRefundAmount').value);
-      if(isNaN(amt) || amt <= 0) return alert("Enter valid amount"); showLoader(true);
-      try {
-        const u = await fbGet(`users/${adminViewingUserId}`); let newBal = parseFloat(u.balance) || 0;
-        if(action === 'add') { newBal += amt; } else if (action === 'deduct') { newBal -= amt; if(newBal < 0) newBal = 0; }
-        await fbPatch(`users/${adminViewingUserId}`, { balance: newBal });
-        const typeLabel = action === 'add' ? "Admin Bonus/Refund" : "Admin Deduction"; const logAmt = action === 'add' ? amt : -amt;
-        await fbPut(`orders/REF-${Date.now()}`, { orderId: "REF-" + Date.now(), paymentId: "N/A", userEmail: u.email, userId: adminViewingUserId, service: typeLabel, link: "N/A", qty: 1, charge: logAmt, status: "Success", timestamp: new Date().toLocaleString() });
-        alert(`Balance updated to ₹${newBal.toFixed(2)} for ${u.email}`); document.getElementById('adminRefundAmount').value = ''; viewSpecificUserOrders(adminViewingUserId, u.email);
-      } catch(e){ alert("Action failed."); } finally { showLoader(false); }
-    }
-  </script>
+            // Clear Input
+            clearBtn.addEventListener('click', () => {
+                rawTextArea.value = '';
+                pdfContainer.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                downloadBtn.disabled = true;
+            });
+
+            // Set UI States
+            function setLoading(isLoading) {
+                if (isLoading) {
+                    generateBtn.disabled = true;
+                    generateBtn.innerHTML = '<div class="loader"></div> Processing...';
+                    emptyState.classList.add('hidden');
+                    pdfContainer.classList.add('hidden');
+                    loadingState.classList.remove('hidden');
+                    loadingState.classList.add('flex');
+                    downloadBtn.disabled = true;
+                } else {
+                    generateBtn.disabled = false;
+                    generateBtn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i><span>Analyze & Format Notes</span>';
+                    loadingState.classList.add('hidden');
+                    loadingState.classList.remove('flex');
+                }
+            }
+
+            // Generate Notes Logic (Gemini API)
+            generateBtn.addEventListener('click', async () => {
+                const text = rawTextArea.value.trim();
+                if (!text) {
+                    alert('Please paste some text to format.');
+                    return;
+                }
+
+                setLoading(true);
+
+                const apiKey = apiKeyInput.value.trim() || ""; // Fallback to empty string for Canvas
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+
+                const systemInstruction = `You are an expert study material formatter. The user will provide raw, messy text (primarily in Assamese). 
+Your job is to analyze this text, fix any structural issues, and format it into a beautifully organized study guide using HTML tags (h1, h2, h3, p, ul, li, strong). 
+Keep the language exactly as provided (Assamese). 
+Do NOT use background highlights (<mark> or background-color). Use <strong> for emphasis.
+Ensure spacing and hierarchy make sense. Return ONLY valid HTML without any markdown wrapping (no \`\`\`html).`;
+
+                const prompt = `Format the following text into study notes based on your system instructions:\n\n${text}`;
+
+                const payload = {
+                    contents: [{ parts: [{ text: prompt }] }],
+                    systemInstruction: { parts: [{ text: systemInstruction }] }
+                };
+
+                try {
+                    // Implement basic exponential backoff retry for robustness
+                    let retries = 3;
+                    let response;
+                    let delay = 1000;
+
+                    while (retries > 0) {
+                        response = await fetch(apiUrl, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                        });
+
+                        if (response.ok) break;
+                        if (response.status === 429) {
+                            retries--;
+                            await new Promise(r => setTimeout(r, delay));
+                            delay *= 2;
+                        } else {
+                            throw new Error(`API Error: ${response.status} - ${response.statusText}`);
+                        }
+                    }
+
+                    if (!response.ok) throw new Error('Failed to generate content after retries.');
+
+                    const result = await response.json();
+                    
+                    if (result.candidates && result.candidates[0].content && result.candidates[0].content.parts) {
+                        let generatedHtml = result.candidates[0].content.parts[0].text;
+                        
+                        // Clean up potential markdown artifacts just in case the model ignores instructions
+                        generatedHtml = generatedHtml.replace(/^```html\n?/, '');
+                        generatedHtml = generatedHtml.replace(/^```\n?/, '');
+                        generatedHtml = generatedHtml.replace(/\n?```$/, '');
+
+                        // Inject into preview
+                        pdfContent.innerHTML = generatedHtml;
+                        
+                        // Show container
+                        pdfContainer.classList.remove('hidden');
+                        downloadBtn.disabled = false;
+                    } else {
+                        throw new Error('Unexpected API response structure.');
+                    }
+
+                } catch (error) {
+                    console.error("Error generating notes:", error);
+                    pdfContent.innerHTML = `<div class="bg-red-50 text-red-600 p-4 rounded-md border border-red-200">
+                        <strong><i class="fa-solid fa-triangle-exclamation"></i> Error generating notes:</strong><br>
+                        ${error.message}<br><br>
+                        Please check your API key in settings or try again later.
+                    </div>`;
+                    pdfContainer.classList.remove('hidden');
+                } finally {
+                    setLoading(false);
+                }
+            });
+
+            // Download PDF Logic
+            downloadBtn.addEventListener('click', () => {
+                // Change UI state temporarily for PDF generation (hide things we don't want printed if they were inside)
+                
+                // Get the title from the generated content to use as filename
+                let filename = 'Study_Notes.pdf';
+                const h1 = pdfContent.querySelector('h1');
+                if (h1 && h1.innerText) {
+                    // Create a safe filename
+                    filename = h1.innerText.replace(/[^a-z0-9]/gi, '_').toLowerCase() + '_notes.pdf';
+                }
+
+                const element = document.getElementById('pdf-container');
+                
+                // html2pdf configuration
+                const opt = {
+                    margin:       15, // 15mm margin all around for standard A4
+                    filename:     filename,
+                    image:        { type: 'jpeg', quality: 0.98 },
+                    html2canvas:  { scale: 2, useCORS: true, letterRendering: true },
+                    jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                    pagebreak:    { mode: ['avoid-all', 'css', 'legacy'] }
+                };
+
+                // Add loading state to button
+                const originalBtnText = downloadBtn.innerHTML;
+                downloadBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Generating...';
+                downloadBtn.disabled = true;
+
+                // Temporarily remove shadow for cleaner PDF generation
+                element.classList.remove('shadow-lg');
+
+                html2pdf().set(opt).from(element).save().then(() => {
+                    // Restore button state
+                    downloadBtn.innerHTML = originalBtnText;
+                    downloadBtn.disabled = false;
+                    element.classList.add('shadow-lg');
+                }).catch(err => {
+                    console.error("PDF generation failed:", err);
+                    alert("Failed to generate PDF. See console for details.");
+                    downloadBtn.innerHTML = originalBtnText;
+                    downloadBtn.disabled = false;
+                    element.classList.add('shadow-lg');
+                });
+            });
+        });
+    </script>
 </body>
 </html>
+```
 
 
 
